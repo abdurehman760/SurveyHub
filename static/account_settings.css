@@ -1,0 +1,193 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Profile Picture Styles */
+.img-fluid.rounded-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+/* Profile Information Styles */
+.profile-info {
+  text-align: center;
+}
+
+.profile-info h5 {
+  margin: 0;
+}
+/* Add this CSS to your account_settings.css file */
+
+
+.user-details {
+  flex-grow: 1;
+}
+
+.username {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.email {
+  font-size: 1rem;
+  color: #666;
+}
+ /* Warning styles */
+ .password-warning,
+ #password-match-warning {
+     color: #ff0000; /* Red color for warnings */
+ }
+
+.message.success {
+  color: rgb(65, 234, 4);
+  
+}
+
+.message.failure {
+  color: rgb(255, 0, 0);
+  
+}
+
+
+
+/* Button Styles */
+button {
+  background-color: #007bff;
+    color: #fff;
+    border: 1px solid transparent;
+    padding: 12px 18px;
+    margin: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 4px 4px 4px 0px #0a3e76;
+    transition: transform 0.2s;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+.upload-button{
+  background-color: #10a01d;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  box-shadow: 3px 3px 3px 1px #345d34;
+}
+.upload-button:hover {
+ 
+  transform: scale(1.1);
+}
+
+/* Section Styles */
+section {
+  background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 30px auto;
+    max-width: 600px;
+    box-shadow: 5px 5px 7px rgb(0 0 0 / 64%);
+}
+
+
+/* Form Styles */
+form {
+  margin-top: 10px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-area {
+  width: 96%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #747474;
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px 0px #000000c2;
+  transition: transform 0.3s;
+}
+.input-area:hover {
+  transform: scale(1.02)
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Align items to the bottom */
+  
+}
+
+
+/* Style for the submit button */
+input[type="submit"] {
+  background-color: #16d026;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 12px 21px;
+  cursor: pointer;
+  transition: transform 0.1s;
+  box-shadow: 3px 3px 3px rgb(79 135 92);
+}
+
+input[type="submit"]:hover {
+  transform: scale(1.1);
+  
+}
+
+/* Hide message placeholders by default */
+/* Success Message Style */
+
+
+/* Position "Hide" button at top-right corner */
+section {
+  position: relative; /* Ensure section is a positioned container */
+ 
+}
+
+button[id^="hide"] {
+  position: absolute;
+    top: 3px;
+    right: 3px;
+    background-color: #e11c1c;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    box-shadow: 3px 3px 4px 0px #4a2525de;
+    transition: transform 0.1s;
+}
+
+button[id^="hide"]:hover {
+  transform: scale(1.1);
+}
+.password-container {
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+
+.password-container input {
+  margin-right: 5px; /* Adjust the spacing between the input and checkbox */
+}

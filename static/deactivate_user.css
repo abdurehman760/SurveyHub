@@ -1,0 +1,133 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+
+
+p {
+    margin-top: 20px;
+}
+
+form {
+    margin: 20px;
+}
+
+.deactivate {
+    background-color: #ff3333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 3px 4px 6px #580000;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.deactivate:hover {
+    transform: translateY(-2px)
+}
+.activate {
+    background-color: #0b8419; 
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 3px 4px 6px #065800;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.activate:hover {
+    transform: translateY(-2px)
+}
+
+
+a {
+    text-decoration: none;
+    color: #333;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+/* CSS in deactivate_user.css */
+.deactivate-info {
+    font-size: 18px;
+    color: #FF0000;
+    margin-bottom: 20px;
+}
+.activate-info {
+    font-size: 18px;
+    color: #1f231e;
+    margin-bottom: 20px;
+}
+.username {
+    font-size: 18px;
+    color: #243ae7;
+    margin-bottom: 20px;
+}
+.time-info {
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+}
+/* Styling for the cancel button */
+.cancel-button {
+    background-color: #1f231e;
+    color: #f2f2f2;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 3px 4px 5px #000;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.cancel-button:hover {
+    background-color: #2d2c2c;
+    transform: translateY(-2px);
+
+    
+}
+/* Navbar Styles */
+.navbar {
+    background-color: #3498db;
+    color: #fff;
+  }
+  
+  .navcontainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-brand {
+    font-size: 20px; /* Adjust the font size */
+  }
+  
+  /* Navbar Links */
+  .navbar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav-item {
+    display: inline;
+    margin-right: 20px; /* Adjust the spacing between items */
+  }
+  
+  .nav-link {
+    color: #fff; /* Text color for links */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px; /* Adjust the font size */
+    transition: color 0.3s; /* Add a smooth color transition effect */
+  }
+  
+  .nav-link:hover {
+    color: #f39c12; /* Change color on hover */
+  }

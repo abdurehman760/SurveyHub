@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact_us.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-ez0S1QJ5+uaBnJruJc5ml5lpfeE2xpGF3f5z4eJFf+UZZEBC1PXEb+HBgoFZBPU5" crossorigin="anonymous">
+
+    <title>Contact Us</title>
+</head>
+<body>
+    <header>
+        <div id="logo">
+          
+         
+        </div>
+        <span class="logo-text">Survey Hub</span>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+        
+        
+    </header>
+    <nav id="side-nav">
+        <button id="close-btn" onclick="closeNav()">&times;</button>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="admin_dashboard">Dashboard</a></li>
+          <li><a href="view_messages">Inbox</a></li>
+          <li><a href="/logout">Logout</a></li>
+            
+            
+        </ul>
+    </nav>
+
+    <div class="contact-container">
+        <div class="header">
+            <h1>Contact Us</h1>
+            <p>Feel free to reach out to us with any questions or concerns.</p>
+        </div>
+
+        <div class="info-container">
+            <div class="contact-info">
+                <h2>Our Information</h2>
+                <p>
+                    <a href="tel:+15551234567">
+                        <img src="{{ url_for('static', filename='img/whatsapp.png') }}" alt="Phone Icon"> +92 (302) 943-7934
+                    </a>
+                </p>
+                <p>
+                    <a href="mailto:contact@example.com">
+                        <img src="{{ url_for('static', filename='img/gmail.png') }}" alt="Email Icon"> surveyhubsupport@gmail.com
+                    </a>
+                </p>
+                <p>
+                    <a href="https://www.google.com/maps/place/University+of+Swat" target="_blank">
+                        <img src="{{ url_for('static', filename='img/address.png') }}" alt="Address Icon"> University of Swat
+                    </a>
+                </p>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d104830.5279402927!2d72.3166532048638!3d34.807099182892024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38dc22ebd0d7e8fb%3A0xa2dfaf0f3167971d!2sUniversity%20of%20Swat!5e0!3m2!1sen!2s!4v1700329794166!5m2!1sen!2s" width="370" height="245" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            
+            
+
+           
+
+            <div class="message-box">
+                <h2>Send Us a Message</h2>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <form action="{{ url_for('contact_us') }}" method="post">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+            
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+            
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+            
+                    <input type="submit" value="Send Message">
+                </form>
+            </div>
+            
+        </div>
+    </div>
+    <p>&copy; 2023 Survey Hub. All rights reserved. | University of Swat, Software Engineering Batch
+        2019-2023</p>
+        <script>
+            var isNavOpen = false;
+        
+            function closeNav() {
+                document.getElementById("side-nav").style.left = "-200px";
+                isNavOpen = false;
+            }
+        
+            function toggleNav() {
+                var sideNav = document.getElementById("side-nav");
+                if (!isNavOpen) {
+                    sideNav.style.left = "0px";
+                } else {
+                    sideNav.style.left = "-200px";
+                }
+                isNavOpen = !isNavOpen;
+            }
+        </script>
+        
+    
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Page</title>
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css'>
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<body>
+<div class="container">
+    <div class="screen">
+        <div class="screen__content">
+           
+            {% if deactivation_message %}
+            <div class="error-message">
+                {{ deactivation_message }}
+                <span class="close-button" onclick="this.parentElement.style.display='none'">&times;</span>
+            </div>
+        {% endif %}
+
+        {% if registration_success_message %}
+            <div class="success-message fade-out">
+                {{ registration_success_message }}
+                <span class="close-button" onclick="this.parentElement.style.display='none'">&times;</span>
+            </div>
+        {% endif %}
+
+        {% if invalid_credentials_message %}
+            <div class="error-message">
+                {{ invalid_credentials_message }}
+                <span class="close-button" onclick="this.parentElement.style.display='none'">&times;</span>
+            </div>
+        {% endif %}
+            <form class="login" action="/login" method="post">
+                
+                <div class="login__field">
+                    <i class="login__icon fas fa-user"></i>
+                    <input type="text" class="login__input" name="identifier" placeholder="User name / Email">
+                </div>
+                <div class="login__field">
+                    <i class="login__icon fas fa-lock"></i>
+                    <input type="password" class="login__input" name="password" id="password" placeholder="Password">
+                    <span class="eye-toggle" onclick="togglePassword()">
+                        <i class="fas fa-eye" id="eye"></i>
+                        <i class="fas fa-eye-slash" id="eye-slash" style="display: none;"></i>
+                    </span>
+                </div>
+                <button class="button login__submit">
+                    <span class="button__text">Log In Now</span>
+                    <i class="button__icon fas fa-chevron-right"></i>
+                </button>
+                <a href="register" class="button login__submit">
+                    <span class="button__text">New User ?</span>
+                    <i class="button__icon fas fa-chevron-right"></i>
+                </a>
+            </form>
+            <div class="social-login">
+                <h3>log in via</h3>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/accounts/login/?next=%2Flogin%2F&source=desktop_nav" class="social-login__icon fab fa-instagram"></a>
+                    <a href="https://www.facebook.com/login/" class="social-login__icon fab fa-facebook"></a>
+                    <a href="https://twitter.com/login/" class="social-login__icon fab fa-twitter"></a>
+                </div>
+            </div>
+        </div>
+        <div class="screen__background">
+            <span class="screen__background__shape screen__background__shape4"></span>
+            <span class="screen__background__shape screen__background__shape3"></span>
+            <span class="screen__background__shape screen__background__shape2"></span>
+            <span class="screen__background__shape screen__background__shape1"></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        var passwordField = document.getElementById("password");
+        var eyeIcon = document.getElementById("eye");
+        var eyeSlashIcon = document.getElementById("eye-slash");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            eyeIcon.style.display = "none";
+            eyeSlashIcon.style.display = "inline";
+        } else {
+            passwordField.type = "password";
+            eyeIcon.style.display = "inline";
+            eyeSlashIcon.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>

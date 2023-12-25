@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete User</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/deactivate_user.css') }}">
+</head>
+<body>
+    <h2>Delete User</h2>
+    <p>Are you sure you want to delete user "{{ user.username }}" ({{ user.email }})?</p>
+    <a method="POST">
+        <button type="submit">Yes, Delete</button>
+        <a href="{{ url_for('admin_users') }}">Cancel</a>
+    </a>
+</body>
+</html>

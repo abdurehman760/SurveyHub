@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='view_messages.css') }}">
+    <title>View Messages</title>
+</head>
+<body>
+    <div class="message-container">
+        <h1>View Messages</h1>
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message">
+                    <p><strong>{{ message.name }}</strong></p>
+                    <p>Email: <a href="mailto:{{ message.email }}">{{ message.email }}</a></p>
+                    <p>Message: {{ message.message }}</p>
+                    <p class="timestamp">{{ message.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                    <p class="email-link"><a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ message.email }}" target="_blank">Reply in Gmail</a></p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

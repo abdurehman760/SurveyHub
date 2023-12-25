@@ -1,0 +1,44 @@
+i am currently working on my universty project . the name of the project is "survey hub".
+ which basically create forms and serveys and gather responses.
+ i am using flask ,html, css, java script and sqlachemey.
+ its a webapp , first the user must login or regester,  if the user role is "USER"
+ then he will be redirect to profile page or user dashboard or if the user role is "admin" he 
+will be redirected to admin dashboard.
+ in admin dashboard . the admon can manage users and their account ,can created form templates , 
+can see messages done by users in contact us page, anmd other activties ,
+and if he is user , he can create forms from scrated ,can also use templates , 
+can see his owm created forms, and can also see the analytis and respones of his forms 
+that he create and shared to his targeted audience,he can also manages his account settings
+like change user name , email, password and profile pic . during form creation he can enter form header, title, creatoer name, and form description, andb then click the add question button which will dynimically add a question box, have a question text feild , can select more then 13 question types and slected if the question and mandatory or not/after created the form succefully , he will be redirected to form preview ,from here he can edit the form if needed or share the form to his audiouns ,if he wants to edit .he will need to clike the edit button whivh will redirect him to form editng page , here he can chnage existing from header ,title , and decription of the fotrm, can chnage the existing questiuoin text or option text if the question has optioin can also add add or remove optioon. or the whole question, he can aslo add a new question , with all the functionalties same is during form creation .. after all te chnages he can update the form. and now the analytics .. when the form is shared and filled by tge filler , he can see analytics  like last 10 days responses count ghraps , gender pue chart or reposnes for each question and totsl count of respospoines
+
+User Authentication and Authorization:
+
+I have successfully integrated Flask's user authentication to manage user registration and login. The system now ensures secure access for authorized users. Additionally, I've implemented role-based access control, directing users to their specific dashboards based on assigned roles.
+
+Admin Dashboard:
+
+The admin dashboard is up and running, equipped with features to manage users, create form templates, view messages, and handle various administrative tasks. SQLAlchemy is integrated to facilitate efficient interaction with the database, ensuring seamless management of user accounts and form templates.
+
+User Dashboard:
+
+I've created a user-friendly dashboard allowing users to create forms, utilize templates, view their created forms, and manage account settings. The system also incorporates dynamic question addition and selection of question types during form creation.
+
+Form Editing:
+
+Users can now easily modify form headers, titles, descriptions, and individual questions through the implemented form editing page. I've included options for adding, removing, or modifying questions and their respective options to enhance flexibility.
+
+Form Preview:
+
+Users have the ability to preview forms before sharing them with their audience. Additionally, I've provided an option to edit the form directly from the preview page, streamlining the editing process.
+
+Analytics:
+
+To enhance user insights, I've implemented analytics to track responses for each form. The system displays response counts over the last 10 days and utilizes charts for visualizing data, such as gender pie charts or graphs representing each question's responses.
+
+Security:
+
+Security measures have been prioritized. Passwords are securely stored using hashing techniques. Furthermore, user inputs are thoroughly sanitized and validated to prevent potential threats like SQL injection and cross-site scripting (XSS) attacks.
+
+User Interface (UI):
+
+The UI has been designed with a focus on user-friendliness and responsiveness, employing HTML and CSS. I've integrated JavaScript to enhance the user experience, especially in dynamic form creation, ensuring a seamless and intuitive interface.

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='analytics.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+  <style>
+    /* Add styling for navigation dots */
+    
+  </style>
+</head>
+
+<body>
+  <header>
+    <div id="logo">
+      
+     
+    </div>
+    <span class="logo-text">Survey Hub</span>
+    <div id="menu-button">
+        <button onclick="toggleNav()">☰</button>
+    </div>
+    
+    
+</header>
+<nav id="side-nav">
+    <button id="close-btn" onclick="closeNav()">&times;</button>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="profile_redirect">Dashboard</a></li>
+      <li><a href="form_templates">Templates</a></li>
+      <li><a href="saved_forms">Your Forms</a></li>
+      <li><a href="/logout">Logout</a></li>
+        
+        
+    </ul>
+</nav>
+<h1>Select any Form from the List to view Analytics</h1>
+
+<form method="POST">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Form ID</th>
+        <th>Form Title</th>
+        <th>Description</th>
+        <th>Creator Name</th>
+        <th>Category</th>
+        <th>Date Created</th>
+        <th>Responses</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user_form in user_forms %}
+      <tr id="form-{{ user_form.id }}" {% if loop.first %}class="selected-form"{% endif %}>
+        <td>{{ user_form.id }}</td>
+        <td>{{ user_form.form_title }}</td>
+        <td>
+          <span class="description-limit" data-description="{{ user_form.form_description }}">
+            {{ user_form.form_description|truncate(15) }}
+            {% if user_form.form_description|length > 15 %}
+            <a href="#" class="show-more">
+                <img src="static/img/view-more.png" alt="Show More">
+            </a>
+            {% endif %}
+            <div class="description-popup">
+                Description: {{ user_form.form_description }}
+            </div>
+        </span>
+        
+        </td>
+        <td>{{ user_form.creator }}</td>
+        <td>{{ user_form.category }}</td>
+        <td>{{ user_form.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>{{ user_form.response_count }}</td>
+        <td>
+          <button type="button" class="btn btn-primary view-analytics-button" data-form-id="{{ user_form.id }}">View Analytics</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</form>
+
+{% if form %}
+<div class="form-details" id="form-details">
+  <h2 class="form-details-title">Form Analytics</h2>
+  <div class="form-info">
+    <div class="form-info-item">
+        <span class="info-label">Title:</span>
+        <span class="info-value" id="form-title">{{ form.form_title }}</span>
+    </div>
+    <div class="form-info-item">
+        <span class="info-label" id="form-creation-date">Date of Creation:</span>
+        <span class="info-value">{{ form.created_at.strftime('%B %d, %Y %I:%M %p') }}</span>
+    </div>
+</div>
+
+
+
+  <div class="analytics-cards">
+    <div class="card analytics-card">
+        <div class="card-body">
+            <h4>Last 10 Days Response Count</h4>
+            <p>This card displays the recent activity for the last 10 days.</p>
+            <a id="analytics-link" class="analytics-link" href="{{ url_for('recent_forms_activity', form_id=form.id) }}">View Analytics</a>
+        </div>
+    </div>
+
+
+<div class="card analytics-card">
+  <div class="card-body">
+      <h4>Gender Pie Chart</h4>
+      <p>This displays a pie chart based on gender responses if there is a gender-related question in the form.</p>
+      <a id="gender-link" class="analytics-link" href="{{ url_for('gender_pie_chart', form_id=form.id) }}">View Analytics</a>
+  </div>
+</div>
+
+
+<div class="card analytics-card">
+  <div class="card-body">
+      <h4>View Question Responses</h4>
+      <p>This section allows you to view detailed responses for each question in the form.</p>
+      <a id="responses-link" class="analytics-link" href="{{ url_for('view_responses', form_id=form.id) }}">View Analytics</a>
+  </div>
+</div>
+
+
+<div class="card analytics-card">
+  <div class="card-body">
+      <h4>All Responses</h4>
+      <p>This section allows you to view all responses submitted for the form.</p>
+      <a id="all-responses-link" class="analytics-link" href="{{ url_for('form_responses', form_id=form.id) }}">View All Responses</a>
+  </div>
+</div>
+
+  
+    
+    <!-- Add more cards for other links if needed -->
+  </div>
+</div>
+{% else %}
+<div class="form-details" id="form-details">
+  <h2 class="form-details-title">No Form Found or Selected</h2>
+</div>
+{% endif %}
+
+<div class="footer">
+  <p>&copy; 2023 Survey Hub. All rights reserved. | University of Swat, Software Engineering Batch
+    2019-2023</p>
+</div>
+
+<!-- JavaScript for showing/hiding description popup and highlighting selected form -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const descriptionSpans = document.querySelectorAll('.description-limit');
+
+    descriptionSpans.forEach(function (descriptionSpan) {
+      const descriptionText = descriptionSpan.getAttribute('data-description');
+      const showMoreLink = descriptionSpan.querySelector('.show-more');
+      const descriptionPopup = descriptionSpan.querySelector('.description-popup');
+
+      if (descriptionText.length > 15) {
+        descriptionSpan.addEventListener('click', function () {
+          descriptionPopup.style.width = 'auto'; // Set width to auto
+          descriptionPopup.style.display = 'block';
+        });
+
+        showMoreLink.addEventListener('click', function (e) {
+          e.stopPropagation(); // Prevents the click from triggering the descriptionSpan click
+          descriptionPopup.style.width = 'auto'; // Set width to auto
+          descriptionPopup.style.display = 'block';
+        });
+
+        document.addEventListener('click', function (e) {
+          if (!descriptionSpan.contains(e.target) && !descriptionPopup.contains(e.target)) {
+            descriptionPopup.style.display = 'none';
+          }
+        });
+      }
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get all view analytics buttons
+    const viewAnalyticsButtons = document.querySelectorAll('.view-analytics-button');
+    const formTitle = document.getElementById('form-title');
+    const formCreationDate = document.getElementById('form-creation-date');
+    const analyticsLink = document.getElementById('analytics-link');
+    const formDetails = document.getElementById('form-details');
+    const allResponsesLink = document.getElementById('all-responses-link');
+    
+
+    // Loop through each button and add a click event listener
+    viewAnalyticsButtons.forEach(function (button) {
+      button.addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        // Remove the 'selected-form' class from all form rows
+        const formRows = document.querySelectorAll('tr[id^="form-"]');
+        formRows.forEach(function (row) {
+          row.classList.remove('selected-form');
+        });
+
+        // Add the 'selected-form' class to the clicked form row
+        const formRowId = button.getAttribute('data-form-id');
+        const selectedFormRow = document.querySelector(`#form-${formRowId}`);
+        if (selectedFormRow) {
+          selectedFormRow.classList.add('selected-form');
+        }
+
+        // Update form details based on the selected form
+        const selectedFormTitle = selectedFormRow.querySelector('td:nth-child(2)').textContent;
+        const selectedFormCreationDate = selectedFormRow.querySelector('td:nth-child(6)').textContent;
+
+        formTitle.textContent = selectedFormTitle;
+        formCreationDate.textContent = selectedFormCreationDate;
+        analyticsLink.href = `/recent_forms_activity?form_id=${formRowId}`;
+
+        // Scroll to the form details section
+        formDetails.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  });
+
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get all view analytics buttons
+    const viewAnalyticsButtons = document.querySelectorAll('.view-analytics-button');
+    const analyticsLink = document.getElementById('analytics-link'); // Get the analytics link element
+
+    // Loop through each button and add a click event listener
+    viewAnalyticsButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        // Get the form_id from the clicked button's data-form-id attribute
+        const formId = button.getAttribute('data-form-id');
+
+        // Update the href attribute of the analytics link with the selected form's form_id
+        analyticsLink.href = `/recent_forms_activity/${formId}`;
+      });
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get all view analytics buttons
+    const viewAnalyticsButtons = document.querySelectorAll('.view-analytics-button');
+    const analyticsLink = document.getElementById('gender-link'); // Get the analytics link element
+
+    // Loop through each button and add a click event listener
+    viewAnalyticsButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        // Get the form_id from the clicked button's data-form-id attribute
+        const formId = button.getAttribute('data-form-id');
+
+        // Update the href attribute of the analytics link with the selected form's form_id
+        analyticsLink.href = `/gender_pie_chart/${formId}`;
+      });
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get all view analytics buttons
+    const viewAnalyticsButtons = document.querySelectorAll('.view-analytics-button');
+    const analyticsLink = document.getElementById('responses-link'); // Get the analytics link element
+
+    // Loop through each button and add a click event listener
+    viewAnalyticsButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        // Get the form_id from the clicked button's data-form-id attribute
+        const formId = button.getAttribute('data-form-id');
+
+        // Update the href attribute of the analytics link with the selected form's form_id
+        analyticsLink.href = `/view_responses/${formId}`;
+      });
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get all view analytics buttons
+    const viewAnalyticsButtons = document.querySelectorAll('.view-analytics-button');
+    const allResponsesLink = document.getElementById('all-responses-link'); // Get the all responses link element
+
+    // Loop through each button and add a click event listener
+    viewAnalyticsButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        // Get the form_id from the clicked button's data-form-id attribute
+        const formId = button.getAttribute('data-form-id');
+
+        // Update the href attribute of the all responses link with the selected form's form_id
+        allResponsesLink.href = `/form_responses/${formId}`;
+      });
+    });
+  });
+</script>
+
+<script>
+  var isNavOpen = false;
+
+  function closeNav() {
+      document.getElementById("side-nav").style.left = "-200px";
+      isNavOpen = false;
+  }
+
+  function toggleNav() {
+      var sideNav = document.getElementById("side-nav");
+      if (!isNavOpen) {
+          sideNav.style.left = "0px";
+      } else {
+          sideNav.style.left = "-200px";
+      }
+      isNavOpen = !isNavOpen;
+  }
+</script>
+
+</body>
+
+</html>
+
+    
+
+
+
+        

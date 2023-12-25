@@ -1,0 +1,86 @@
+
+
+/* Style the container */
+.container {
+    margin: 2rem auto;
+    max-width: 600px;
+    padding: 2rem;
+    background-color: #262626;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Style the form */
+  form {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  label {
+    color: #fff;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #333;
+    background-color: #333;
+    color: #fff;
+    border-radius: 4px;
+  }
+  
+  input[type="range"] {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  
+  #ratingValue {
+    display: inline-block;
+    margin-left: 0.5rem;
+    color: #0078d4;
+  }
+  
+  input[type="radio"] {
+    margin-right: 0.25rem;
+    transform: scale(1.2);
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  button[type="submit"] {
+    background-color: #0078d4;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #005ba1;
+  }
+  
+  /* Style the "Use Templates" button */
+  .btn {
+    background-color: #0078d4;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .btn:hover {
+    background-color: #005ba1;
+  }
+  

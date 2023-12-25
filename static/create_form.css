@@ -1,0 +1,578 @@
+/* create_form.css - Part 1: Layout and Form Structure */
+body{
+  background: linear-gradient(90deg, #C7C5F4, #776BCC);	
+}
+/* Overall page layout */
+.container {
+  max-width: 850px;
+  margin: 100px auto;
+  padding: 20px;
+  background: linear-gradient(90deg, #C7C5F4, #aca3f1);
+  border-radius: 8px;
+  box-shadow: 1px 1px 3px 11px rgb(255 0 0 / 20%);
+  transition: background-color 0.3s;
+}
+
+.container:hover {
+  background-color: #e0e0e0;
+}
+
+/* Form box styling */
+.form-box {
+  background: linear-gradient(90deg, #C7C5F4, #c1bce8);
+  padding: 20px;
+  box-shadow: 0 0px 3px 3px #007bff;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+
+
+/* Form title styling */
+.form-box h2,
+.form-box h4 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+/* Form input and select fields */
+.form-control {
+  width: 95%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  box-shadow: 5px 5px 15px #d86767c2;
+  font-size: 16px;
+  background-color: #f5f5f5;
+  transition: transform 0.2s;
+}
+.form-control:hover{
+  transform: scale(1.02);
+  border: 3px solid rgb(0, 115, 255);
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  background-color: #fff;
+}
+
+/* Form labels */
+label {
+  font-weight: bold;
+  color: #555;
+}
+
+/* Form submit buttons */
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+
+  transform: translateY(-3px);
+}
+
+
+
+/* create_form.css - Part 2: Question Fields and Remove Question Button */
+
+/* Question container */
+.question-container {
+ 
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 5px 5px 5px 0px #0403038c;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.465);
+    position: relative;
+    transition: transform 0.1s;
+}
+
+
+.question-container:hover {
+  transform: scale(1.01);
+}
+
+/* Question number styling */
+.question-number {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Remove Question button */
+.remove-question {
+  position: absolute;
+    top: 23px;
+    right: 10px;
+    border: none;
+    background-color: rgb(255 255 255);
+    padding: 4px 8px;
+    border-radius: 21px;
+    color: #000000;
+    cursor: pointer;
+    margin-top: -16px;
+    font-size: 16px;
+    
+    transition: background-color 0.3s;
+  
+}
+.remove-question:hover {
+  transform: scale(1.2);
+  background-color: red;
+  color: white;
+  border: none;
+  
+}
+.remove-option {
+  border: none;
+    background-color: transparent;
+    color: transparent;
+    cursor: pointer;
+    margin-left: 5px;
+    margin-top: -16px;
+    transition: background-color 0.3s;
+  
+
+}
+.remove-option:hover {
+  transform: scale(1.2);
+  
+
+  
+}
+/* Styling for Horizontal Lines */
+hr {
+  border: none;
+  border-top: 3px solid rgb(0 79 255);
+  margin-top: 50px;
+  margin-bottom: 20px;
+  box-shadow: 2px 3px 2px 0px #2d09d4;
+}
+
+
+
+/* create_form.css - Part 3: Question Type Select Boxes and Options */
+
+/* Question type select box styling */
+.select-box {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  background-color: #f5f5f5;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.select-box:focus {
+  border-color: #007bff;
+  background-color: #fff;
+}
+
+/* Styling for options container */
+.option-container {
+  margin-top: 10px;
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+/* Add Option button */
+.add-option-button {
+  background-color: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+
+
+
+/* Remove Option button */
+.remove-option-button {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.remove-option-button:hover {
+  background-color: #c82333;
+}
+/* create_form.css - Part 4: Styling Specific Question Types and Options */
+
+/* Rating scale input styling */
+.rating-scale {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  background-color: #f5f5f5;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.rating-scale:focus {
+  border-color: #007bff;
+  background-color: #fff;
+}
+
+/* Character limit input styling */
+.char-limit {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  background-color: #f5f5f5;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.char-limit:focus {
+  border-color: #007bff;
+  background-color: #fff;
+}
+
+/* Date and time format select box styling */
+.date-time-format {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  background-color: #f5f5f5;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.date-time-format:focus {
+  border-color: #007bff;
+  background-color: #fff;
+}
+
+/* Styling for hidden rating scale and character limit fields */
+.hidden-field {
+  display: none;
+}
+
+/* Styling for the options of rating scale */
+.rating-options {
+  margin-top: 10px;
+}
+
+/* Styling for rating scale labels */
+.rating-label {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Styling for rating scale radio buttons */
+.rating-radio {
+  margin-right: 10px;
+}
+
+/* Styling for date and time format labels */
+.date-time-label {
+  font-size: 14px;
+  color: #333;
+}
+
+
+/* Target the select element with the "shorter-select" class */
+.shorter-select {
+  width: 30%;
+    margin-left: 550px;
+    position: relative;
+    padding: 10px;
+    border: transparent;
+    border-radius: 4px;
+    box-shadow: 6px 5px 9px #0c0b0b;
+    transition: transform 0.3s;
+    font-size: 16px;
+    background-color: #f5f5f5;
+
+}
+.shorter-select:hover {
+  border: 1px solid purple;
+}
+
+.btn-secondary {
+  background-color: transparent;
+    color: transparent;
+    cursor: pointer;
+    transition: transform 0.2s,background-color 0.2s;
+    background-image: url(img/add_option.png);
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+    border: aliceblue;
+}
+.btn-secondary:hover{
+  
+  transform: translatey(-2px)
+}
+.create-button {
+  background-color: #55cf1d;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s ,background-color 0.3s;
+}
+.create-button:hover {
+  transform: translateY(-3px);
+
+}
+.option {
+  width: 30%;
+  position: relative;
+  padding: 10px;
+  border: transparent;
+  border-radius: 4px;
+  box-shadow: 6px 5px 9px #0c0b0b;
+  transition: transform 0.3s;
+  font-size: 16px;
+  background-color: #f5f5f5;
+}
+.limit {
+  width: 51%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    box-shadow: 5px 5px 5px #3f3737c2;
+    font-size: 16px;
+    background-color: #f5f5f5;
+    transition: transform 0.2s;
+}
+/* Specify the button's class or add an ID for more specific targeting */
+.btn-danger.remove-option {
+  background-image: url('img/option.png');
+  background-size: cover;
+    width: 30px;
+    height: 30px;
+}
+/* Specify the button's class or add an ID for more specific targeting */
+.btn-danger.remove-question {
+  background-image: url('img/question delete.png');
+  background-size: cover; /* Adjust the sizing as needed */
+  text-indent: -9999px; /* Hide the text */
+  width: 30px; /* Set the width and height as needed */
+  height: 30px;
+}
+/* Specify the button's class or add an ID for more specific targeting */
+.add-option-button {
+  background-image: url('img/add_option.png');
+  background-size: cover; /* Adjust the sizing as needed */
+  width: 30px; /* Set the width and height as needed */
+  height: 30px;
+  border: none; /* Remove the border, if desired */
+  padding: 0; /* Remove padding, if desired */
+}
+.update-button {
+  background-color: #0900de;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+
+  /* 3D effect */
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Pseudo-element for creating the bottom shadow */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent);
+    border-radius: 0 0 4px 4px;
+  }
+}
+.add-question-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+
+  /* 3D effect */
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Pseudo-element for creating the bottom shadow */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent);
+    border-radius: 0 0 4px 4px;
+  }
+}
+option {
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  border: 2px solid #aaa;
+  border-radius: 5px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+option:hover {
+  border-color: #555555;
+}
+
+.buttons {
+  text-align: center;
+}
+
+
+/* Add styles for the success message */
+#success-message {
+  display: none;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #3ad660ad;
+  border: 1px solid #c3e6cb;
+  color: #000000;
+  border-radius: 5px;
+  text-align: center;
+}
+
+
+/* Optional: Add styles for a close button within the success message */
+#success-message .close {
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #155724; /* Text color */
+}
+
+/* Add this to your CSS file or in a <style> tag in your HTML file */
+/* Add this to your existing CSS or create a new CSS file */
+.custom-popup {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 45%;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.close-popup {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-popup:hover,
+.close-popup:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.text-container {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+}
+
+.play-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.play-text-button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.play-text-button:hover {
+  background-color: #45a049;
+  transform: scale(1.1);
+}
+
+.play-icon {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 15px solid white;
+  margin-right: 5px;
+}
+

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Creation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='create_form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- Add any additional meta tags, link tags, or script tags as needed -->
+</head>
+
+<body>
+    <header>
+        <div id="logo">
+
+
+        </div>
+        <span class="logo-text">Survey Hub</span>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+
+
+    </header>
+    <nav id="side-nav">
+        <button id="close-btn" onclick="closeNav()">&times;</button>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="profile_redirect">Profile</a></li>
+            {% if user_role.role == 'admin' %}
+            <li><a href="/admin_dashboard">Admin Dashboard</a></li>
+            {% endif %}
+            <li><a href="form_templates">Templates</a></li>
+            <li><a href="saved_forms">Your Forms</a></li>
+            <li><a href="/logout">Logout</a></li>
+
+
+        </ul>
+    </nav>
+    <div class="container mt-5">
+
+        <div class="form-box">
+            {% if user_role == "admin" %}
+            <h2>Create Template</h2>
+            {% else %}
+            <h2>Create Form</h2>
+            {% endif %}
+            <!-- Add this before the closing </body> tag -->
+<audio id="error-sound" preload="auto">
+    <source src="{{ url_for('static', filename='audio/error.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  
+  <div id="custom-popup" class="custom-popup">
+    <div class="popup-overlay"></div>
+    <div class="popup-content">
+      <span class="close-popup" onclick="closeCustomPopup()">&times;</span>
+      <div class="text-container">
+        <p id="custom-popup-message" class="popup-message"></p>
+      </div>
+      <div class="play-container">
+        <button class="play-text-button" onclick="playTextAudio()">
+          <div class="play-icon"></div>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+
+
+            <form action="{{ url_for('create_form') }}" method="post" onsubmit="return validateForm()">
+                <div class="form-group">
+                    {% if user_role == "admin" %}
+                    <label for="form_header">Template Header</label>
+                    {% else %}
+                    <label for="form_header">Form Header</label>
+                    {% endif %}
+                    <input type="text" class="form-control" id="form_header" placeholder="Max length= 20 characters"
+                        name="form_header" maxlength="20" required>
+                </div>
+                <div class="form-group">
+                    {% if user_role == "admin" %}
+                    <label for="form_title">Template Title</label>
+                    {% else %}
+                    <label for="form_title">Form Title</label>
+                    {% endif %}
+                    <input type="text" class="form-control" id="form_title" placeholder="Max length= 20 characters"
+                        name="form_title" maxlength="20" required>
+                </div>
+                {% if user_role != "admin" %}
+                <div class="form-group">
+                    <label for="creator">Creator</label>
+                    <input type="text" class="form-control" id="creator" placeholder="Max length= 30 characters"
+                        name="creator" maxlength="30" required>
+                </div>
+                {% endif %}
+                <div class="form-group">
+                    {% if user_role == "admin" %}
+                    <label for="form_description">Template Description</label>
+                    {% else %}
+                    <label for="form_description">Form Description</label>
+                    {% endif %}
+                    <input class="form-control" id="form_description" placeholder="Max length= 100 characters"
+                        name="form_description" maxlength="100" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select class="form-control" id="category" name="category">
+                        <option value="arts">Arts</option>
+                        <option value="business">Business</option>
+                        <option value="charity">Charity</option>
+                        <option value="culture">Culture</option>
+                        <option value="education">Education</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="environment">Environment</option>
+                        <option value="events">Events</option>
+                        <option value="feedback">Feedback</option>
+                        <option value="finance">Finance</option>
+                        <option value="food">Food</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="other">Other</option>
+                        <option value="personal">Personal</option>
+                        <option value="politics">Politics</option>
+                        <option value="recruiting">Recruiting</option>
+                        <option value="religion">Religion</option>
+                        <option value="registration">Registration</option>
+                        <option value="science">Science</option>
+                        <option value="sports">Sports</option>
+                        <option value="survey">Survey</option>
+                        <option value="technology">Technology</option>
+                        <option value="travel">Travel</option>
+                        <option value="volunteer">Volunteer</option>
+
+
+                        <!-- Add more categories as needed -->
+                    </select>
+                </div>
+
+                <h4>Add Questions</h4>
+                <div id="questions-container">
+
+                </div>
+
+<div class=" buttons">
+                <button type="button" class="btn btn-primary" onclick="addQuestion()">Add Question</button>
+                <button type="submit" class="create-button ">Create Form</button>
+                <button type="reset" class="create-button" style="background-color: red;">Clear Form</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div class="footer">
+        <p>&copy; 2023 Survey Hub. All rights reserved. | University of Swat, Software Engineering Batch
+            2019-2023</p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var isNavOpen = false;
+
+        function closeNav() {
+            document.getElementById("side-nav").style.left = "-200px";
+            isNavOpen = false;
+        }
+
+        function toggleNav() {
+            var sideNav = document.getElementById("side-nav");
+            if (!isNavOpen) {
+                sideNav.style.left = "0px";
+            } else {
+                sideNav.style.left = "-200px";
+            }
+            isNavOpen = !isNavOpen;
+        }
+    </script>
+
+    <script>
+        let totalQuestions = 0;
+
+        function addQuestion() {
+            totalQuestions++;
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('form-group');
+            questionDiv.id = `question_${totalQuestions}`;
+            questionDiv.innerHTML = `
+    <div class="question-container">
+        <div class="question-number">Question ${totalQuestions}</div>
+        <input type="text" class="form-control" id="question_${totalQuestions}" name="questions[]"placeholder="Max length= 80 characters" maxlength="80"required>
+        <select class="shorter-select" name="question_types[]" id="question_type_${totalQuestions}" onchange="showOptions(this)">
+            <option value="text">Text</option>
+            <option value="multiple_choice">Multiple Choice</option>
+            <option value="dropdown">Dropdown</option>
+            <option value="checkboxes">Checkboxes</option>
+            <option value="short_answer">Short Answer</option>
+            <option value="paragraph">Paragraph</option>
+            <option value="date">Date</option>
+            <option value="time">Time</option>
+            <option value="email">Email</option>
+            <option value="tel">Phone Number</option>
+            <option value="cnic">CNIC Number</option>
+            <option value="rating">Rating</option>
+            <option value="gender">Gender</option>
+            <option value="file_upload">File Upload</option>
+            <option value="address">Address</option>
+            
+
+        </select>
+        
+        <!-- Add the mandatory select input here -->
+        <select class="shorter-select" name="mandatory[]">
+            <option value="non_mandatory">Non-Mandatory</option>
+            <option value="mandatory">Mandatory</option>
+        </select>
+        
+        <div id="options_${totalQuestions}" style="display: none;">
+            <!-- Additional options for the selected question type will be added here -->
+        </div>
+        <button type="button" class="btn btn-danger remove-question" onclick="removeQuestion(${totalQuestions})">x</button>
+    </div>
+    `;
+            document.getElementById('questions-container').appendChild(questionDiv);
+        }
+
+
+        function showRatingOptions(questionIndex) {
+            const optionsDiv = document.getElementById(`options_${questionIndex}`);
+            optionsDiv.innerHTML = `
+        <label for="rating_scale_${questionIndex}">Rating Scale (1 to 5):</label>
+        <input type="hidden" id="rating_scale_${questionIndex}" name="rating_scale_${questionIndex}" value="1-5">
+    `;
+        }
+
+        function removeQuestion(questionIndex) {
+            const questionDiv = document.getElementById(`question_${questionIndex}`);
+            if (questionDiv) {
+                questionDiv.remove();
+
+                // Update totalQuestions and reassign question numbers
+                totalQuestions--;
+                const questionsContainer = document.getElementById('questions-container');
+                const questionGroups = questionsContainer.getElementsByClassName('form-group');
+                for (let i = 0; i < questionGroups.length; i++) {
+                    const questionNumberElement = questionGroups[i].querySelector('.question-number');
+                    if (questionNumberElement) {
+                        questionNumberElement.textContent = `Question ${i + 1}`;
+                    }
+                }
+            }
+        }
+
+
+
+        function addOption(questionIndex) {
+            const optionsDiv = document.getElementById(`options_${questionIndex}`);
+            const optionCounter = optionsDiv.getElementsByClassName('option').length + 1;
+            const optionContainer = document.createElement('div');
+            optionContainer.classList.add('option-container');
+            optionContainer.id = `option_${questionIndex}_${optionCounter}`; // Add unique ID for the option
+            const optionInput = document.createElement('input');
+            optionInput.type = 'text';
+            optionInput.classList.add('form-control', 'option');
+            optionInput.placeholder = `Option ${optionCounter}`;
+            optionInput.name = `options_${questionIndex}[]`; // Correct name attribute
+            optionInput.maxLength = 30;
+            optionContainer.appendChild(optionInput);
+            const removeOptionButton = document.createElement('button');
+            removeOptionButton.type = 'button';
+            removeOptionButton.classList.add('btn', 'btn-danger', 'remove-option');
+            removeOptionButton.textContent = 'x';
+            removeOptionButton.addEventListener('click', () => removeOption(optionContainer));
+            optionContainer.appendChild(removeOptionButton);
+            optionsDiv.appendChild(optionContainer);
+        }
+
+
+        function removeOption(optionContainer) {
+            const questionIndex = optionContainer.id.split('_')[1];
+            const optionsDiv = document.getElementById(`options_${questionIndex}`);
+            optionContainer.remove();
+
+            // Renumber the remaining options within the same question
+            const remainingOptions = optionsDiv.getElementsByClassName('option-container');
+            for (let i = 0; i < remainingOptions.length; i++) {
+                const optionInput = remainingOptions[i].querySelector('.option');
+                optionInput.placeholder = `Option ${i + 1}`;
+                remainingOptions[i].id = `option_${questionIndex}_${i + 1}`; // Update the ID of the remaining options
+            }
+        }
+
+        function showOptions(selectElement) {
+            const questionIndex = selectElement.id.split('_')[2];
+            const selectedOption = selectElement.value;
+            const optionsDiv = document.getElementById(`options_${questionIndex}`);
+            optionsDiv.innerHTML = '';
+
+            if (selectedOption === 'text') {
+                optionsDiv.style.display = 'none';
+            } else {
+                optionsDiv.style.display = 'block';
+                if (selectedOption === 'multiple_choice' || selectedOption === 'dropdown' || selectedOption === 'checkboxes') {
+                    const addOptionButton = document.createElement('button');
+                    addOptionButton.type = 'button';
+                    addOptionButton.classList.add('btn', 'btn-secondary');
+                    addOptionButton.textContent = 'Add Option';
+                    addOptionButton.addEventListener('click', () => addOption(questionIndex));
+                    optionsDiv.appendChild(addOptionButton);
+                } else if (selectedOption === 'short_answer') {
+                    // Show character limit option for Short Answer
+                    optionsDiv.innerHTML = `
+                <label for="char_limit_${questionIndex}">Character Limit (max 100):</label>
+                <input type="number" class="form-control" id="char_limit_${questionIndex}" name="char_limit_${questionIndex}" min="1" max="100">
+            `;
+                } else if (selectedOption === 'paragraph') {
+                    // Show character limit option for Paragraph
+                    optionsDiv.innerHTML = `
+                <label for="char_limit_${questionIndex}">Character Limit (max 500):</label>
+                <input type="number" class="form-control" id="char_limit_${questionIndex}" name="char_limit_${questionIndex}" min="1" max="500">
+            `;
+                } else if (selectedOption === 'tel') {
+                    optionsDiv.style.display = 'none';
+                } else if (selectedOption === 'email') {
+                    optionsDiv.style.display = 'none';
+                } else if (selectedOption === 'name') {
+                    optionsDiv.style.display = 'none';
+                } else if (selectedOption === 'rating') {
+                } else if (selectedOption === 'gender') {
+                    optionsDiv.style.display = 'none';
+                    optionsDiv.innerHTML = `
+                <label for="rating_scale_${questionIndex}">Rating Scale (1 to 5):</label>
+                <input type="hidden" id="rating_scale_${questionIndex}" name="rating_scale_${questionIndex}" value="1-5">
+            `;
+                } else if (selectedOption === 'date') {
+                    optionsDiv.innerHTML = `
+                <label for="date_format_${questionIndex}">Format</label>
+                <select class="form-control" id="date_format_${questionIndex}" name="date_format_${questionIndex}">
+                    <option value="mm/dd/yyyy">mm/dd/yyyy</option>
+                    <option value="dd/mm/yyyy">dd/mm/yyyy</option>
+                    <option value="yyyy/mm/dd">yyyy/mm/dd</option>
+                </select>
+            `;
+                } else if (selectedOption === 'time') {
+                    optionsDiv.innerHTML = `
+                <label for="time_format_${questionIndex}">Format</label>
+                <select class="form-control" id="time_format_${questionIndex}" name="time_format_${questionIndex}">
+                    <option value="hh:mm AM/PM">hh:mm AM/PM</option>
+                    <option value="hh:mm:ss AM/PM">hh:mm:ss AM/PM</option>
+                    <option value="hh:mm">hh:mm</option>
+                    <option value="hh:mm:ss">hh:mm:ss</option>
+                </select>
+            `;
+                } else if (selectedOption === 'file_upload') {
+                    // Show options for file upload
+                    optionsDiv.innerHTML = `
+                <label for="file_types_${questionIndex}">Allowed File Types:</label>
+                <select class="form-control" id="file_types_${questionIndex}" name="file_types_${questionIndex}">
+                    <option value="images">Images</option>
+                    <option value="videos">Videos</option>
+                    <option value="audio">Audio</option>
+                    <option value="documents">Documents</option>
+                    <!-- Add more file types as needed -->
+                </select>
+
+                <label for="max_file_size_${questionIndex}">Max File Size (in MB):</label>
+                <input type="number" class="form-control" id="max_file_size_${questionIndex}" name="max_file_size_${questionIndex}" min="1">
+            `;
+                }
+                // Handle other question types and their options here
+            }
+        }
+
+    </script>
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('custom-popup').style.display = 'none';
+    });
+
+    function validateForm() {
+        // Get all mandatory checkboxes
+        const mandatoryCheckboxes = document.querySelectorAll('select[name="mandatory[]"]');
+
+        // Check if at least one checkbox is set to 'mandatory'
+        const hasMandatoryQuestion = Array.from(mandatoryCheckboxes).some(checkbox => checkbox.value === 'mandatory');
+
+        // Display a custom popup with error sound and prevent form submission if no mandatory question is found
+        if (!hasMandatoryQuestion) {
+            playErrorSound();
+            openCustomPopup('Please ensure that there is at least one mandatory question in the form. This ensures that the form contains questions, and respondents cannot submit empty responses.');
+            return false; // Prevent form submission
+        }
+
+        // Continue with form submission if at least one mandatory question is found
+        return true;
+    }
+
+    function openCustomPopup(message) {
+        const popup = document.getElementById('custom-popup');
+        const popupMessage = document.getElementById('custom-popup-message');
+        popupMessage.textContent = message;
+        popup.style.display = 'block';
+    }
+
+    function closeCustomPopup() {
+        const popup = document.getElementById('custom-popup');
+        popup.style.display = 'none';
+
+        // Stop text-to-speech
+        stopTextAudio();
+    }
+
+    function playErrorSound() {
+        const errorSound = document.getElementById('error-sound');
+        errorSound.play();
+    }
+
+    function playTextAudio() {
+        const popupMessage = document.getElementById('custom-popup-message').textContent;
+
+        // Use text-to-speech synthesis to read the popup message aloud
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(popupMessage);
+        synth.speak(utterance);
+    }
+
+    function stopTextAudio() {
+        const synth = window.speechSynthesis;
+        synth.cancel(); // Stop text-to-speech
+    }
+</script>
+
+      
+
+</body>
+
+</html>

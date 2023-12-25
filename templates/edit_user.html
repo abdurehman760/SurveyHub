@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Admin Dashboard</title>
+  
+    <link rel="stylesheet" href="{{ url_for('static', filename='edit_user.css') }}">
+   
+    <style>
+        
+       
+
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+          
+         
+        </div>
+        <span class="logo-text">Survey Hub</span>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+        
+        
+    </header>
+    <nav id="side-nav">
+        <button id="close-btn" onclick="closeNav()">&times;</button>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="admin_dashboard">Dashboard</a></li>
+          <li><a href="view_messages">Inbox</a></li>
+          <li><a href="/logout">Logout</a></li>
+            
+            
+        </ul>
+    </nav>
+
+    <div class="user-edit-container">
+        <form method="POST" class="user-edit-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <select id="role" name="role">
+                    <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                    <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="password">New Password:</label>
+                <input type="password" id="password" name="password" placeholder="current pass: * {{ user.password }} *">
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm new password">
+            </div>
+
+            <button type="submit" class="update-button">Update User</button>
+        </form>
+        <a href="{{ url_for('admin_users') }}" class="back-link">Back to User List</a>
+    </div>
+    <script>
+        var isNavOpen = false;
+    
+        function closeNav() {
+            document.getElementById("side-nav").style.left = "-200px";
+            isNavOpen = false;
+        }
+    
+        function toggleNav() {
+            var sideNav = document.getElementById("side-nav");
+            if (!isNavOpen) {
+                sideNav.style.left = "0px";
+            } else {
+                sideNav.style.left = "-200px";
+            }
+            isNavOpen = !isNavOpen;
+        }
+    </script>
+    
+</body>
+</html>

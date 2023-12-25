@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='account_settings.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Navbar.css') }}">
+    <style>
+        /* Add this style block within the <head> of your HTML document or link to an external stylesheet */
+    
+       
+    
+       
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+          
+         
+        </div>
+        <span class="logo-text">Survey Hub</span>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+        
+        
+    </header>
+    <nav id="side-nav">
+        <button id="close-btn" onclick="closeNav()">&times;</button>
+        <ul>
+          <li><a href="/">Home</a></li>
+          {% if user.role == 'admin' %}
+    <li><a href="/admin_dashboard">Dashboard</a></li>
+{% endif %}
+          <li><a href="/logout">Logout</a></li>
+            
+            
+        </ul>
+    </nav>
+
+
+      <!-- Main Content Section -->
+      <div class="main-content">
+        <h1>Account Settings</h1>
+
+        <!-- Display any messages or notifications here -->
+        <div id="message"></div>
+
+        <!-- Profile Information Section -->
+        <div class="profile-info">
+            {% if user.profile_picture %}
+                <img src="{{ url_for('get_uploaded_image', filename=user.profile_picture) }}" class="profile-picture img-fluid rounded-circle mb-3">
+            {% endif %}
+            <div class="user-details">
+                <h5 class="username">{{ user.username }}</h5>
+                <h6 class="email">{{ user.email }}</h6>
+            </div>
+            <button id="editUsernameBtn">Edit Username</button>
+            <button id="editProfilePictureBtn">Edit Profile Picture</button>
+            <button id="changePasswordBtn">Change Password</button>
+            <button id="editEmailBtn">Edit Email</button>
+        </div>
+
+   <!-- Edit Profile Picture Section -->
+<section id="profilePictureSection" class="profile-picture-section" style="display: none;">
+    <h2>Edit Profile Picture</h2>
+    <p>Choose a new profile picture and click the "Upload" button to save changes.</p>
+    <button id="hideProfilePictureBtn">X</button> <!-- Close button -->
+    <!-- Success message placeholder -->
+    <div id="uploadProfilePictureSuccess" class="message success"></div>
+    <!-- Failure message placeholder -->
+    <div id="uploadProfilePictureFailure" class="message failure"></div>
+    <form id="editProfilePictureForm" enctype="multipart/form-data">
+        <label for="profile_picture">Select a profile picture:</label>
+        <input type="file" name="profile_picture" id="profile_picture">
+        <div class="container">
+            <input class="upload-button" type="button" value="Upload" onclick="uploadProfilePicture();">
+        </div>
+    </form>
+</section>
+
+<!-- Change Password Section -->
+<!-- Change Password Section -->
+<section id="changePasswordSection" class="change-password-section" style="display: none;">
+    <h2>Change Password</h2>
+    <p>Enter your current password, choose a new password, and confirm the new password and be at least 6 characters long. Click "Change Password" to save changes.</p>
+    <button id="hideChangePasswordBtn">X</button> <!-- Close button -->
+    <!-- Success message placeholder -->
+    <div id="changePasswordSuccess" class="message success"></div>
+    <!-- Failure message placeholder -->
+    <div id="changePasswordFailure" class="message failure"></div>
+    <form id="editPassword" action="/change_password" method="post">
+        <!-- Current Password -->
+        <label for="current_password">Current Password:</label>
+        <div class="password-container">
+            <input class="input-area" type="password" name="current_password" id="current" required>
+            <input type="checkbox" onclick="myFunctioncurrent(this)">Show
+        </div><br>
+    
+        <!-- New Password -->
+        <label for="new_password">New Password:</label>
+        <div class="password-container">
+            <input class="input-area" type="password" name="new_password" id="new" placeholder="Enter a new password (at least one digit, one special character, and 6 characters long)" pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$" title="Password must contain at least one digit, one special character, and be at least 6 characters long" required oninput="validateNewPassword();">
+            <input type="checkbox" onclick="myFunctionnew(this)">Show
+        </div><br>
+        <small id="password-validation-message" class="password-warning" style="display: none;"></small><br>
+    
+        <!-- Confirm New Password -->
+        <label for="confirm_password">Confirm New Password:</label>
+        <div class="password-container">
+            <input class="input-area" type="password" name="confirm_password" id="confirm" placeholder="Confirm your new password" required oninput="checkPasswordMatch();">
+            <input type="checkbox" onclick="myFunctionconfirm(this)">Show
+        </div><br>
+        <small id="password-match-warning" class="password-warning" style="display: none;">Passwords do not match.</small><br>
+    
+        <div class="container">
+            <input type="submit" value="Change Password" onclick="submitForm('editPassword', 'changePasswordSuccess', 'changePasswordFailure'); return false;">
+        </div>
+    </form>
+    <script>
+        // Function to validate the New Password
+        function validateNewPassword() {
+            const newPassword = document.querySelector('input[name="new_password"]').value;
+            const validationMessage = document.getElementById('password-validation-message');
+
+            // Reset previous messages
+            validationMessage.style.display = 'none';
+            validationMessage.textContent = '';
+
+            // Check if the password meets the criteria
+            if (!/(?=.*[0-9])/.test(newPassword)) {
+                validationMessage.style.display = 'block';
+                validationMessage.textContent = 'Password must contain at least one digit.';
+            } else if (!/(?=.*[!@#$%^&*])/.test(newPassword)) {
+                validationMessage.style.display = 'block';
+                validationMessage.textContent = 'Password must contain at least one special character (!@#$%^&*).';
+            } else if (newPassword.length < 6) {
+                validationMessage.style.display = 'block';
+                validationMessage.textContent = 'Password must be at least 6 characters long.';
+            }
+        }
+
+        // Function to check if the passwords match
+        function checkPasswordMatch() {
+            const newPassword = document.querySelector('input[name="new_password"]').value;
+            const confirmPassword = document.querySelector('input[name="confirm_password"]').value;
+            const matchWarning = document.getElementById('password-match-warning');
+
+            // Reset previous messages
+            matchWarning.style.display = 'none';
+
+            // Check if the passwords match
+            if (newPassword !== confirmPassword) {
+                matchWarning.style.display = 'block';
+            }
+        }
+    </script>
+<script>
+    function myFunctioncurrent(checkbox) {
+        var x = document.getElementById("current");
+        if (x.type === "password") {
+            x.type = "text";
+            checkbox.innerText = "Hide";
+        } else {
+            x.type = "password";
+            checkbox.innerText = "Show";
+        }
+    }
+
+    function myFunctionnew(checkbox) {
+        var x = document.getElementById("new");
+        if (x.type === "password") {
+            x.type = "text";
+            checkbox.innerText = "Hide";
+        } else {
+            x.type = "password";
+            checkbox.innerText = "Show";
+        }
+    }
+
+    function myFunctionconfirm(checkbox) {
+        var x = document.getElementById("confirm");
+        if (x.type === "password") {
+            x.type = "text";
+            checkbox.innerText = "Hide";
+        } else {
+            x.type = "password";
+            checkbox.innerText = "Show";
+        }
+    }
+</script>
+</section>
+
+
+
+<!-- Edit Email Section -->
+<section id="editEmailSection" class="edit-email-section" style="display: none;">
+    <h2>Edit Email</h2>
+    <p>Enter your new email address and click "Save Email" to update your email.</p>
+    <button id="hideEditEmailBtn">X</button> <!-- Close button -->
+    <!-- Success message placeholder -->
+    <div id="editEmailSuccess" class="message success"></div>
+    <!-- Failure message placeholder -->
+    <div id="editEmailFailure" class="message failure"></div>
+    <form id="editEmail" action="/edit_email" method="post">
+        <label for="email">Email:</label>
+        <input class="input-area" type="email" name="email" placeholder="{{ user.email }}" value="{{ email }}" required><br>
+        <div class="container">
+            <input type="submit" value="Save Email" onclick="submitForm('editEmail', 'editEmailSuccess', 'editEmailFailure'); return false;">
+        </div>
+    </form>
+</section>
+
+<!-- Edit Username Section -->
+<section id="editUsernameSection" class="edit-username-section" style="display: none;">
+    <h2>Edit Username</h2>
+    <p>Enter your new username and click "Save Username" to update your username.</p>
+    <button id="hideEditUsernameBtn">X</button> <!-- Close button -->
+    <!-- Success message placeholder -->
+    <div id="editUsernameSuccess" class="message success"></div>
+    <!-- Failure message placeholder -->
+    <div id="editUsernameFailure" class="message failure"></div>
+    <form id="editUsername" action="/edit_username" method="post">
+        <label for="username">Username:</label>
+        <input class="input-area" type="text" name="username" placeholder="{{ user.username }}" value="{{ username }}" required><br>
+        <div class="container">
+            <input type="submit" value="Save Username" onclick="submitForm('editUsername', 'editUsernameSuccess', 'editUsernameFailure'); return false;">
+        </div>
+    </form>
+</section>
+
+<script>
+    // Function to hide a specific section
+    function hideSection(sectionId) {
+        document.getElementById(sectionId).style.display = "none";
+    }
+
+    // Button click event handlers for close buttons
+    document.getElementById("hideEditUsernameBtn").addEventListener("click", function () {
+        hideSection("editUsernameSection");
+    });
+
+    document.getElementById("hideEditEmailBtn").addEventListener("click", function () {
+        hideSection("editEmailSection");
+    });
+
+    document.getElementById("hideChangePasswordBtn").addEventListener("click", function () {
+        hideSection("changePasswordSection");
+    });
+
+    document.getElementById("hideProfilePictureBtn").addEventListener("click", function () {
+        hideSection("profilePictureSection");
+    });
+</script>
+
+<script>
+    function submitForm(formId, successMessageId, failureMessageId) {
+        const form = document.getElementById(formId);
+        const successMessage = document.getElementById(successMessageId);
+        const failureMessage = document.getElementById(failureMessageId);
+
+        // Send an asynchronous request to the server
+        fetch(form.action, {
+            method: form.method,
+            body: new FormData(form),
+        })
+        .then((response) => response.text())
+        .then((message) => {
+            if (message.startsWith("Success")) {
+                successMessage.textContent = message;
+                failureMessage.textContent = '';
+            } else {
+                successMessage.textContent = '';
+                failureMessage.textContent = message;
+            }
+        })
+        .catch((error) => {
+            successMessage.textContent = '';
+            failureMessage.textContent = 'An error occurred while processing your request.';
+        });
+    }
+</script>
+
+<script>
+    // Function to hide all sections
+    function hideAllSections() {
+        document.getElementById("profilePictureSection").style.display = "none";
+        document.getElementById("changePasswordSection").style.display = "none";
+        document.getElementById("editEmailSection").style.display = "none";
+        document.getElementById("editUsernameSection").style.display = "none";
+    }
+
+    // Function to show a specific section
+    function showSection(sectionId) {
+        hideAllSections();
+        document.getElementById(sectionId).style.display = "block";
+    }
+
+    // Button click event handlers
+    document.getElementById("editProfilePictureBtn").addEventListener("click", function () {
+        showSection("profilePictureSection");
+    });
+
+    document.getElementById("changePasswordBtn").addEventListener("click", function () {
+        showSection("changePasswordSection");
+    });
+
+    document.getElementById("editEmailBtn").addEventListener("click", function () {
+        showSection("editEmailSection");
+    });
+
+    document.getElementById("editUsernameBtn").addEventListener("click", function () {
+        showSection("editUsernameSection");
+    });
+</script>
+
+<script>
+    function uploadProfilePicture() {
+        const form = document.getElementById("editProfilePictureForm");
+        const successMessage = document.getElementById("uploadProfilePictureSuccess");
+        const failureMessage = document.getElementById("uploadProfilePictureFailure");
+        const fileInput = document.getElementById("profile_picture");
+
+        const formData = new FormData();
+        formData.append("profile_picture", fileInput.files[0]);
+
+        // Send an asynchronous request to the server
+        fetch("/upload_profile_picture", {
+            method: "POST",
+            body: formData,
+        })
+        .then((response) => response.text())
+        .then((message) => {
+            if (message.startsWith("Success")) {
+                successMessage.textContent = message;
+                failureMessage.textContent = '';
+                // Optionally, you can update the displayed profile picture here
+                // Example: document.getElementById("profile_picture_display").src = message;
+            } else {
+                successMessage.textContent = '';
+                failureMessage.textContent = message;
+            }
+        })
+        .catch((error) => {
+            successMessage.textContent = '';
+            failureMessage.textContent = 'An error occurred while processing your request.';
+        });
+    }
+</script>
+
+</body>
+</html>

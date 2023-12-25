@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pie Chart</title>
+    <!-- Include Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        #plotContainer {
+    margin-bottom: 40px;
+    text-align: center; /* Add this line to center-align content */
+}
+
+        #genderFilterButton {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        #genderFilterButton:hover {
+            background-color: #0056b3;
+        }
+
+     
+#genderChartContainer {
+    display: none;
+    margin-top: 20px;
+    text-align: center; /* Add this line to center-align content */
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pie Chart</h1>
+        <p>This pie chart represents the responses for certain question types. Each slice corresponds to an option selected in the responses.</p>
+
+        <!-- Render Plotly chart -->
+        <div id="plotContainer">
+            {{ plot_html|safe }}
+        </div>
+
+        {% if show_gender_filter %}
+            <!-- Gender filter button and container -->
+            <button id="genderFilterButton">Filter by Gender</button>
+            <div id="genderChartContainer">
+                <h2>Gender Distribution</h2>
+                <p>See how responses are distributed across genders: Male, Female, and Rather Not Say. Each segment shows the percentage of respondents in that category.</p>
+                {{ gender_chart_html|safe }}
+                {{ gender_chart_html|safe }}
+            </div>
+
+            <script>
+                $(document).ready(function() {
+                    // Attach a click event to the gender filter button
+                    $("#genderFilterButton").click(function() {
+                        // Toggle the display of the gender chart container
+                        $("#genderChartContainer").toggle();
+                    });
+                });
+            </script>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,396 @@
+/* saved_form.css */
+
+/* Reset some default styles and set a background color */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    background: linear-gradient(90deg, #C7C5F4, #776BCC);
+    padding: 0;
+}
+
+/* Style for the main heading */
+.title{
+    font-size: 36px;
+    color: #6200ff;
+    font-weight: bold;
+    text-align: center;
+    margin: 78px auto;
+    text-shadow: 6px 6px 3px #360de159;
+}   
+
+
+/* Style for the list of saved forms */
+ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Style for individual saved form items */
+li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 20px;
+    width: calc(33.33% - 20px);
+    text-align: center;
+    box-shadow: 8px 7px 4px rgb(0 0 0 / 49%);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for saved form items */
+li:hover {
+    transform: translateY(-5px);
+    
+}
+
+/* Style for subheadings within saved forms */
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Style for the form information */
+.form-info {
+    margin-bottom: 10px; /* Add spacing between form information items */
+    font-size: 16px; /* Adjust the font size as needed */
+    color: #333; /* Text color */
+}
+
+/* Style for the form title */
+.form-info h3 {
+    font-size: 20px; /* Adjust the font size for the title */
+    font-weight: bold; /* Bold text for the title */
+    color: #007bff; /* Title color */
+    margin-bottom: 5px; /* Add spacing below the title */
+}
+
+/* Style for the strong elements (e.g., "Creator:", "Description:") */
+.form-info strong {
+    font-weight: bold; /* Bold text for the strong elements */
+    color: #555; /* Strong element color */
+}
+
+/* Style for the creation date */
+.form-info .created-date {
+    color: #888; /* Date color */
+}
+.description {
+    font-size: 16px; /* Adjust the font size as needed */
+    color: #333; /* Text color */
+    margin-bottom: 5px; /* Add spacing below the description */
+    white-space: nowrap; /* Prevent line breaks */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis (...) to indicate truncated text */
+    max-width:100%; /* Limit the width to the container width */
+}
+
+
+
+
+
+.x-button {
+    position: absolute;
+    top: 5px;
+    right: 3px;
+    cursor: pointer;
+    color: transparent;
+    background-image: url('img/question delete.png');
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+    border: none;
+}
+
+
+/* Hover effect for buttons */
+.x-button:hover {
+    transform: translateY(-1px);
+    
+}
+
+/* Style for the "Create New Form" button */
+/* Style for the "Create New Form" button */
+.back-button {
+    display: inline-block;
+    background-color: #4CAF50; /* Green color for the button */
+    color: #fff; /* White text color */
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 30px; /* Round button corners */
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    font-size: 18px;
+    border: none;
+}
+
+.back-button:hover {
+    background-color: #45A049; /* Darker green color on hover */
+    transform: translateY(-3px); /* Add a slight lift on hover */
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+/* Center the button horizontally within its container */
+.container {
+    text-align: center; /* Center-align the button's container */
+}
+
+/* Optional: Adjust button size for smaller screens */
+@media (max-width: 576px) {
+    .back-button {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+}
+/* Style for the "No templates found" message */
+.no-templates {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Adjusted to flex-start */
+   
+    margin-top: 20vh;
+    font-size: 24px; /* Adjust the font size as needed */
+    color: #333; /* Text color */
+    font-weight: bold; /* Bold text */
+    text-align: center; /* Center-align the text */
+    padding: 10px; /* Add padding around the text */
+}
+
+
+
+
+/* Media Queries for Responsive Design */
+
+/* Small screens (phones) */
+@media (max-width: 576px) {
+    li {
+        width: 100%; /* Full width for saved form items on small screens */
+    }
+    
+    
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 577px) and (max-width: 992px) {
+    li {
+        width: calc(50% - 20px); /* 2 columns on medium screens */
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 993px) {
+    /* No specific changes for large screens in this example */
+}
+
+
+/* Small screens (phones) */
+@media (max-width: 576px) {
+    li {
+        width: 100%; /* Full width for saved form items on small screens */
+    }
+    
+    /* Make the "Create New Form" button responsive */
+    .back-button {
+        margin: 10px auto; /* Center the button horizontally with smaller margin */
+        padding: 8px 16px; /* Adjust padding for smaller screens */
+        font-size: 16px; /* Reduce font size for smaller screens */
+    }
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 577px) and (max-width: 992px) {
+    li {
+        width: calc(50% - 20px); /* 2 columns on medium screens */
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 993px) {
+    /* No specific changes for large screens in this example */
+}
+/* Style for the filter form */
+.form-group {
+    margin-bottom: 20px; /* Add spacing between the form and other elements */
+}
+
+label {
+    font-weight: bold;
+}
+
+/* Style for the category dropdown */
+#category {
+    width: 200px; /* Adjust the width as needed */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style for the filter button */
+.Filter-button {
+    background-color: transparent;
+    color: transparent;
+    cursor: pointer;
+    background-image: url(img/filter.png);
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+    border: none;
+
+}
+
+
+
+.Filter-button:hover {
+   transform: scale(1.1);
+}
+/* Navbar styling */
+.navbar {
+    position: absolute;
+    top: 0;
+    width: 97.6%;
+    padding: 20px;
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 1px 4px 10px #2d1b38;
+  }
+  
+  .logo {
+    margin: -10px;
+    margin-left: 30px;
+  }
+  
+  /* Add a style for the form creation website logo */
+  .logo-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 6px 6px 0px rgb(255 255 255 / 80%);
+    animation: glow 1.5s ease-in-out infinite alternate;
+  }
+  
+  /* Define the glowing animation */
+  @keyframes glow {
+    from {
+      text-shadow: 4px -5px 5px rgb(92 0 222 / 80%);
+    }
+  
+    to {
+      text-shadow: 5px 5px 5px rgb(55 42 188 / 80%), 0 0 5px rgb(0 0 0 / 60%);
+    }
+  }
+  
+  /* Navigation list styling */
+  .nav-list {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-list .lj {
+    margin-right: 50px;
+  }
+  
+  /* Navigation list item magnification on hover */
+  .nav-list .lj:hover {
+    transform: scale(1.1);
+    /* Increase the scale on hover */
+    transition: transform 0.1s ease;
+    /* Add a smooth transition effect */
+  }
+  
+  .nav-list a {
+    text-decoration: none;
+    color: #ffffff;
+    margin-right: 60px;
+    position: relative;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    /* Smooth transition for color change */
+  }
+  
+  .nav-list a:hover {
+    color: #00ff15;
+  }
+  
+  .nav-list a::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #ff0000;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .nav-list a:hover::before {
+    visibility: visible;
+    transform: scaleX(1);
+  }
+  
+  /* Footer styling */
+  .footer {
+    background-color: transparent;
+    color: #0b0000;
+    box-shadow: 0px -2px 3px #35283a;
+    text-align: center;
+    padding: 5px 0;
+    
+    bottom: 0;
+    width: 100%;
+  }
+ /* Style for the "View Form" and "Copy Template" buttons */
+.view, .copy-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    margin-top: 10px; /* Adjust margin as needed */
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+/* Style for the "View Form" button */
+.view {
+    border: 1px solid #007bff; /* Border color for the button */
+    color: #007bff; /* Text color for the button */
+    background-color: #fff; /* Background color for the button */
+}
+
+/* Hover effect for the "View Form" button */
+.view:hover {
+    background-color: #007bff;
+    box-shadow: 4px 4px 5px 1px #2e5077;
+    color: white;
+}
+
+/* Style for the "Copy Template" button */
+.copy-button {
+    border: 1px solid #007bff; /* Border color for the button */
+    color: #007bff; /* Text color for the button */
+    background-color: #fff; /* Background color for the button */
+}
+
+/* Hover effect for the "Copy Template" button */
+.copy-button:hover {
+    background-color: #31c81d; /* Darker blue color on hover */
+    color: #fff; /* White text color on hover */
+    transform: translateY(-3px); /* Add a slight lift on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow on hover */
+}

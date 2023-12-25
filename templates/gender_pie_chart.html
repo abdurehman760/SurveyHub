@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gender Pie Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<div class="container">
+        <h1>Gender Distribution</h1>
+        <p>
+            This pie chart represents the responses to the gender question.
+            Each slice corresponds to a gender selected in the responses.
+        </p>
+
+        <!-- Render Plotly chart -->
+        {{ chart_html|safe }}
+
+        <h2>Percentage of Form Fillers by Gender</h2>
+        <ul>
+            <li>Male: {{ male_percentage }}%</li>
+            <li>Female: {{ female_percentage }}%</li>
+            <li>Rather Not Say: {{ rather_not_say_percentage }}%</li>
+        </ul>
+    </div>
+</html>

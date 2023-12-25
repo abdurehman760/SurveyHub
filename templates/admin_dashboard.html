@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_dashboard.css') }}">
+    <script src="index.js"></script>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <img src="static/img/logo.png" alt="Logo">
+        </div>
+        <span class="logo-text">Survey Hub</span>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+        
+        
+    </header>
+    <nav id="side-nav">
+        <button id="close-btn" onclick="closeNav()">&times;</button>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="profile_redirect">Dashboard</a></li>
+            
+            <li><a href="/logout">Logout</a></li>
+            
+            
+        </ul>
+    </nav>
+    <main id="content">
+        <div id="cards">
+            <a href="admin_users" class="card">
+                <h3>Manage Users</h3>
+                <p>Manage user accounts and permissions. This section allows administrators to control user access and roles.</p>
+                <div class="card-footer">
+                    <span class="card-link">Go to Users</span>
+                </div>
+            </a>
+            <a href="form_templates" class="card">
+                <h3>Form Templates</h3>
+                <p>Browse and manage form templates. Explore a variety of pre-designed templates for creating surveys and forms.</p>
+                <div class="card-footer">
+                    <span class="card-link">Explore Templates</span>
+                </div>
+            </a>
+            <a href="{{ url_for('saved_forms') }}" class="card">
+                <h3>Saved Forms</h3>
+                <p>Access and manage survey forms. View and organize saved survey forms submitted by users.</p>
+                <div class="card-footer">
+                    <span class="card-link">View Saved Forms</span>
+                </div>
+            </a>
+            <a href="{{ url_for('view_messages') }}" class="card">
+                <h3>Messages</h3>
+                <p>View and manage Messages. Keep track of user messages and communication within the platform.</p>
+                <div class="card-footer">
+                    <span class="card-link">Check Messages</span>
+                </div>
+            </a>
+        </div>
+    </main>
+    
+    <script>
+        var isNavOpen = false;
+    
+        function closeNav() {
+            document.getElementById("side-nav").style.left = "-200px";
+            isNavOpen = false;
+        }
+    
+        function toggleNav() {
+            var sideNav = document.getElementById("side-nav");
+            if (!isNavOpen) {
+                sideNav.style.left = "0px";
+            } else {
+                sideNav.style.left = "-200px";
+            }
+            isNavOpen = !isNavOpen;
+        }
+    </script>
+    
+    
+
+</body>
+</html>

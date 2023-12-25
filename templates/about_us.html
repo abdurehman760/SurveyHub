@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Survey Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='about_us.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+</head>
+
+<body>
+    <header>
+        <div id="logo">
+            <!-- Add your logo image here if available -->
+        </div>
+        <span class="logo-text">Survey Hub</span>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+    </header>
+
+    <nav id="side-nav">
+        <button id="close-btn" onclick="closeNav()">&times;</button>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="about-section">
+            <h1>About Us</h1>
+            <p>Welcome to Survey Hub, where innovation meets dedication. Meet the minds behind our final year university project.</p>
+        </section>
+
+        <section class="team-member" id="current-supervisor">
+            <!-- Replace with actual image -->
+            <img src="dr-kiramat rahman.jpg" alt="Current Supervisor">
+            <div class="info">
+                <h2>Dr.kiramat Rahman</h2>
+                <p>Supervisor</p>
+                <p>Meet our current supervisor, [Dr.kiramat Rahman], the driving force behind the refinement and
+                    polishing of our web app. Their insights, dedication, and guidance have elevated our project to new
+                    heights.</p>
+            </div>
+        </section>
+
+        <section class="team-member" id="dr-kafiyatullah">
+            <!-- Replace with actual image -->
+            <img src="dr-kafiyatullah.jpg" alt="Dr. Kafiyatullah">
+            <div class="info">
+                <h2>Dr. Kafiyatullah</h2>
+                <p>Co-Supervisor</p>
+                <p>Dr. Kafiyatullah, the guiding light in our coding journey. With a Ph.D. in [Field], his expertise has
+                    been invaluable in shaping the success of our web application. Grateful for his mentorship.</p>
+            </div>
+        </section>
+
+        <section class="team-member" id="abdul-rahman">
+            <!-- Replace with actual image -->
+            <img src="abdul-rahman.jpg" alt="Abdur Rahman">
+            <div class="info">
+                <h2>Abdur Rahman</h2>
+                <p>Leader & Backend Developer</p>
+                <p>Hi, I'm Abdur Rahman, the backbone of our project. My passion for backend development in Flask drives
+                    the efficiency and functionality of our web application. Let's make technology work seamlessly!</p>
+            </div>
+        </section>
+
+        <section class="team-member" id="ihsan-ulhaq">
+            <!-- Replace with actual image -->
+            <img src="ihsan-ulhaq.jpg" alt="Ihsan ulhaq">
+            <div class="info">
+                <h2>Ihsan ulhaq</h2>
+                <p>Frontend Developer & Designer</p>
+                <p>Hey, I'm Ihsan ulhaq, the creative force transforming ideas into a visually stunning interface. My
+                    dedication to frontend development ensures a user-friendly and aesthetically pleasing experience.</p>
+            </div>
+        </section>
+
+        
+
+       
+
+        <section class="university-info">
+            <h2>University Information</h2>
+            <p>We are proud students of the University of Swat, pursuing a degree in Software Engineering. Our academic
+                journey spans from 2019 to 2023, and we are excited to present our final year project as a testament to
+                our learning and dedication.</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2023 Survey Hub. All rights reserved. | University of Swat, Software Engineering Batch
+                2019-2023</p>
+        </footer>
+    </div>
+
+    <script>// scripts.js
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get all team member sections
+            const teamMembers = document.querySelectorAll('.team-member');
+        
+            // Add click event listener to each team member section
+            teamMembers.forEach(function (member) {
+                member.addEventListener('click', function () {
+                    // Display a modal with more details when a team member section is clicked
+                    showModal(member.id);
+                });
+            });
+        
+            // Function to display modal with more details
+            function showModal(memberId) {
+                // Get the corresponding team member information
+                const memberInfo = document.getElementById(memberId).querySelector('.info').innerHTML;
+        
+                // Create a modal element
+                const modal = document.createElement('div');
+                modal.classList.add('modal');
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <span class="close-modal">&times;</span>
+                        ${memberInfo}
+                    </div>
+                `;
+        
+                // Append the modal to the body
+                document.body.appendChild(modal);
+        
+                // Add click event listener to close the modal
+                const closeModal = modal.querySelector('.close-modal');
+                closeModal.addEventListener('click', function () {
+                    document.body.removeChild(modal);
+                });
+            }
+        });
+        </script>
+    <script>
+        var isNavOpen = false;
+    
+        function closeNav() {
+            document.getElementById("side-nav").style.left = "-200px";
+            isNavOpen = false;
+        }
+    
+        function toggleNav() {
+            var sideNav = document.getElementById("side-nav");
+            if (!isNavOpen) {
+                sideNav.style.left = "0px";
+            } else {
+                sideNav.style.left = "-200px";
+            }
+            isNavOpen = !isNavOpen;
+        }
+    </script>
+    
+</body>
+
+</html>

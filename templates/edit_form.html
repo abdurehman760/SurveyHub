@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Editing </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='create_form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- Add any additional meta tags, link tags, or script tags as needed -->
+</head>
+
+<body>
+    <div>
+        <header>
+            <div id="logo">
+
+
+            </div>
+            <span class="logo-text">Survey Hub</span>
+            <div id="menu-button">
+                <button onclick="toggleNav()">☰</button>
+            </div>
+
+
+        </header>
+        <nav id="side-nav">
+            <button id="close-btn" onclick="closeNav()">&times;</button>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="profile_redirect">Profile</a></li>
+                {% if user_role.role == 'admin' %}
+                <li><a href="/admin_dashboard">Admin Dashboard</a></li>
+                {% endif %}
+                <li><a href="form_templates">Templates</a></li>
+                <li><a href="saved_forms">Your Forms</a></li>
+                <li><a href="/logout">Logout</a></li>
+
+
+            </ul>
+        </nav>
+
+        <div class="container mt-5">
+
+            <div class="form-box">
+                {% if user_role == "admin" %}
+                <h2>Edit Template</h2>
+                {% else %}
+                <h2>Edit Form</h2>
+
+                {% endif %}
+
+                <div id="success-message" class="alert alert-success" style="display: none;">
+                    <span id="success-message-text">Form updated successfully!</span>
+                    <span class="close" onclick="closeSuccessMessage()">×</span>
+                  </div>
+                  
+    
+                  
+                  
+
+
+
+                <form action="{{ url_for('edit_form', form_id=form.id) }}" method="post">
+                    <div class="form-group">
+                        {% if user_role == "admin" %}
+                        <label for="form_header">Template Header</label>
+                        {% else %}
+                        <label for="form_header">Form Header</label>
+                        {% endif %}
+                        <input type="text" class="form-control" id="form_header" name="form_header"
+                            value="{{ form.form_header }}" maxlength="20" required>
+                    </div>
+                    <div class="form-group">
+                        {% if user_role == "admin" %}
+                        <label for="form_title">Template Title</label>
+                        {% else %}
+                        <label for="form_title">Form Title</label>
+                        {% endif %}
+                        <input type="text" class="form-control" id="form_title" name="form_title"
+                            value="{{ form.form_title }}" maxlength="20" required>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label for="creator">Creator</label>
+                        <input type="text" class="form-control" id="creator" placeholder="Max length=30 characters"
+                            name="creator" maxlength="30" required value="{{ form.creator }}">
+                    </div>
+
+
+
+                    <div class="form-group">
+                        {% if user_role == "admin" %}
+                        <label for="form_description">Template Description</label>
+                        {% else %}
+                        <label for="form_description">Form Description</label>
+                        {% endif %}
+                        <input class="form-control" id="form_description" name="form_description"
+                            value="{{ form.form_description }}" maxlength="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select class="form-control" id="category" name="category">
+                            <option value="arts" {% if form.category=='arts' %}selected{% endif %}>Arts</option>
+                            <option value="business" {% if form.category=='business' %}selected{% endif %}>Business
+                            </option>
+                            <option value="charity" {% if form.category=='charity' %}selected{% endif %}>Charity
+                            </option>
+                            <option value="culture" {% if form.category=='culture' %}selected{% endif %}>Culture
+                            </option>
+                            <option value="education" {% if form.category=='education' %}selected{% endif %}>Education
+                            </option>
+                            <option value="entertainment" {% if form.category=='entertainment' %}selected{% endif %}>
+                                Entertainment</option>
+                            <option value="environment" {% if form.category=='environment' %}selected{% endif %}>
+                                Environment</option>
+                            <option value="events" {% if form.category=='events' %}selected{% endif %}>Events</option>
+                            <option value="feedback" {% if form.category=='feedback' %}selected{% endif %}>Feedback
+                            </option>
+                            <option value="finance" {% if form.category=='finance' %}selected{% endif %}>Finance
+                            </option>
+                            <option value="food" {% if form.category=='food' %}selected{% endif %}>Food</option>
+                            <option value="healthcare" {% if form.category=='healthcare' %}selected{% endif %}>
+                                Healthcare</option>
+                            <option value="marketing" {% if form.category=='marketing' %}selected{% endif %}>Marketing
+                            </option>
+                            <option value="other" {% if form.category=='other' %}selected{% endif %}>Other</option>
+                            <option value="personal" {% if form.category=='personal' %}selected{% endif %}>Personal
+                            </option>
+                            <option value="politics" {% if form.category=='politics' %}selected{% endif %}>Politics
+                            </option>
+                            <option value="recruiting" {% if form.category=='recruiting' %}selected{% endif %}>
+                                Recruiting</option>
+                            <option value="religion" {% if form.category=='religion' %}selected{% endif %}>Religion
+                            </option>
+                            <option value="registration" {% if form.category=='registration' %}selected{% endif %}>
+                                Registration</option>
+                            <option value="science" {% if form.category=='science' %}selected{% endif %}>Science
+                            </option>
+                            <option value="sports" {% if form.category=='sports' %}selected{% endif %}>Sports</option>
+                            <option value="survey" {% if form.category=='survey' %}selected{% endif %}>Survey</option>
+                            <option value="technology" {% if form.category=='technology' %}selected{% endif %}>
+                                Technology</option>
+                            <option value="travel" {% if form.category=='travel' %}selected{% endif %}>Travel</option>
+                            <option value="volunteer" {% if form.category=='volunteer' %}selected{% endif %}>Volunteer
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <!-- Edit existing questions -->
+                    <h4>Edit Questions</h4>
+                    <div id="questions-container">
+                        <!-- Edit existing questions -->
+                        {% for question in form.questions %}
+
+
+                        <div class="question-container">
+                            <button class="btn btn-danger remove-question" onclick="removeQuestion(this)"
+                                data-form-id="{{ form.id }}" data-question-id="{{ question.id }}">
+                                Remove Question
+                            </button>
+
+                            <div class="question-number">Question {{ loop.index }}</div>
+                            <label for="question_text_{{ question.id }}">Question Text</label>
+                            <input type="text" class="form-control" id="question_text_{{ question.id }}"
+                                name="question_text_{{ question.id }}" value="{{ question.question_text }}"
+                                maxlength="80" required>
+
+
+
+                            <select class="shorter-select" id="question_type_{{ question.id }}"
+                                name="question_type_{{ question.id }}">
+                                <option value="text" {% if question.question_type=='text' %}selected{% endif %}>Text
+                                </option>
+                                <option value="multiple_choice" {% if question.question_type=='multiple_choice'
+                                    %}selected{% endif %}>Multiple Choice</option>
+                                <option value="dropdown" {% if question.question_type=='dropdown' %}selected{% endif %}>
+                                    Dropdown
+                                </option>
+                                <option value="checkboxes" {% if question.question_type=='checkboxes' %}selected{% endif
+                                    %}>
+                                    Checkboxes</option>
+                                <option value="short_answer" {% if question.question_type=='short_answer' %}selected{%
+                                    endif %}>
+                                    ShortAnswer</option>
+                                <option value="paragraph" {% if question.question_type=='paragraph' %}selected{% endif
+                                    %}>
+                                    Paragraph</option>
+                                <option value="rating" {% if question.question_type=='rating' %}selected{% endif %}>
+                                    Rating
+                                </option>
+                                <option value="date" {% if question.question_type=='date' %}selected{% endif %}>Date
+                                </option>
+                                <option value="time" {% if question.question_type=='time' %}selected{% endif %}>Time
+                                </option>
+                                <option value="tel" {% if question.question_type=='tel' %}selected{% endif %}>Phone
+                                    Number
+                                </option>
+                                <option value="cnic" {% if question.question_type=='cnic' %}selected{% endif %}>CNIC
+                                    Number
+                                </option>
+                                <option value="gender" {% if question.question_type=='gender' %}selected{% endif %}>
+                                    Gender
+                                </option>
+                                <option value="file_upload" {% if question.question_type=='file_upload' %}selected{%
+                                    endif %}>File Upload
+                                </option>
+                                <option value="address" {% if question.question_type=='address' %}selected{%
+                                    endif %}>Address
+                                </option>
+                            </select>
+
+
+
+
+                            <select class="shorter-select" id="mandatory_{{ question.id }}"
+                                name="mandatory_{{ question.id }}">
+                                <option value="mandatory" {% if question.mandatory=='mandatory' %}selected{% endif %}>
+                                    Mandatory
+                                </option>
+                                <option value="non_mandatory" {% if question.mandatory=='non_mandatory' %}selected{%
+                                    endif %}>
+                                    Non-Mandatory</option>
+                            </select>
+
+                            {% if question.question_type in ['multiple_choice', 'dropdown', 'checkboxes'] %}
+                            <button type="button" class="btn btn-primary add-option-button"
+                                onclick="toggleNewOptionInput('{{ question.id }}')"></button>
+
+                            <label for="options_{{ question.id }}"></label>
+                            <ul class="options-list">
+                                <!-- Edit existing options for this question -->
+                                {% for option in question.options %}
+                                <li>
+                                    <input type="text" class="option" id="option_text_{{ question.id }}_{{ option.id }}"
+                                        name="option_text_{{ question.id }}_{{ option.id }}"
+                                        value="{{ option.option_text }}" maxlength="30" required>
+                                    <button class="btn btn-danger remove-option" onclick="removeOption(this)"
+                                        data-form-id="{{ form.id }}" data-question-id="{{ question.id }}"
+                                        data-option-id="{{ option.id }}">
+                                        Remove Option
+                                    </button>
+
+                                </li>
+                                {% endfor %}
+
+                                <!-- New option input field (initially hidden) -->
+                                <input type="text" class="option" id="new_option_text_{{ question.id }}"
+                                    name="new_option_text_{{ question.id }}" maxlength="30" placeholder="New Option"
+                                    style="display: none;">
+
+                            </ul>
+
+
+                            {% endif %}
+
+                            {% if question.question_type == 'short_answer' %}
+
+                            <label for="char_limit_{{ question.id }}">Character Limit (current: {{ question.char_limit
+                                if
+                                question.char_limit else 'not set' }}) (min 1, max 100)</label>
+                            <input type="number" class="limit" id="char_limit_{{ question.id }}"
+                                name="char_limit_{{ question.id }}" value="{{ question.char_limit }}" min="1" max="100"
+                                placeholder="Enter character limit (current: {{ question.char_limit if question.char_limit else 'not set' }})">
+
+                            {% endif %}
+                            {% if question.question_type == 'paragraph' %}
+
+                            <label for="char_limit_{{ question.id }}">Character Limit (current: {{ question.char_limit
+                                if
+                                question.char_limit else 'not set' }}) (min 20, max 500)</label>
+                            <input type="number" class="limit" id="char_limit_{{ question.id }}"
+                                name="char_limit_{{ question.id }}" value="{{ question.char_limit }}" min="20" max="500"
+                                placeholder="Enter character limit (current: {{ question.char_limit if question.char_limit else 'not set' }})">
+
+
+                            {% endif %}
+                        </div>
+                        <!-- Add other conditional fields for different question types here -->
+                        {% endfor %}
+
+
+
+
+
+
+                        <!-- Add new questions -->
+
+
+
+</div>
+                        <button type="button" class="add-question-button" onclick="addQuestion()">Add Question</button>
+                        <button type="submit" class="update-button" onclick="showSuccessMessage()">Update Form</button>
+
+                        <a href="{{ url_for('preview_form', form_id=form.id) }}" class="edit-button">Back to Form Preview</a>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="footer">
+        <p>&copy; 2023 Survey Hub. All rights reserved. | University of Swat, Software Engineering Batch
+            2019-2023</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function closeNav() {
+            document.getElementById("side-nav").style.left = "-200px";
+        }
+
+        function toggleNav() {
+            var sideNav = document.getElementById("side-nav");
+            var left = sideNav.style.left;
+            if (left == "-200px") {
+                sideNav.style.left = "0px";
+            } else {
+                sideNav.style.left = "-200px";
+            }
+        }
+    </script>
+    <script>
+        function removeQuestion(button) {
+            var formId = button.getAttribute("data-form-id");
+            var questionId = button.getAttribute("data-question-id");
+
+            if (confirm("Are you sure you want to remove this question?")) {
+                // Create a new XMLHttpRequest
+                var xhr = new XMLHttpRequest();
+
+                // Define the request method, URL, and async as true
+                xhr.open("DELETE", "/remove_question/" + formId + "/" + questionId, true);
+
+                // Define the function to run when the request is complete
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Handle success, e.g., remove the question from the DOM
+                        var questionElement = document.getElementById("question-" + questionId);
+                        if (questionElement) {
+                            questionElement.remove();
+                        }
+                    } else {
+                        // Handle errors, e.g., display an error message
+                        alert("Failed to remove the question.");
+                    }
+                };
+
+                // Send the request
+                xhr.send();
+            }
+        }
+    </script>
+    <script>
+        function removeOption(button) {
+            var formId = button.getAttribute("data-form-id");
+            var questionId = button.getAttribute("data-question-id");
+            var optionId = button.getAttribute("data-option-id");
+
+            if (confirm("Are you sure you want to remove this option?")) {
+                // Create a new XMLHttpRequest
+                var xhr = new XMLHttpRequest();
+
+                // Define the request method, URL, and async as true
+                xhr.open("DELETE", "/remove_option/" + formId + "/" + questionId + "/" + optionId, true);
+
+                // Define the function to run when the request is complete
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Handle success, e.g., remove the option from the DOM
+                        var optionElement = document.getElementById("option-" + optionId);
+                        if (optionElement) {
+                            optionElement.remove();
+                        }
+                    } else {
+                        // Handle errors, e.g., display an error message
+                        alert("Failed to remove the option.");
+                    }
+                };
+
+                // Send the request
+                xhr.send();
+            }
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const flashMessage = document.getElementById('flash-message');
+
+            // Check if the flash message element exists
+            if (flashMessage) {
+                // Get the initial message content from the template
+                const initialMessage = flashMessage.innerHTML;
+
+                // Display the message
+                flashMessage.style.display = 'block';
+
+                // Automatically hide the message after 10 seconds
+                setTimeout(function () {
+                    flashMessage.style.display = 'none';
+                }, 10000); // 10000 milliseconds (10 seconds)
+
+                // Replace the message with an empty string to clear it
+                setTimeout(function () {
+                    flashMessage.innerHTML = '';
+                }, 10100); // 10100 milliseconds (10.1 seconds)
+
+                // Optionally, you can add CSS classes for different message types (e.g., success, error)
+                if (flashMessage.classList.contains('flash-success')) {
+                    // Handle success message styling or behavior here
+                }
+            }
+        });
+    </script>
+    <script>
+        var isNavOpen = false;
+
+        function closeNav() {
+            document.getElementById("side-nav").style.left = "-200px";
+            isNavOpen = false;
+        }
+
+        function toggleNav() {
+            var sideNav = document.getElementById("side-nav");
+            if (!isNavOpen) {
+                sideNav.style.left = "0px";
+            } else {
+                sideNav.style.left = "-200px";
+            }
+            isNavOpen = !isNavOpen;
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let totalQuestions = document.querySelectorAll('.question-container').length;
+
+        function addQuestion() {
+            totalQuestions++;
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('form-group');
+            questionDiv.id = `question_${totalQuestions}`;
+            questionDiv.innerHTML = `
+            <div class="question-container">
+                <div class="question-number">Question ${totalQuestions}</div>
+                <input type="text" class="form-control" id="question_${totalQuestions}" name="questions[]" maxlength="80"  required>
+                <select class="shorter-select" name="question_types[]" id="question_type_${totalQuestions}" onchange="showOptions(this)">
+                    <option value="text">Text</option>
+                    <option value="multiple_choice">Multiple Choice</option>
+                    <option value="dropdown">Dropdown</option>
+                    <option value="checkboxes">Checkboxes</option>
+                    <option value="short_answer">Short Answer</option>
+                    <option value="paragraph">Paragraph</option>
+                    <option value="date">Date</option>
+                    <option value="time">Time</option>
+                    <option value="email">Email</option>
+                    <option value="tel">Phone Number</option>
+                    <option value="cnic">CNIC Number</option>
+                    <option value="rating">Rating</option>
+                    <option value="gender">Gender</option>
+                    <option value="file_upload">File Upload</option>
+                    <option value="address">Address</option>
+                </select>
+                
+                <!-- Add the mandatory select input here -->
+                <select class="shorter-select" name="mandatory[]">
+                    <option value="non_mandatory">Non-Mandatory</option>
+                    <option value="mandatory">Mandatory</option>
+                </select>
+                
+                <div id="options_${totalQuestions}" style="display: none;">
+                    <!-- Additional options for the selected question type will be added here -->
+                </div>
+                <button type="button" class="btn btn-danger remove-question" onclick="removeQuestion(${totalQuestions})">x</button>
+            </div>
+            `;
+            document.getElementById('questions-container').appendChild(questionDiv);
+        }
+
+
+        function showRatingOptions(questionIndex) {
+            const optionsDiv = document.getElementById(`options_${questionIndex}`);
+            optionsDiv.innerHTML = `
+                <label for="rating_scale_${questionIndex}">Rating Scale (1 to 5):</label>
+                <input type="hidden" id="rating_scale_${questionIndex}" name="rating_scale_${questionIndex}" value="1-5">
+            `;
+        }
+
+
+
+
+        function addOption(questionIndex) {
+            const optionsDiv = document.getElementById(`options_${questionIndex}`);
+            const optionCounter = optionsDiv.getElementsByClassName('option').length + 1;
+            const optionContainer = document.createElement('div');
+            optionContainer.classList.add('option-container');
+            optionContainer.id = `option_${questionIndex}_${optionCounter}`; // Add unique ID for the option
+            const optionInput = document.createElement('input');
+            optionInput.type = 'text';
+            optionInput.classList.add('form-control', 'option');
+            optionInput.placeholder = `Option ${optionCounter}`;
+            optionInput.name = `options_${questionIndex}[]`; // Correct name attribute
+            optionInput.maxLength = 30;
+            optionContainer.appendChild(optionInput);
+            const removeOptionButton = document.createElement('button');
+            removeOptionButton.type = 'button';
+            removeOptionButton.classList.add('btn', 'btn-danger', 'remove-option');
+            removeOptionButton.textContent = 'x';
+            removeOptionButton.addEventListener('click', () => removeOption(optionContainer));
+            optionContainer.appendChild(removeOptionButton);
+            optionsDiv.appendChild(optionContainer);
+        }
+
+
+
+
+        function showOptions(selectElement) {
+            const questionIndex = selectElement.id.split('_')[2];
+            const selectedOption = selectElement.value;
+            const optionsDiv = document.getElementById(`options_${questionIndex}`);
+            optionsDiv.innerHTML = '';
+
+            if (selectedOption === 'text') {
+                optionsDiv.style.display = 'none';
+            } else {
+                optionsDiv.style.display = 'block';
+                if (selectedOption === 'multiple_choice' || selectedOption === 'dropdown' || selectedOption === 'checkboxes') {
+                    const addOptionButton = document.createElement('button');
+                    addOptionButton.type = 'button';
+                    addOptionButton.classList.add('btn', 'btn-secondary');
+                    addOptionButton.textContent = 'Add Option';
+                    addOptionButton.addEventListener('click', () => addOption(questionIndex));
+                    optionsDiv.appendChild(addOptionButton);
+                } else if (selectedOption === 'short_answer') {
+                    // Show character limit option for Short Answer
+                    optionsDiv.innerHTML = `
+                <label for="char_limit_${questionIndex}">Character Limit (max 100):</label>
+                <input type="number" class="form-control" id="char_limit_${questionIndex}" name="char_limit_${questionIndex}" min="1" max="100">
+            `;
+                } else if (selectedOption === 'paragraph') {
+                    // Show character limit option for Paragraph
+                    optionsDiv.innerHTML = `
+                <label for="char_limit_${questionIndex}">Character Limit (max 500):</label>
+                <input type="number" class="form-control" id="char_limit_${questionIndex}" name="char_limit_${questionIndex}" min="1" max="500">
+            `;
+                } else if (selectedOption === 'tel') {
+                    optionsDiv.style.display = 'none';
+                } else if (selectedOption === 'email') {
+                    optionsDiv.style.display = 'none';
+                } else if (selectedOption === 'name') {
+                    optionsDiv.style.display = 'none';
+                } else if (selectedOption === 'rating') {
+                } else if (selectedOption === 'gender') {
+                    optionsDiv.style.display = 'none';
+                    optionsDiv.innerHTML = `
+                <label for="rating_scale_${questionIndex}">Rating Scale (1 to 5):</label>
+                <input type="hidden" id="rating_scale_${questionIndex}" name="rating_scale_${questionIndex}" value="1-5">
+            `;
+                } else if (selectedOption === 'date') {
+                    optionsDiv.innerHTML = `
+                <label for="date_format_${questionIndex}">Format</label>
+                <select class="form-control" id="date_format_${questionIndex}" name="date_format_${questionIndex}">
+                    <option value="mm/dd/yyyy">mm/dd/yyyy</option>
+                    <option value="dd/mm/yyyy">dd/mm/yyyy</option>
+                    <option value="yyyy/mm/dd">yyyy/mm/dd</option>
+                </select>
+            `;
+                } else if (selectedOption === 'time') {
+                    optionsDiv.innerHTML = `
+                <label for="time_format_${questionIndex}">Format</label>
+                <select class="form-control" id="time_format_${questionIndex}" name="time_format_${questionIndex}">
+                    <option value="hh:mm AM/PM">hh:mm AM/PM</option>
+                    <option value="hh:mm:ss AM/PM">hh:mm:ss AM/PM</option>
+                    <option value="hh:mm">hh:mm</option>
+                    <option value="hh:mm:ss">hh:mm:ss</option>
+                </select>
+            `;
+                } else if (selectedOption === 'file_upload') {
+                    // Show options for file upload
+                    optionsDiv.innerHTML = `
+                <label for="file_types_${questionIndex}">Allowed File Types:</label>
+                <select class="form-control" id="file_types_${questionIndex}" name="file_types_${questionIndex}">
+                    <option value="images">Images</option>
+                    <option value="videos">Videos</option>
+                    <option value="audio">Audio</option>
+                    <option value="documents">Documents</option>
+                    <!-- Add more file types as needed -->
+                </select>
+
+                <label for="max_file_size_${questionIndex}">Max File Size (in MB):</label>
+                <input type="number" class="form-control" id="max_file_size_${questionIndex}" name="max_file_size_${questionIndex}" min="1">
+            `;
+                }
+                // Handle other question types and their options here
+            }
+        }
+
+    </script>
+    <script>
+        function showSuccessMessage() {
+          // Display the success message
+          var successMessage = document.getElementById("success-message");
+          successMessage.style.display = "block";
+      
+          // Save the success message to local storage
+          localStorage.setItem("successMessage", "Form updated successfully!");
+      
+          // Hide the success message after 5 seconds
+          setTimeout(function() {
+            closeSuccessMessage();
+          }, 5000);
+        }
+      
+        // Function to close the success message
+        function closeSuccessMessage() {
+          var successMessage = document.getElementById("success-message");
+          successMessage.style.display = "none";
+        }
+      
+        // Check if there is a stored success message on page load
+        window.onload = function() {
+          var storedMessage = localStorage.getItem("successMessage");
+          if (storedMessage) {
+            // Display the stored success message
+            var successMessage = document.getElementById("success-message");
+            successMessage.innerHTML = storedMessage;
+            successMessage.style.display = "block";
+      
+            // Clear the stored success message from local storage
+            localStorage.removeItem("successMessage");
+      
+            // Hide the success message after 5 seconds
+            setTimeout(function() {
+              closeSuccessMessage();
+            }, 5000);
+          }
+        };
+      </script>
+      
+
+
+</body>
+
+</html>

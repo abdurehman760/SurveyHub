@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- Add any additional meta tags, link tags, or script tags as needed -->
+</head>
+<body>
+<div>
+    <header>
+        <div id="logo">
+          
+         
+        </div>
+        <span class="logo-text">Survey Hub</span>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+        
+        
+    </header>
+    <nav id="side-nav">
+        <button id="close-btn" onclick="closeNav()">&times;</button>
+        <ul>
+          <li><a href="/">Home</a></li>
+          {% if user.role == 'admin' %}
+    <li><a href="/admin_dashboard">Dashboard</a></li>
+{% endif %}
+          <li><a href="/logout">Logout</a></li>
+            
+            
+        </ul>
+    </nav>
+
+
+
+<div class="container mt-4" style="margin-top: 80px;"> <!-- Adjust the margin-top value as needed -->
+    {% if success_message %}
+    <div class="alert alert-success">
+        <span>{{ success_message }}</span>
+    </div>
+{% endif %}
+    <div class="row">
+        <!-- User Information Section -->
+        <div class="col-md-12">
+            <div class="card user-info-card">
+                <div class="card-body">
+                    {% if user.profile_picture %}
+                    <img src="{{ url_for('get_uploaded_image', filename=user.profile_picture) }}" class="img-fluid rounded-circle mb-3">
+                    {% endif %}
+                    <h5 class="card-title">{{ user.username }}</h5>
+                    <p class="card-text">Welcome to your dashboard.</p>
+                    <a href="{{ url_for('account_settings') }}" class="btn btn-primary">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Child Cards in Tile View -->
+<div class="row card-tile-view">
+    <!-- Create Surveys Section -->
+    <div class="col-md-4">
+        <div class="card create_surveys_card">
+            <div class="card-body">
+                <h5 class="card-title">Create Surveys</h5>
+                <p class="card-text">Start creating surveys and gather valuable insights.</p>
+                <a href="{{ url_for('create_form') }}" class="btn btn-success">Create Survey</a>
+            </div>
+        </div>
+    </div>
+    <!-- Form Templates Section -->
+    <div class="col-md-4">
+        <div class="card form_template_card">
+            <div class="card-body">
+                <h5 class="card-title">Form Templates</h5>
+                <p class="card-text">Browse and use pre-designed form templates.</p>
+                <a href="{{ url_for('form_templates') }}" class="btn btn-info">Explore Templates</a>
+            </div>
+        </div>
+    </div>
+    <!-- Saved Forms Section -->
+    <div class="col-md-4">
+        <div class="card saved_forms_card">
+            <div class="card-body">
+                <h5 class="card-title">Saved Forms</h5>
+                <p class="card-text">Access and manage your saved survey forms.</p>
+                <a href="{{ url_for('saved_forms') }}" class="btn btn-warning">View Saved Forms</a>
+            </div>
+        </div>
+    </div>
+    <!-- Form Analytics Section -->
+    <div class="col-md-4">
+        <div class="card form_analytics_card">
+            <div class="card-body">
+                <h5 class="card-title">Form Analytics</h5>
+                <p class="card-text">Analyze data and insights from your survey responses.</p>
+                <a href="{{ url_for('analytics') }}" class="btn btn-danger">View Analytics</a>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Footer Section -->
+<div class="footer">
+    <p>&copy; 2023 Survey Hub. All rights reserved. | University of Swat, Software Engineering Batch
+        2019-2023</p>
+</div>
+</div>
+
+<script>
+    // Function to hide the success message after 5 seconds
+    function hideSuccessMessage() {
+        var successMessage = document.querySelector('.alert-success');
+        if (successMessage) {
+            setTimeout(function() {
+                successMessage.style.opacity = '0'; // Start fading out
+                setTimeout(function() {
+                    successMessage.style.display = 'none'; // Hide the success message
+                }, 1000); // Delay before hiding after fading out (1 second)
+            }, 5000); // Hide after 5 seconds (5000 milliseconds)
+        }
+    }
+
+    // Call the function when the page loads
+    window.onload = hideSuccessMessage;
+</script>
+<script>
+    var isNavOpen = false;
+
+    function closeNav() {
+        document.getElementById("side-nav").style.left = "-200px";
+        isNavOpen = false;
+    }
+
+    function toggleNav() {
+        var sideNav = document.getElementById("side-nav");
+        if (!isNavOpen) {
+            sideNav.style.left = "0px";
+        } else {
+            sideNav.style.left = "-200px";
+        }
+        isNavOpen = !isNavOpen;
+    }
+</script>
+
+
+</body>
+</html>

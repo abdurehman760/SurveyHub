@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  
+</head>
+
+<body>
+
+ <nav class="navbar">
+    <div class="logo">
+        <!-- Add your logo here -->
+        
+    </div>
+   
+    <ul class="nav-list">
+        <li><a href="/">Home</a></li>
+        <li><a href="{{ url_for('profile_redirect') }}">Profile</a></li>
+        {% if user.role == 'admin' %}
+        <li><a href="/admin_dashboard">Dashboard</a></li>
+    {% endif %}
+        {% if 'user_id' in session %}
+            <!-- Show Logout link if user is logged in -->
+            <li><a href="/logout">Logout</a></li>
+        {% else %}
+            <!-- Show Register and Login links if user is not logged in -->
+            <li><a href="register">Register</a></li>
+            <li><a href="login">Login</a></li>
+        {% endif %}
+        <li><a href="about_us">About Us</a></li>
+        <li><a href="contact_us">Contact Us</a></li>
+    </ul>
+</nav>
+
+
+  <div class="container">
+
+    <div class="header-info-container">
+      <div class="header-info">
+        <h1>Welcome to Survey Hub!</h1>
+        <p>Empowering you to create, share, and analyze surveys seamlessly.</p>
+        <p>Explore our features to streamline your survey creation and analysis process.</p>
+      </div>
+
+      <div class="header-info">
+        <h1>Create Surveys Effortlessly</h1>
+        <p>Build customized surveys with a user-friendly interface.</p>
+        <p>Engage your audience and collect valuable insights.</p>
+      </div>
+
+      <div class="header-info">
+        <h1>Survey Insights and Trends</h1>
+        <p>Explore detailed responses and track trends with our analytics tools.</p>
+        <p>View recent activity, analyze gender distribution, and dive into individual responses.</p>
+      </div>
+    </div>
+
+    <!-- Navigation dots -->
+    <div class="dots">
+      <span class="dot" onclick="showCard(0)"></span>
+      <span class="dot" onclick="showCard(1)"></span>
+      <span class="dot" onclick="showCard(2)"></span>
+    </div>
+
+    <div class="all">
+      <div class="lefter" id="lefterDiv">
+        <a href="#" id="loginLink"></a>
+        <div class="text">Login</div>
+      </div>
+
+      <div class="left" id="leftDiv">
+        <a href="#" id="registerLink"></a>
+        <div class="text">Sign Up</div>
+      </div>
+
+      <div class="center" id="centerDiv">
+        <a href="#" id="createFormLink"></a>
+        <div class="explainer"><span>Lets Begin</span></div>
+        <div class="text">Profile</div>
+      </div>
+
+      <div class="right" id="rightDiv">
+        <a href="#" id="aboutUsLink"></a>
+        <div class="text">About Us</div>
+      </div>
+
+      <div class="righter" id="righterDiv">
+        <a href="#" id="contactUsLink"></a>
+        <div class="text">Contact Us</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer">
+    <p>&copy; 2023 Survey Hub. All rights reserved. | University of Swat, Software Engineering Batch
+      2019-2023</p>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var headerInfoContainer = document.querySelector('.header-info-container');
+      var headerInfo = document.querySelectorAll('.header-info');
+      var dots = document.querySelectorAll('.dot');
+  
+      var currentCardIndex = 0;
+  
+      function showCard(index) {
+        headerInfo.forEach((card, i) => {
+          card.style.display = i === index ? 'block' : 'none';
+          dots[i].classList.toggle('active', i === index);
+        });
+        currentCardIndex = index;
+      }
+  
+      function nextCard() {
+        currentCardIndex = (currentCardIndex + 1) % headerInfo.length;
+        showCard(currentCardIndex);
+      }
+  
+      function dotClickHandler(index) {
+        return function () {
+          showCard(index);
+          clearInterval(intervalId); // Stop the automatic rotation
+          setTimeout(() => {
+            intervalId = setInterval(nextCard, 5000); // Resume automatic rotation after 5 seconds
+          }, 5000);
+        };
+      }
+  
+      var intervalId = setInterval(nextCard, 5000);
+  
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', dotClickHandler(index));
+      });
+  
+      // Initial display
+      showCard(currentCardIndex);
+    });
+  </script>
+  
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var lefterDiv = document.getElementById("lefterDiv");
+      var loginLink = document.getElementById("loginLink");
+
+      lefterDiv.addEventListener("click", function () {
+        // Redirect to the login page or update this with the desired URL
+        window.location.href = "login";
+      });
+
+      // Set the background image for the invisible link
+      loginLink.style.backgroundImage = 'url(https://cdn3.iconfinder.com/data/icons/other-icons/48/organization-512.png)';
+    });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var leftDiv = document.getElementById("leftDiv");
+      var centerDiv = document.getElementById("centerDiv");
+      var rightDiv = document.getElementById("rightDiv");
+      var righterDiv = document.getElementById("righterDiv");
+
+      leftDiv.addEventListener("click", function() {
+        window.location.href = "register";
+      });
+
+      centerDiv.addEventListener("click", function() {
+        window.location.href = "profile_redirect";
+      });
+
+      rightDiv.addEventListener("click", function() {
+        window.location.href = "about_us";
+      });
+
+      righterDiv.addEventListener("click", function() {
+        window.location.href = "contact_us";
+      });
+    });
+  </script>
+
+</body>
+
+</html>

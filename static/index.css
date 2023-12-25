@@ -1,0 +1,334 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(90deg, #C7C5F4, #776BCC);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: -100px;
+  font-weight: 300;
+}
+
+.all {
+  display: flex;
+  perspective: 10px;
+  transform: perspective(300px) rotateX(20deg);
+  will-change: perspective;
+  perspective-origin: center center;
+  transition: all 1.3s ease-out;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+.all:hover {
+  perspective: 1000px;
+  transition: all 1.3s ease-in;
+  transform: perspective(10000px) rotateX(0deg);
+
+  .text {
+    opacity: 1;
+  }
+
+  &>div {
+    opacity: 1;
+    transition-delay: 0s;
+  }
+
+  .explainer {
+    opacity: 0;
+  }
+}
+.header-info-container{
+  margin-top: 150px;
+}
+/* Update the styles for header-info */
+/* Styles for header-info */
+/* Styles for header-info */
+.header-info {
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin: 10px auto;
+  /* Add margin to center the card */
+  width: 1000px;
+  /* Set a fixed width for the card */
+  background: linear-gradient(135deg, #4776E6, #8E54E9);
+  /* Gradient background */
+  border-radius: 15px;
+  /* Rounded corners */
+  box-shadow: 2px 4px 12px 6px rgb(20 17 40 / 40%);
+  /* Box shadow for depth */
+
+  /* Add smooth transition effect */
+}
+
+
+
+
+/* Styles for header-info text */
+.header-info h1 {
+  font-size: 2.5em;
+  margin-bottom: 15px;
+}
+
+.header-info p {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+/* Add a hover effect for the card */
+
+
+
+.left,
+.center,
+.right,
+.lefter,
+.righter {
+  width: 200px;
+  height: 150px;
+  transform-style: preserve-3d;
+  border-radius: 10px;
+  border: 1px solid #fff;
+  box-shadow: 0 0 20px 5px rgba(100, 100, 255, .4);
+  opacity: 0;
+  
+  transition-delay: 1s;
+  position: relative;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: #58d;
+  cursor: pointer;
+  background-blend-mode: color-burn;
+
+  &:hover {
+    box-shadow: 0 0 30px 10px rgba(100, 100, 255, .6);
+    background-color: #ccf;
+  }
+}
+
+.text {
+  transform: translateY(30px);
+  opacity: 0;
+  transition: all .3s ease;
+  bottom: 0;
+  left: 5px;
+  position: absolute;
+  will-change: transform;
+  color: #fff;
+  text-shadow: 0 0 5px rgba(100, 100, 255, .6)
+}
+
+.lefter {
+  transform: translateX(-60px) translateZ(-50px) rotateY(-10deg);
+  background-image: url(img/login.png);
+}
+
+.left {
+  transform: translateX(-30px) translateZ(-25px) rotateY(-5deg);
+  background-image: url(img/register.jpg);
+}
+
+.center {
+  opacity: 1;
+  background-image: url(img/profile.png);
+}
+
+.right {
+  transform: translateX(30px) translateZ(-25px) rotateY(5deg);
+  background-image: url(img/about.png);
+}
+
+.righter {
+  transform: translateX(60px) translateZ(-50px) rotateY(10deg);
+  background-image: url(img/contact.png);
+}
+
+.explainer {
+  font-weight: 300;
+  font-size: 2rem;
+  color: #fff;
+  transition: all .6s ease;
+  width: 100%;
+  height: 100%;
+  border: 3px solid rgb(255 255 255 / 80%);
+  background-color: #303050;
+  background-image: radial-gradient(circle at center top, #cce, #33a);
+  border-radius: 10px;
+  box-shadow: 0px 0px 11px 9px #6a607b;
+  text-shadow: 3px 3px 2px #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.ref {
+  background-color: #000;
+  background-image: linear-gradient(to bottom, #d80, #c00);
+  border-radius: 3px;
+  padding: 7px 10px;
+  position: absolute;
+  font-size: 16px;
+  bottom: 10px;
+  right: 10px;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 0 3px rgba(0, 0, 0, .4);
+
+  &::first-letter {
+    font-size: 12px;
+  }
+}
+
+
+
+
+/* Navbar styling */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 5px;
+  background-color: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 1px 4px 10px #2d1b38;
+}
+
+.logo {
+
+  width: 200px;
+  height: 60px;
+  background-image: url(img/logo.png);
+  background-size: contain;
+  margin-left: 40px;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+
+#logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Add a style for the form creation website logo */
+.logo-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  margin-left: -480px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 6px 6px 0px rgb(255 255 255 / 80%);
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+/* Define the glowing animation */
+@keyframes glow {
+  from {
+    text-shadow: 4px -5px 5px rgb(92 0 222 / 80%);
+  }
+
+  to {
+    text-shadow: 5px 5px 5px rgb(55 42 188 / 80%), 0 0 5px rgb(0 0 0 / 60%);
+  }
+}
+
+/* Navigation list styling */
+.nav-list {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list li {
+  margin-right: 50px;
+}
+
+/* Navigation list item magnification on hover */
+.nav-list li:hover {
+  transform: scale(1.1);
+  /* Increase the scale on hover */
+  transition: transform 0.1s ease;
+  /* Add a smooth transition effect */
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: #ffffff;
+  position: relative;
+  
+  transition: color 0.3s ease;
+  /* Smooth transition for color change */
+}
+
+.nav-list a:hover {
+  color: rgb(231, 226, 226);
+}
+
+.nav-list a::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color:orangered;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-list a:hover::before {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+
+.footer {
+  background-color: transparent;
+  color: #0b0000;
+  box-shadow: 0px -2px 3px #35283a;
+  text-align: center;
+  padding: 5px 0;
+  position: fixed;
+  bottom: 0;
+  font-weight: bolder;
+  width: 100%;
+}
+
+.dots {
+  text-align: center;
+  margin-bottom: 30px;
+
+}
+
+.dot {
+  height: 10px;
+  width: 15px;
+  margin: 0px 5px;
+  background-color: #ffffff;
+  border-radius: 20%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+  cursor: pointer;
+}
+
+.active {
+  background-color: #4f4d4d;
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deactivated User</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='deactivate_user.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="navcontainer">
+            <div class="navbar-brand">
+                <h5>Administrator Dashboard</h5>
+            </div>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+
+    <p>Are you sure you want to 
+    {% if user.status == 'active' %}
+        <form method="POST" action="{{ url_for('deactivate_user', user_id=user.id) }}">
+            <button class="deactivate" type="submit">Deactivate</button>
+        </form>
+    {% else %}
+        <form method="POST" action="{{ url_for('deactivate_user', user_id=user.id) }}">
+            <button class="activate" type="submit">Activate</button>
+        </form>
+    {% endif %}
+    
+    {% if user.status == 'active' %}
+        <p class="activate-info">Account for user <span class="username" >"{{ user.username }}"</span>  has not been deactivated.</p>
+    {% else %}
+        <p class="deactivate-info">Account for user "{{ user.username }}" was deactivated on {{ user.deactivated_at.strftime('%Y-%m-%d %H:%M:%S') }}.</p>
+        
+        {% if user.deactivated_at %}
+            <p class="time-info">Account has been deactivated for {{ (current_time - user.deactivated_at).days }} days, {{ ((current_time - user.deactivated_at).seconds) // 3600 }} hours, and {{ ((current_time - user.deactivated_at).seconds) // 60 % 60 }} minutes.</p>
+        {% endif %}
+    {% endif %}
+    
+    <a href="{{ url_for('admin_users') }}" class="cancel-button">Cancel</a>
+</body>
+</html>

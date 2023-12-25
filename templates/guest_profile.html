@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Guest Profile{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='guest_profile.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="profile">
+        <h1 class="profile__title">Welcome, Guest User!</h1>
+        <p class="profile__description">This is the guest user profile. You have access to a range of features without the need to login or register.</p>
+        <a href="{{ url_for('create_form') }}" class="btn btn-primary profile__cta">Create Form Now</a>
+    </div>
+    <div class="login-prompt">
+        <p class="login-prompt__description">To unlock even more capabilities, including access to Form Templates and personalized features, we invite you to <a href="{{ url_for('login') }}" class="login-prompt__link">Login</a> or <a href="{{ url_for('register') }}" class="login-prompt__link">Register</a> for a free account.</p>
+        <p class="login-prompt__note">Don't worry, we value your privacy and data security. Your information is safe with us.</p>
+    </div>
+</div>
+{% endblock %}

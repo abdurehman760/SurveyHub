@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form preview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='preview_form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- Add any additional meta tags, link tags, or script tags as needed -->
+</head>
+<body>
+  <header>
+    <div id="logo">
+      
+     
+    </div>
+    <span class="logo-text">Survey Hub</span>
+    <div id="menu-button">
+        <button onclick="toggleNav()">☰</button>
+    </div>
+    
+    
+</header>
+<nav id="side-nav">
+    <button id="close-btn" onclick="closeNav()">&times;</button>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/profile_redirect">Profile</a></li>
+      {% if current_user.role == 'admin' %}
+    <li><a href="/admin_dashboard">Dashboard</a></li>
+{% endif %}
+      <li><a href="/logout">Logout</a></li>
+        
+        
+    </ul>
+</nav>
+<div class="container mt-5">
+  <div class="form-box">
+    <h2>{{ form.form_header }}</h2>
+
+    <form method="POST" action="{{ url_for('fill_form', form_id=form.id) }}">
+      <input type="hidden" name="form_id" value="{{ form.id }}">
+
+      <div class="form-header">
+        <p class="form-title"><strong>Title:</strong> {{ form.form_title }}</p>
+        <!-- Check if the created_by is not "admin" before displaying these fields -->
+        {% if form.created_by != "admin" %}
+        <p><strong>Created by:</strong> <span class="username">{{ form.creator }}</span></p>
+        <p><strong>Created On:</strong> <span class="date">{{ form.created_at.strftime('%d-%m-%Y') }}</span></p>
+        {% endif %}
+        <p><strong>Category:</strong><span class="category"> {{ form.category }}</span></p>
+        <p><strong>Description:</strong> <span class="description">{{ form.form_description }}</span></p>
+      </div>
+      
+      
+
+      {% for question in form.questions %}
+  <hr>
+  <m class="question-container">
+    <o class="question-text"><strong>{{ loop.index }}:</strong> {{ question.question_text }}</o>
+    <input type="hidden" name="question_id[]" value="{{ question.id }}">
+    {% if question.mandatory == 'mandatory' %}
+      <span class="mandatory-text">(Mandatory)</span>
+    {% endif %}
+  </m>
+
+  
+
+      {% if question.question_type == 'multiple_choice' %}
+      <strong class="question-label">Options:</strong>
+      <ul class="question-options">
+          {% for option in question.options %}
+          <li class="question-option">
+              <input type="radio" name="question_{{ question.id }}" id="option_{{ option.id }}" value="{{ option.id }}"
+              {% if question.mandatory == 'mandatory' %}required{% endif %}>
+              <label for="option_{{ option.id }}" class="option-label">{{ option.option_text }}</label>
+          </li>
+          {% endfor %}
+      </ul>
+
+      {% elif question.question_type == 'checkboxes' %}
+      <strong class="question-label">Options:</strong>
+      <ul class="question-options">
+          {% for option in question.options %}
+          <li class="question-option">
+              <input type="checkbox" name="question_{{ question.id }}" id="option_{{ option.id }}" value="{{ option.id }}"
+              {% if question.mandatory == 'mandatory' %}required{% endif %}>
+              <label for="option_{{ option.id }}" class="option-label">{{ option.option_text }}</label>
+          </li>
+          {% endfor %}
+      </ul>
+
+      {% elif question.question_type == 'dropdown' %}
+      <select name="question_{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+          <option value="">Select an option</option>
+          {% for option in question.options %}
+          <option value="{{ option.id }}">{{ option.option_text }}</option>
+          {% endfor %}
+      </select>
+      
+     
+      <!-- HTML Template for Address Question Type -->
+      {% elif question.question_type == 'address' %}
+      <label for="country">Country:</label>
+      <select name="country" id="country" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+          <option value="">Select a country</option>
+          {% for country in countries %}
+              <option value="{{ country.id }}">{{ country.name }}</option>
+          {% endfor %}
+      </select>
+      
+      <label for="state">State:</label>
+      <select name="state" id="state" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+          <option value="">Select a state</option>
+      </select>
+      
+      <label for="city">City:</label>
+      <select name="city" id="city" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+          <option value="">Select a city</option>
+      </select>
+      <label for="postal_code">Postal Code:</label>
+<input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Enter postal code">
+      
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+      <script>
+          // Use AJAX to load states based on the selected country
+          $('#country').change(function() {
+              console.log('Country dropdown changed');
+              var countryId = $(this).val();
+              console.log('Selected Country ID:', countryId);
+      
+              $.get('/states/' + countryId, function(data) {
+                  console.log('Received States Data:', data);
+      
+                  // Update the states dropdown
+                  var statesDropdown = $('#state');
+                  statesDropdown.empty();
+                  statesDropdown.append($('<option>').text('Select a state').attr('value', ''));
+                  $.each(data.states, function(index, state) {
+                      statesDropdown.append($('<option>').text(state.name).attr('value', state.name));
+                  });
+      
+                  // Clear the cities dropdown when the country changes
+                  $('#city').empty().append($('<option>').text('Select a city').attr('value', ''));
+              });
+          });
+      
+          // Use AJAX to load cities based on the selected state
+          $('#state').change(function() {
+              console.log('State dropdown changed');
+              var stateName = $(this).val();
+              console.log('Selected State Name:', stateName);
+      
+              $.get('/cities/' + stateName, function(data) {
+                  console.log('Received Cities Data:', data);
+      
+                  // Update the cities dropdown
+                  var citiesDropdown = $('#city');
+                  citiesDropdown.empty();
+                  citiesDropdown.append($('<option>').text('Select a city').attr('value', ''));
+                  $.each(data.cities, function(index, city) {
+                      citiesDropdown.append($('<option>').text(city.name).attr('value', city.name));
+                  });
+              });
+          });
+      </script>
+      
+
+
+      <!-- Add handling for other question types -->
+      {% elif question.question_type in ['short_answer', 'paragraph'] %}
+      <label for="answer_{{ question.id }}"> <strong>Answer here</strong></label>
+      <input class="form-control" type="text" name="question_{{ question.id }}"
+          placeholder="start typing here......... max limit:{{ question.char_limit }}"
+          {% if question.char_limit %}maxlength="{{ question.char_limit }}"{% endif %}
+          {% if question.mandatory == 'mandatory' %}required{% endif %}>
+      {% elif question.question_type == 'rating' %}
+      <div class="rating_1">
+        <input type="radio" id="star1_{{ question.id }}" name="question_{{ question.id }}" value="1"
+          data-question-id="{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+        <label for="star1_{{ question.id }}" title="1 star">😞</label>
+        <input type="radio" id="star2_{{ question.id }}" name="question_{{ question.id }}" value="2"
+          data-question-id="{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+        <label for="star2_{{ question.id }}" title="2 stars">😐</label>
+        <input type="radio" id="star3_{{ question.id }}" name="question_{{ question.id }}" value="3"
+          data-question-id="{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+        <label for="star3_{{ question.id }}" title="3 stars">😊</label>
+        <input type="radio" id="star4_{{ question.id }}" name="question_{{ question.id }}" value="4"
+          data-question-id="{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+        <label for="star4_{{ question.id }}" title="4 stars">😄</label>
+        <input type="radio" id="star5_{{ question.id }}" name="question_{{ question.id }}" value="5"
+          data-question-id="{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+        <label for="star5_{{ question.id }}" title="5 stars">⭐️</label>
+      </div>
+      <div id="response_{{ question.id }}" class="response" style="display: none;"></div>
+
+      {% elif question.question_type == 'email' %}
+      <label for="email_{{ question.id }}">Email:</label>
+      <input type="email" class="form-control" id="email_{{ question.id }}" name="question_{{ question.id }}"
+          placeholder="Enter your email" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+
+      {% elif question.question_type in ['date'] %}
+      <label for="date_{{ question.id }}"><strong>Date:</strong></label>
+      <input type="date" class="form-control" id="datetime_{{ question.id }}" name="question_{{ question.id }}"
+          {% if question.mandatory == 'mandatory' %}required{% endif %}>
+
+      {% elif question.question_type in ['time'] %}
+      <label for="datetime_{{ question.id }}"><strong>Time:</strong></label>
+      <input type="time" class="form-control" id="datetime_{{ question.id }}" name="question_{{ question.id }}"
+          {% if question.mandatory == 'mandatory' %}required{% endif %}>
+
+    {% elif question.question_type =='text' %}
+          
+    <input type="text" class="form-control" id="text_{{ question.id }}" name="question_{{ question.id }}"
+              placeholder="start typing here......... max limit:{{ question.char_limit }}"
+              {% if question.char_limit %}maxlength="{{ question.char_limit }}"{% endif %}
+              {% if question.mandatory == 'mandatory' %}required{% endif %}>
+              
+
+              {% elif question.question_type == 'tel' %}
+              <label for="phone">Phone:</label>
+              <select id="countrySelect" name="country_code" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+                  <option value="" selected disabled>Select a country</option>
+                  {% for country_code in country_codes %}
+                      <option value="{{ country_code.Code }}">{{ country_code.Country }} (+{{ country_code.Code }})</option>
+                  {% endfor %}
+              </select>
+              <input type="tel" class="form-control" id="phone" name="phone"
+                  placeholder="Enter phone number with country code" minlength="14" maxlength="19" pattern="\+\(\d{1,4}\)-\d{15}"
+                  {% if question.mandatory == 'mandatory' %}required{% endif %}>
+              
+              <script>
+              const countrySelect = document.getElementById('countrySelect');
+              const phoneInput = document.getElementById('phone');
+              
+              // Fetch country codes dynamically
+              fetch('/country_codes')
+                  .then(response => response.json())
+                  .then(data => {
+                      // Populate the country codes dropdown
+                      data.country_codes.forEach(country_code => {
+                          const option = document.createElement('option');
+                          option.value = country_code.Code;
+                          option.text = `${country_code.Country} (+${country_code.Code})`;
+                          countrySelect.add(option);
+                      });
+                  })
+                  .catch(error => console.error('Error fetching country codes:', error));
+              
+              countrySelect.addEventListener('change', () => {
+                  const selectedCountryCode = countrySelect.value;
+                  if (selectedCountryCode === 'other') {
+                      phoneInput.value = ''; // Clear the input if "Other Country" is selected
+                  } else {
+                      phoneInput.value = `+(${selectedCountryCode})-`; // Format: + (country_code) -
+                  }
+              });
+              
+              // Disable editing of the country code and parentheses in the input
+              phoneInput.addEventListener('input', () => {
+                  const selectedCountryCode = countrySelect.value;
+                  const inputLength = phoneInput.value.length;
+              
+                  // Ensure the country code and parentheses are not editable
+                  if (inputLength < `+(${selectedCountryCode})-`.length) {
+                      phoneInput.value = `+(${selectedCountryCode})-`;
+                  }
+              });
+              </script>
+              
+              
+              <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+              <script>
+                  // Use AJAX to load country codes
+                  $.get('/country_codes', function(data) {
+                      console.log('Received Country Codes Data:', data);
+              
+                      // Update the country codes dropdown
+                      var countryCodesDropdown = $('#countrySelect');
+                      $.each(data.country_codes, function(index, country) {
+                          countryCodesDropdown.append($('<option>').text(country.Country + ' (' + country.Code + ')').attr('value', country.Code));
+                      });
+                  });
+              </script>
+              
+
+      {% elif question.question_type == 'cnic' %}
+      <label for="cnic">CNIC Number:</label>
+      <input type="text" class="form-control" id="cnic" name="question_{{ question.id }}"
+          placeholder="Enter your CNIC number" minlength="14" maxlength="14" pattern="[0-9]{5}-[0-9]{7}-[0-9]{1}"
+          oninput="formatCnic(this)" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+
+      {% elif question.question_type == 'gender' %}
+      <!-- Handle gender dropdown questions -->
+      <label for="question_{{ question.id }}">Select Gender:</label>
+      <select name="question_{{ question.id }}" id="question_{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+          <option value="Rather Not Say">Rather Not Say</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+      </select>
+      {% elif question.question_type == 'file_upload' %}
+      <label for="file_{{ question.id }}">Upload File:</label>
+      <input type="file" class="form-control-file" id="file_{{ question.id }}" name="question_{{ question.id }}"
+          {% if question.mandatory == 'mandatory' %}required{% endif %}>
+          
+      {% if question.options %}
+          <span class="file-type-hint">Acceptable file types: 
+              {% for option in question.options %}
+              <span class=" type">{{ option.file_type }}</span>{% if not loop.last %}, {% endif %}
+              {% endfor %}
+          </span>
+          <span class="file-size-hint">Acceptable file Size: 
+            {% for option in question.options %}
+            <span class="mb">  {{ option.max_file_size }}MBs</span>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </span>
+      {% endif %}
+      
+      <!-- Add handling for other question types -->
+      {% endif %}
+      <!-- Add more question types here -->
+      {% endfor %}
+      <hr>
+      {% if success_message %}
+      <div id="success-message" class="alert alert-success" style="display: none;">
+        {{ success_message }}
+    </div>
+    <div id="submit-again-message" class="alert alert-info" style="display: none;">
+        You can submit again.
+    </div>
+{% endif %}
+  <div class="buttons">
+{% if form.created_by == 'admin' and current_user and current_user.role == 'admin' %}
+<a href="{{ url_for('edit_form', form_id=form.id) }}" class="edit-button">Edit</a>
+{% elif form.created_by == 'admin' and current_user and current_user.role == 'user' %}
+<!-- Do not show the Edit button -->
+{% elif form.created_by == 'user' %}
+<a href="{{ url_for('edit_form', form_id=form.id) }}" class="edit-button">Edit</a>
+{% endif %}
+
+<button type="button" id="share-button" class="share-button">Share</button>
+<button type="reset" class="share-button" style="background-color: red;">Clear Form</button>
+<a href="{{ url_for('analytics') }}" class="edit-button">Analytics</a>
+<a href="{{ url_for('create_form') }}" class="edit-button">Create New Form</a>
+<a href="{{ url_for('saved_forms') }}" class="edit-button">Saved Forms</a>
+</div>
+  <div id="popup-menu" class="popup">
+    <textarea id="form-link" readonly></textarea>
+    <button id="close-button" class="close-button">X</button>
+    <button id="copy-button" class="copy-button">Copy Link</button>
+</div>
+
+
+</form>
+</div>
+</div>
+<div class="footer">
+  <p>&copy; 2023 Survey Hub. All rights reserved. | University of Swat, Software Engineering Batch
+    2019-2023</p>
+</div>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  var isNavOpen = false;
+
+  function closeNav() {
+      document.getElementById("side-nav").style.left = "-200px";
+      isNavOpen = false;
+  }
+
+  function toggleNav() {
+      var sideNav = document.getElementById("side-nav");
+      if (!isNavOpen) {
+          sideNav.style.left = "0px";
+      } else {
+          sideNav.style.left = "-200px";
+      }
+      isNavOpen = !isNavOpen;
+  }
+</script>
+
+<script>
+  $(document).ready(function () {
+    const shareButton = document.getElementById("share-button");
+    const popupMenu = document.getElementById("popup-menu");
+    const formLink = document.getElementById("form-link");
+    const copyButton = document.getElementById("copy-button");
+    const closeButton = document.getElementById("close-button");
+
+    shareButton.addEventListener("click", function () {
+      // Generate the form link (assuming 'form.id' contains the form ID)
+      const formId = "{{ form.id }}"; // Replace with your actual form ID
+      const formLinkValue = `http://127.0.0.1:5000/fill_form/${formId}`;
+
+      // Set the form link text
+      formLink.textContent = formLinkValue;
+
+      // Show the popup menu
+      popupMenu.style.display = "block";
+    });
+
+    copyButton.addEventListener("click", function (event) {
+  event.preventDefault(); // Prevent the default behavior (form submission and redirection)
+
+  // Copy the link to the clipboard
+  const linkToCopy = formLink.textContent;
+  const tempInput = document.createElement("input");
+  document.body.appendChild(tempInput);
+  tempInput.value = linkToCopy;
+  tempInput.select();
+  document.execCommand("copy");
+  document.body.removeChild(tempInput);
+
+  // Provide some visual feedback to the user (e.g., change button text)
+  copyButton.textContent = "Copied!";
+  setTimeout(function () {
+    copyButton.textContent = "Copy Link";
+  }, 2000); // Reset the button text after 2 seconds
+});
+closeButton.addEventListener("click", function (event) {
+  event.preventDefault(); // Prevent the default behavior (form submission and redirection)
+
+  // Close the popup menu
+  popupMenu.style.display = "none";
+});
+
+  });
+</script>
+
+<script>
+  const stars = document.querySelectorAll('.rating_1 input[type="radio"]');
+stars.forEach((star) => {
+  star.addEventListener('change', (e) => {
+    const selectedStar = e.target;
+    const selectedValue = parseInt(selectedStar.value);
+    const questionId = selectedStar.getAttribute('data-question-id');
+
+    // Clear previous selections
+    stars.forEach((s) => {
+      const starQuestionId = s.getAttribute('data-question-id');
+      const starLabel = document.querySelector(`label[for="star${s.value}_${starQuestionId}"]`);
+      if (s !== selectedStar && starQuestionId === questionId) {
+        starLabel.classList.remove('selected');
+      }
+    });
+
+    // Highlight selected star and previous stars for the same question
+    for (let i = 1; i <= selectedValue; i++) {
+      const starLabel = document.querySelector(`label[for="star${i}_${questionId}"]`);
+      if (starLabel) {
+        starLabel.classList.add('selected');
+      }
+    }
+
+    // Display response based on the selected emoji
+    const responseElement = document.getElementById(`response_${questionId}`);
+    if (responseElement) {
+      switch (selectedValue) {
+        case 1:
+          responseElement.innerHTML = "You selected 1 star: 😞";
+          break;
+        case 2:
+          responseElement.innerHTML = "You selected 2 stars: 😐";
+          break;
+        case 3:
+          responseElement.innerHTML = "You selected 3 stars: 😊";
+          break;
+        case 4:
+          responseElement.innerHTML = "You selected 4 stars: 😄";
+          break;
+        case 5:
+          responseElement.innerHTML = "You selected 5 stars: ⭐️";
+          break;
+        default:
+          responseElement.innerHTML = "";
+          break;
+      }
+      responseElement.style.display = "block";
+    }
+  });
+});
+
+
+
+  // Format CNIC input as 5 digits - 7 digits - 1 digit
+  function formatCnic(input) {
+    let value = input.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    value = value.substring(0, 14); // Limit to 14 characters
+
+    if (value.length >= 5 && value.length <= 12) {
+      value = value.substring(0, 5) + "-" + value.substring(5);
+    } else if (value.length >= 13) {
+      value = value.substring(0, 5) + "-" + value.substring(5, 12) + "-" + value.substring(12);
+    }
+
+    input.value = value;
+  }
+  
+
+  
+   
+</script>
+
+
+
+
+</body>
+</html>

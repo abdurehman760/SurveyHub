@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_users.css') }}">
+    <script src="index.js"></script>
+    <style>
+        
+        header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  box-shadow: -1px 6px 7px #221d1d;
+  color: white;
+  background: linear-gradient(90deg, #C7C5F4, #776BCC);
+}
+
+#logo {
+  width: 200px;
+  height: 60px;
+}
+
+#logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#menu-button {
+  width: 60px;
+  height: 60px;
+}
+
+#menu-button button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#profile {
+  width: 60px;
+  height: 60px;
+}
+
+#profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#search {
+  width: 300px;
+  height: 40px;
+  margin-right: 20px;
+}
+
+#search input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#side-nav {
+  width: 200px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: -200px;
+  background-color: #444;
+  color: white;
+  transition: 0.3s;
+}
+
+#side-nav ul {
+  list-style: none;
+}
+
+#side-nav ul li {
+  height: 60px;
+  line-height: 60px;
+  padding-left: 20px;
+  border-bottom: 1px solid #555;
+}
+
+#side-nav ul li a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: white;
+  text-decoration: none;
+}
+
+#side-nav ul li:hover {
+  background-color: #555;
+}
+#close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <img src="static/img/logo.png" alt="Logo">
+        </div>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+        
+        
+    </header>
+    <nav id="side-nav">
+        <button id="close-btn" onclick="closeNav()">&times;</button>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="admin_dashboard">Dashboard</a></li>
+            <li><a href="view_messages">Inbox</a></li>
+            <li><a href="/logout">Logout</a></li>
+            
+            
+        </ul>
+    </nav>
+
+<h1>User Management</h1>
+<table>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users_list %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.password }}</td>
+            <td>{{ user.email }}</td>
+            <td class="role
+    {% if user.role == 'admin' %}
+        role-admin
+    {% elif user.role == 'teacher' %}
+        role-teacher
+    {% elif user.role == 'user' %}
+        role-user
+    {% endif %}
+">
+                {{ user.role }}
+            </td>
+            <td class="status {{ 'status-active' if user.status == 'active' else 'status-deactive' }}">
+                {{ user.status }}
+            </td>
+            <td>
+                <div class="button-container">
+                    <a class="edit" href="{{ url_for('edit_user', user_id=user.id) }}">Edit</a>
+                    <a href="{{ url_for('deactivate_user', user_id=user.id) }}" class="{% if user.status == 'active' %}deactivate_button{% else %}activate_button{% endif %}">
+                        {% if user.status == 'active' %}
+                            Deactivate
+                        {% else %}
+                            Activate
+                        {% endif %}
+                    </a>
+                    <form onsubmit="return confirm('Are you sure you want to delete this user?');" action="{{ url_for('delete_user', user_id=user.id) }}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button  type="submit" class="delete_link">Delete</button>
+                    </form>
+                </div>
+            </td>
+            
+            
+            
+            
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    var isNavOpen = false;
+
+    function closeNav() {
+        document.getElementById("side-nav").style.left = "-200px";
+        isNavOpen = false;
+    }
+
+    function toggleNav() {
+        var sideNav = document.getElementById("side-nav");
+        if (!isNavOpen) {
+            sideNav.style.left = "0px";
+        } else {
+            sideNav.style.left = "-200px";
+        }
+        isNavOpen = !isNavOpen;
+    }
+</script>
+
+
+</body>
+    
+</html>
+
+

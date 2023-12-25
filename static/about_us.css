@@ -1,0 +1,127 @@
+/* about_us.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #caa8fb;
+    color: #2b2b2b; /* Dark text color */
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* About Section Styling */
+#about-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#about-section h1 {
+    color: #4b0082; /* Indigo color for heading */
+}
+
+#about-section p {
+    font-size: 1.1em;
+    line-height: 1.5;
+}
+
+/* Team Member Styling */
+.team-member {
+    border: 3px solid #9c69c1c4;
+    box-shadow: 0px 0px 12px 8px rgb(92 0 222 / 31%);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: transf#ffffff.3s;
+    background-color: rgb(255, 255, 255); /* White background for team members */
+}
+
+.team-member:hover {
+    transform: scale(1.05);
+}
+
+.team-member img {
+    max-width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    object-fit: cover; /* Maintain aspect ratio */
+}
+
+.team-member .info {
+    padding: 15px;
+    text-align: center;
+    background: rgb(92 0 222 / 31%);
+
+}
+
+.team-member h2 {
+    color: #4b0082; /* Indigo color for member names */
+}
+
+/* Modal Styling */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #4b0082; /* Matching the theme */
+}
+
+/* University Info Styling */
+.university-info {
+    margin-top: 30px;
+}
+
+.university-info h2 {
+    color: #4b0082; /* Indigo color for heading */
+}
+
+.university-info p {
+    font-size: 1.1em;
+    line-height: 1.5;
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #4b0082; /* Indigo color for footer text */
+}
+
+@media (max-width: 600px) {
+    .team-member {
+        margin-bottom: 10px;
+    }
+
+    .modal-content {
+        max-width: 100%;
+    }
+}

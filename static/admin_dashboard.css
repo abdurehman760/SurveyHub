@@ -1,0 +1,215 @@
+/* style.css */
+body{
+  background: linear-gradient(90deg, #C7C5F4, #776BCC);
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+ 
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  box-shadow: -1px 6px 7px #221d1d;
+  color: white;
+  background: linear-gradient(90deg, #C7C5F4, #776BCC);
+}
+
+#logo {
+  width: 200px;
+  height: 60px;
+}
+
+#logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#menu-button {
+  width: 60px;
+  height: 60px;
+}
+
+#menu-button button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#profile {
+  width: 60px;
+  height: 60px;
+}
+
+#profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#search {
+  width: 300px;
+  height: 40px;
+  margin-right: 20px;
+}
+
+#search input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#side-nav {
+  width: 200px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: -200px;
+  background-color: #444;
+  color: white;
+  transition: 0.3s;
+}
+
+#side-nav ul {
+  list-style: none;
+}
+
+#side-nav ul li {
+  height: 60px;
+  line-height: 60px;
+  padding-left: 20px;
+  border-bottom: 1px solid #555;
+}
+
+#side-nav ul li a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: white;
+  text-decoration: none;
+}
+
+#side-nav ul li:hover {
+  background-color: #555;
+}
+#close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+#content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#cards {
+  display: flex;
+  gap: 20px;
+}
+
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 308px;
+  height: 198px;
+  background: white;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05); /* Added scale on hover for a subtle interactive effect */
+}
+
+.card h3, .card p {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.card-footer {
+  margin-top: 15px;
+}
+
+.card-link {
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.card-link:hover {
+  background-color: #444;
+}
+
+/* Add more specific styling for the links within cards if needed */
+.card a .card-link {
+  color: white;
+}
+
+.card a .card-link:hover {
+  text-decoration: none;
+}
+a{
+  text-decoration: none;
+}
+.logo-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+ margin-left: -100px;
+  text-shadow: 6px 6px 0px rgb(255 255 255 / 80%);
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+  /* Footer styling */
+  .footer {
+    background-color: transparent;
+    color: #0b0000;
+    box-shadow: 0px -2px 3px #35283a;
+    text-align: center;
+    padding: 5px 0;
+    position: relative;
+    bottom: 0;
+    font-weight: bolder;
+  
+  }
+/* Define the glowing animation */
+@keyframes glow {
+  from {
+    text-shadow: 4px -5px 5px rgb(92 0 222 / 80%);
+  }
+
+  to {
+    text-shadow: 5px 5px 5px rgb(55 42 188 / 80%), 0 0 5px rgb(0 0 0 / 60%);
+  }
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up page</title>
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css'>
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="container">
+	<div class="screen">
+		<div class="screen__content">
+          
+			{% if username_message %}
+    <div class="error-message1 message-container">
+      {{ username_message }}
+      <span class="close-button" onclick="this.parentElement.style.display='none'">&times;</span>
+    </div>
+  {% endif %}
+
+  <!-- Display email_message -->
+  {% if email_message %}
+    <div class="error-message1 message-container">
+      {{ email_message }}
+      <span class="close-button" onclick="this.parentElement.style.display='none'">&times;</span>
+    </div>
+  {% endif %}
+
+  <!-- Display password_message -->
+  {% if password_message %}
+    <div class="error-message1 message-container">
+      {{ password_message }}
+      <span class="close-button" onclick="this.parentElement.style.display='none'">&times;</span>
+    </div>
+  {% endif %}
+
+  
+			<form class="login" action="/register" method="post">
+				<div class="login__field">
+					<i class="login__icon fas fa-user"></i>
+					<input type="text" class="login__input" placeholder="User name" name="username" required>
+				</div>
+				<div class="login__field">
+					<i class="login__icon fas fa-envelope"></i>
+					<input type="email" class="login__input" placeholder="Email" name="email" pattern="[a-zA-Z0-9]+@[a-zA-Z]+\.com" title="Invalid email format. Example: name@example.com" required>
+				</div>
+				<span id="email-error" class="error-message"></span>
+				
+				
+				<div class="login__field">
+					<i class="login__icon fas fa-lock"></i>
+					<input type="password" class="login__input" placeholder="Password" name="password" id="password" pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$" required>
+					<span class="eye-toggle" onclick="togglePasswordVisibility('password')">
+						<i class="fas fa-eye"></i>
+					</span>
+				</div>
+				<span id="password-error" class="error-message"></span>
+				
+				
+				
+				<button class="button login__submit" type="submit">
+					<span class="button__text">Register Now</span>
+					<i class="button__icon fas fa-chevron-right"></i>
+				</button>			
+                <a href="login" class="button login__submit">
+					<span class="button__text">Account Holder?</span>
+					<i class="button__icon fas fa-chevron-right"></i>
+				</a>		
+			</form>
+		
+            <div class="social-login">
+                <h3>log in via</h3>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/accounts/login/?next=%2Flogin%2F&source=desktop_nav" class="social-login__icon fab fa-instagram"></a>
+                    <a href="https://www.facebook.com/login/" class="social-login__icon fab fa-facebook"></a>
+                    <a href="https://twitter.com/login/" class="social-login__icon fab fa-twitter"></a>
+                </div>
+            </div>
+            
+		</div>
+		<div class="screen__background">
+			<span class="screen__background__shape screen__background__shape4"></span>
+			<span class="screen__background__shape screen__background__shape3"></span>		
+			<span class="screen__background__shape screen__background__shape2"></span>
+			<span class="screen__background__shape screen__background__shape1"></span>
+		</div>		
+	</div>
+</div>
+<!-- partial -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.querySelector('input[name="password"]');
+        const passwordError = document.getElementById('password-error');
+
+        document.querySelector('.login__submit').addEventListener('click', function() {
+            const password = passwordInput.value;
+            
+
+            if (password.length < 6) {
+                showPasswordError('Password must be at least 6 characters.');
+            } else if (!/\d/.test(password)) {
+                showPasswordError('Password must contain at least one digit.');
+            } else if (!/[!@#$%^&*]/.test(password)) {
+                showPasswordError('Password must contain at least one special character.');
+            } else {
+                hidePasswordError();
+            }
+        });
+
+        function showPasswordError(message) {
+            passwordError.textContent = message;
+            passwordError.style.color = 'red';
+        }
+
+        function hidePasswordError() {
+            passwordError.textContent = '';
+        }
+    });
+</script>
+
+<script>
+    function togglePasswordVisibility(passwordFieldId) {
+        const passwordField = document.getElementById(passwordFieldId);
+        const eyeToggle = document.querySelector('.eye-toggle i');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeToggle.classList.remove('fa-eye');
+            eyeToggle.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            eyeToggle.classList.remove('fa-eye-slash');
+            eyeToggle.classList.add('fa-eye');
+        }
+    }
+</script>
+
+
+
+
+</body>
+</html>

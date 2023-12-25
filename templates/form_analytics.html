@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='analytics.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+  <style>
+    /* Add styling for navigation dots */
+    
+  </style>
+</head>
+
+<body>
+
+ <nav class="navbar">
+    <div class="logo">
+        <!-- Add your logo here -->
+        <span class="logo-text">Survey Hub</span>
+    </div>
+    <ul class="nav-list">
+        <li><a href="/">Home</a></li>
+        <li><a href="{{ url_for('profile_redirect') }}">Profile</a></li>
+
+        {% if 'user_id' in session %}
+            <!-- Show Logout link if user is logged in -->
+            <li><a href="/logout">Logout</a></li>
+        {% else %}
+            <!-- Show Register and Login links if user is not logged in -->
+            <li><a href="register">Register</a></li>
+            <li><a href="login">Login</a></li>
+        {% endif %}
+        <li><a href="about_us">About Us</a></li>
+        <li><a href="contact_us">Contact Us</a></li>
+    </ul>
+</nav>
+
+    <h1>Form Analytics</h1>
+    
+    <form method="POST">
+        <label for="selected_form">Select a Form:</label>
+        <select name="selected_form" id="selected_form">
+            {% for form in user_forms %}
+                <option value="{{ form.id }}">{{ form.form_title }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="View Analytics">
+    </form>
+
+    <script>
+        var isNavOpen = false;
+    
+        function closeNav() {
+            document.getElementById("side-nav").style.left = "-200px";
+            isNavOpen = false;
+        }
+    
+        function toggleNav() {
+            var sideNav = document.getElementById("side-nav");
+            if (!isNavOpen) {
+                sideNav.style.left = "0px";
+            } else {
+                sideNav.style.left = "-200px";
+            }
+            isNavOpen = !isNavOpen;
+        }
+    </script>
+    
+</body>
+</html>

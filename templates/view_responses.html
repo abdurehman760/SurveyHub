@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Hub - View Responses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='view_response.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <!-- Add this line to include Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        integrity="sha384-dfESY1I6Enp7RDIq0QAbKRVU7BE0fdPUepFibgU8LZAKw8AJgQhpDH3uXq15g7XM" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <header>
+        <div id="logo">
+
+
+        </div>
+        <span class="logo-text">Survey Hub</span>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+
+
+    </header>
+    <nav id="side-nav">
+        <button id="close-btn" onclick="closeNav()">&times;</button>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="profile_redirect">Dashboard</a></li>
+            <li><a href="form_templates">Templates</a></li>
+            <li><a href="saved_forms">Your Forms</a></li>
+            <li><a href="/logout">Logout</a></li>
+
+
+        </ul>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2>{{ form.form_title }}</h2>
+                <p class="card-text">
+                    <strong>Form ID:</strong> <span class="card-text-span">{{ form.id }}</span> |
+                    <strong>Created by:</strong> <span class="card-text-span">{{ form.creator }}</span> |
+                    <strong>Category:</strong> <span class="card-text-span">{{ form.category }} </span>|
+                    <strong>Created On:</strong> <span class="card-text-span">{{ form.created_at.strftime('%d-%m-%Y')
+                        }}</span>
+                </p>
+                <p class="card-text"><strong>Description:</strong> {{ form.form_description }}</p>
+            </div>
+            <div class="card-body">
+                <h3 class="mt-4">Responses for Each Question: <button id="global-toggle" class="toggle-button">Unfold
+                        All Responses</button></h3>
+                <hr>
+
+                <!-- Global Toggle Button -->
+                {% for question, responses in question_responses.items() %}
+                <div class="question-card">
+                    <div class="question-header">
+                        <h5>
+                            <strong>{{ loop.index }}:</strong>
+                            <span class="question-type">(Type: {{ question.question_type }})</span>
+                        </h5>
+                        <p class="question-text"> <span class="Q">Q:</span> {{ question.question_text }}</p>
+                        {% if question.question_type in ['multiple_choice', 'dropdown', 'checkboxes'] %}
+                            <div class="chart-buttons">
+                                <a href="{{ url_for('view_pie_chart', form_id=form.id, question_type=question.question_type) }}"
+                                    class="btn btn-primary">View Pie Chart </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <span class="response-count" data-toggle="responses-{{ loop.index }}">
+                        ({{ responses|length }} responses)
+                        <img src="/static/img/down-arrow.png" alt="down Icon" class="arrow-icon">
+                    </span>
+                    <div class="response-list" id="responses-{{ loop.index }}" style="display: none;">
+                        {% if responses %}
+                            <ul class="list-group">
+                                {% if question.question_type == 'multiple_choice' %}
+                                    {% for response in responses %}
+                                        <li class="list-group-item">{{ get_option_text(response.answer, question) }}</li>
+                                    {% endfor %}
+                                {% elif question.question_type == 'dropdown' %}
+                                    {% for response in responses %}
+                                        <li class="list-group-item">{{ get_option_text(response.answer, question) }}</li>
+                                    {% endfor %}
+                                {% elif question.question_type == 'checkboxes' %}
+                                    {% for response in responses %}
+                                        <li class="list-group-item {% if not response.answer %}question-not-filled{% endif %}">
+                                            {% if response.answer %}
+                                                {% for option_id in response.answer.split(',') %}
+                                                    {% set option_text = get_option_text(option_id, question) %}
+                                                    {% if option_text %}
+                                                        {{ option_text }}
+                                                        {% if not loop.last %}, {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% else %}
+                                                <!-- Display a message for non-mandatory questions with no answer -->
+                                                <span class="not-filled-message">Question not filled (non-mandatory)</span>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                {% elif question.question_type == 'file_upload' %}
+                                    {% for response in responses %}
+                                        <li class="list-group-item">
+                                            <a href="{{ url_for('download_file', filename=response.file_path) }}"
+                                                class="btn btn-primary">Download File: {{ response.file_path.split('/')[-1] }}</a>
+                                        </li>
+                                    {% endfor %}
+                                {% elif question.question_type == 'address' %}
+                                    {% for response in responses %}
+                                        <li class="list-group-item {% if not response.answer %}question-not-filled{% endif %}">
+                                            {% if response.answer %}
+                                                {{ response.answer }}
+                                            {% else %}
+                                                <!-- Display a message for non-mandatory questions with no answer -->
+                                                <span class="not-filled-message">Question not filled (non-mandatory)</span>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    <!-- Handle other question types as before -->
+                                {% endif %}
+                            </ul>
+                        {% else %}
+                            <p>No responses available for this question.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            
+
+            
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const responseCounts = document.querySelectorAll('.response-count');
+                    const globalToggle = document.getElementById('global-toggle');
+
+                    // Function to toggle individual responses
+                    function toggleResponse(count, targetId, arrowIcon) {
+                        const targetElement = document.getElementById(targetId);
+
+                        if (targetElement.style.display === 'none') {
+                            targetElement.style.display = 'block';
+                            arrowIcon.src = "/static/img/up-arrow.png";
+                        } else {
+                            targetElement.style.display = 'none';
+                            arrowIcon.src = "/static/img/down-arrow.png";
+                        }
+                    }
+
+                    // Event listener for individual question responses
+                    responseCounts.forEach(function (count) {
+                        count.addEventListener('click', function () {
+                            const targetId = count.getAttribute('data-toggle');
+                            const arrowIcon = count.querySelector('.arrow-icon');
+                            toggleResponse(count, targetId, arrowIcon);
+                        });
+                    });
+
+                    // Event listener for global toggle
+                    globalToggle.addEventListener('click', function () {
+                        responseCounts.forEach(function (count) {
+                            const targetId = count.getAttribute('data-toggle');
+                            const arrowIcon = count.querySelector('.arrow-icon');
+                            toggleResponse(count, targetId, arrowIcon);
+                        });
+
+                        // Change text based on the current state
+                        const buttonText = globalToggle.textContent.trim();
+                        if (buttonText === 'Unfold All Responses') {
+                            globalToggle.textContent = 'Fold All Responses';
+                        } else {
+                            globalToggle.textContent = 'Unfold All Responses';
+                        }
+                    });
+                });
+            </script>
+            <script>
+                var isNavOpen = false;
+
+                function closeNav() {
+                    document.getElementById("side-nav").style.left = "-200px";
+                    isNavOpen = false;
+                }
+
+                function toggleNav() {
+                    var sideNav = document.getElementById("side-nav");
+                    if (!isNavOpen) {
+                        sideNav.style.left = "0px";
+                    } else {
+                        sideNav.style.left = "-200px";
+                    }
+                    isNavOpen = !isNavOpen;
+                }
+            </script>
+
+
+</body>
+
+</html>

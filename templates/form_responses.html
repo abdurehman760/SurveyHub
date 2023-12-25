@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='analytics.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+
+</head>
+
+<body>
+  <header>
+    <div id="logo">
+      
+     
+    </div>
+    <span class="logo-text">Survey Hub</span>
+    <div id="menu-button">
+        <button onclick="toggleNav()">☰</button>
+    </div>
+    
+    
+</header>
+<nav id="side-nav">
+    <button id="close-btn" onclick="closeNav()">&times;</button>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="profile_redirect">Dashboard</a></li>
+      <li><a href="form_templates">Templates</a></li>
+      <li><a href="saved_forms">Your Forms</a></li>
+      <li><a href="/logout">Logout</a></li>
+        
+        
+    </ul>
+</nav>
+<!-- Add this code to your form_responses.html template -->
+<h1>All Responses for {{ form.form_title }}</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <!-- Add headers based on your ResponseAnswer model -->
+            <th>Response ID</th>
+            <th>Submitted At</th>
+            <!-- Add more headers as needed -->
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for response in responses %}
+        <tr>
+            <td>{{ response.id }}</td>
+            <td>{{ response.submitted_at.strftime('%B %d, %Y %I:%M %p') }}</td>
+            <!-- Add more columns as needed -->
+            <td>
+                <a href="{{ url_for('response_details', response_id=response.id) }}" class="btn btn-primary">View Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,261 @@
+/* Style for the form container */
+.form-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    grid-gap: 10px; /* Gap between grid items */
+}
+
+/* Style for each label tile */
+.label-tile {
+    background-color: #f0f0f0; /* Background color for the label tile */
+    padding: 10px; /* Padding around the label tile */
+    border: 1px solid #ccc; /* Border for the label tile */
+}
+
+/* Style for form elements */
+form input[type="text"],
+form input[type="email"],
+form select,
+form input[type="password"] {
+    width: 100%; /* Make form elements take full width of their container */
+    padding: 5px; /* Add some padding for input fields */
+    margin: 5px 0; /* Add margin to separate form elements */
+}
+
+
+/* Style for the "Back to User List" link */
+a {
+    text-decoration: none; /* Remove underline from links */
+    color: #007bff; /* Blue color for links */
+    margin-top: 10px; /* Add margin at the top of the link */
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    /* Adjust the form container for smaller screens */
+    .form-container {
+        grid-template-columns: 1fr; /* Single column layout */
+    }
+
+    /* Center-align label tiles on smaller screens */
+    .label-tile {
+        text-align: center;
+    }
+
+    /* Increase the font size for form elements on smaller screens */
+    form input[type="text"],
+    form input[type="email"],
+    form select,
+    form input[type="password"] {
+        font-size: 16px;
+    }
+}
+
+/* Reset some default styles for better consistency */
+body, h1, h2, ul, li, p {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    line-height: 1.6;
+}
+
+
+/* Style the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Style for the table header row */
+thead tr {
+    display: flex;
+    justify-content: space-between;
+    background-color: #007bff; /* Header background color */
+    color: white;
+    font-weight: bold;
+    border: none;
+}
+
+/* Style for each table header cell (th) */
+thead th {
+    flex-basis: calc(16.6667% - 10px); /* Adjust column width */
+    padding: 10px;
+    text-align: center;
+    border: none;
+}
+
+/* Style for the "Action" header cell */
+thead th:last-child {
+    flex-basis: calc(16.6667% - 10px); /* Adjust column width */
+}
+
+/* Style for the table body */
+tbody {
+    border: 1px solid #ccc;
+}
+
+/* Style for table rows */
+tbody tr {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Style for table cells (td) */
+tbody td {
+    flex-basis: calc(16.6667% - 10px); /* Adjust column width */
+    padding: 10px;
+    text-align: center;
+}
+
+/* Add hover effect to table rows */
+tbody tr:hover {
+    background-color: #f2f2f2;
+    transition: background-color 0.3s;
+}
+
+/* Style for the form container */
+.form-container {
+    max-width: 400px; /* Limit the form width for better readability */
+    margin: 0 auto; /* Center the form horizontally */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for each label tile */
+.label-tile {
+    background-color: #f0f0f0; /* Background color for the label tile */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Style for form elements */
+form input[type="text"],
+form input[type="email"],
+form select,
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style for the submit button */
+.update_user{
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Change button color on hover */
+.update_user:hover {
+    background-color: #0056b3;
+}
+
+/* Style for the "Back to User List" link */
+
+.button-container {
+    display: flex;
+    align-items: center; /* Center items vertically */
+}
+
+.button-container a,
+.button-container form {
+    margin-right: 10px; /* Add space between buttons */
+}
+
+.button-container form {
+    vertical-align: middle;
+    margin-top: 25px;
+}
+
+
+/* Rest of your CSS styles remain the same */
+.activate_button {
+    background-color: green;
+    color: white;
+    text-decoration: none;
+    padding: 4px 13px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px #036b00;
+    transition: transform 0.2s;
+}
+
+.deactivate_button {
+    text-decoration: none;
+    background-color: #ff0000a6;
+    color: #ffffff;
+    padding: 4px 3px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px #c23737;
+    transition: transform 0.2s;
+}
+
+
+.edit {
+    text-decoration: none;
+    background-color: #8500ffa6;
+    color: #ffffff;
+    padding: 4px;
+    border-radius: 0px 8px 8px 0px;
+    box-shadow: 2px 2px 3px #ac61f1e8;
+    transition: transform 0.2s;
+}
+.delete_link{
+    text-decoration: none;
+    background-color: #ff0000a6;
+    color: #ffffff;
+    font-size: 15px;
+    border: none;
+    padding: 5px 3px;
+    border-radius: 8px 0px 0px 8px;
+    box-shadow: 2px 2px 2px #c23737;
+    transition: transform 0.2s;
+}
+
+
+
+.status-active {
+    color: green;
+}
+
+.status-deactive {
+    color: red; 
+}
+/* Define CSS classes for roles */
+.role-admin {
+    color: green;
+}
+
+.role-teacher {
+    color: blue;
+}
+
+
+
+ 
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .form-container {
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='saved_form.css') }}">
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- Add any additional meta tags, link tags, or script tags as needed -->
+    <style>
+        .edited-label {
+            background-color: #ffcc00; /* Set your preferred background color */
+            color: #333; /* Set your preferred text color */
+            padding: 5px 10px; /* Adjust padding as needed */
+            border-radius: 5px; /* Add border-radius for rounded corners */
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1; /* Ensure the label appears above other elements */
+        }
+    
+        .edited-label:hover + .edited-tag {
+            display: block; /* Show the edited-tag when the label is hovered */
+        }
+    
+        .edited-tag {
+            display: none; /* Initially hide the edited-tag */
+            position: absolute;
+            top: 25px; /* Adjust top position as needed */
+            left: 0;
+            background-color: #fff; /* Set background color for the edited-tag */
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            z-index: 1; /* Ensure the tag appears above other elements */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <!-- Add your logo here -->
+        <span class="logo-text">Survey Hub</span>
+    </div>
+    <ul class="nav-list">
+        <lj><a href="/">Home</a></lj>
+        <lj><a href="profile_redirect">Profile</a></lj>
+        {% if user.role == 'admin' %}
+    <lj><a href="/admin_dashboard">Dashboard</a></lj>
+{% endif %}
+        <lj><a href="/form_templates">Templates</a></lJ>
+        {% if 'user_id' in session %}
+            <!-- Show Logout link if the user is logged in -->
+            <lj><a href="/logout">Logout</a></lj>
+        
+        {% endif %}
+        
+</nav>
+
+    <h1 class="title" > Saved Forms</h1>
+    <div class="container">
+        <a href="{{ url_for('create_form') }}" class="back-button">Create New Form</a>
+    </div>
+    
+
+    <!-- Category Selection Dropdown -->
+    <form action="{{ url_for('saved_forms') }}" method="GET">
+        <div class="form-group">
+            <label for="category">Select Category:</label>
+            <select class="form-control" id="category" name="category_filter">
+                <option value="">Show All</option>
+                <!-- Add your categories here -->
+                <option value="arts">Arts</option>
+<option value="business">Business</option>
+<option value="charity">Charity</option>
+<option value="culture">Culture</option>
+<option value="education">Education</option>
+<option value="entertainment">Entertainment</option>
+<option value="environment">Environment</option>
+<option value="events">Events</option>
+<option value="feedback">Feedback</option>
+<option value="finance">Finance</option>
+<option value="food">Food</option>
+<option value="healthcare">Healthcare</option>
+<option value="marketing">Marketing</option>
+<option value="other">Other</option>
+<option value="personal">Personal</option>
+<option value="politics">Politics</option>
+<option value="recruiting">Recruiting</option>
+<option value="religion">Religion</option>
+<option value="registration">Registration</option>
+<option value="science">Science</option>
+<option value="sports">Sports</option>
+<option value="survey">Survey</option>
+<option value="technology">Technology</option>
+<option value="travel">Travel</option>
+<option value="volunteer">Volunteer</option>
+
+                <!-- Add more categories as needed -->
+            </select>
+            <button type="submit" class="Filter-button">Filter</button>
+        </div>
+    </form>
+
+    {% if saved_forms %}
+    {% if saved_forms|length == 0 %}
+    <p>No forms found.</p>
+    {% else %}
+    <ul>
+        {% for form in saved_forms %}
+        <li style="position: relative;">
+            <div class="form-info">
+                <h3>{{ form.form_title }}</h3>
+                <p class="created-date">Id:{{ form.id }} </p>
+                <p><strong>Creator:</strong> {{ form.username }}</p>
+                <p class="description"><strong>Description:</strong> {{ form.form_description }}</p>
+                <p><strong>Category:</strong> {{ form.category }}</p>
+                <p class="created-date">{{ form.created_at.strftime('%B %d, %Y %I:%M %p') }}</p>
+            </div>
+            
+            {% if form.recently_edited %}
+                <span class="edited-label">Edited</span>
+                <p class="edited-tag">{{ form.edited_at.strftime('%B %d, %Y %I:%M %p') }}</p>
+            {% endif %}
+            
+            <a href="{{ url_for('preview_form', form_id=form.id) }}" class="view">View Form</a>
+       
+            <form onsubmit="return confirm('Are you sure you want to delete this form?');"
+                action="{{ url_for('delete_form', form_id=form.id) }}" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="x-button">X</button>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% else %}
+    <p class="no-templates">No forms found.</p>
+    {% endif %}
+    
+   
+    <script>
+        var isNavOpen = false;
+    
+        function closeNav() {
+            document.getElementById("side-nav").style.left = "-200px";
+            isNavOpen = false;
+        }
+    
+        function toggleNav() {
+            var sideNav = document.getElementById("side-nav");
+            if (!isNavOpen) {
+                sideNav.style.left = "0px";
+            } else {
+                sideNav.style.left = "-200px";
+            }
+            isNavOpen = !isNavOpen;
+        }
+    </script>
+    
+</body>
+</html>

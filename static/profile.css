@@ -1,0 +1,352 @@
+/* Global styles */
+body {
+  
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(90deg, #C7C5F4, #776BCC);	
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  flex: 1;
+  margin: 10px;
+  min-width: 300px;
+  max-width: 350px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btn-success:hover {
+  background-color: #1f8d3f;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  color: #fff;
+}
+
+.btn-info:hover {
+  background-color: #117a8b;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.btn-warning:hover {
+  background-color: #d39e00;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+/* Avatar */
+.avatar {
+  display: block;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 50px;
+  text-align: center;
+  margin-top: -30px; /* Adjust to center and reduce spacing */
+}
+
+
+/* Container styles */
+.container {
+  text-align: center;
+}
+
+/* Card styles */
+.card {
+  border: none;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Avatar styles */
+.card img {
+  border-radius: 50%;
+}
+
+/* Button styles */
+.card a.btn {
+  width: 100%;
+  margin-top: 15px;
+  transition: background-color 0.2s;
+  margin-left: -19px;
+}
+
+
+
+/* Title styles */
+.card h5.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+/* Description styles */
+.card p.card-text {
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+/* Custom CSS for the tile view */
+.card-tile-view {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Adjust as needed */
+}
+
+/* Button text color */
+.card a.btn {
+  color: #fff;
+}
+
+/* Smaller avatar size */
+.card img {
+  height: 80px;
+  width: 80px;
+}
+/* Add your existing styles here */
+
+/* Hover effect for user card */
+.card:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for Edit Profile button */
+.card .btn-primary {
+  background-color: #007bff;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.card .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Style for Create Survey button */
+.card .btn-success {
+  background-color: #28a745;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.card .btn-success:hover {
+  background-color: #1e7e34;
+}
+
+/* Style for Explore Templates button */
+.card .btn-info {
+  background-color: #17a2b8;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.card .btn-info:hover {
+  background-color: #117a8b;
+}
+
+/* Style for View Saved Forms button */
+.card .btn-warning {
+  background-color: #ffc107;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.card .btn-warning:hover {
+  background-color: #d39e00;
+}
+
+/* Style for View Analytics button */
+.card .btn-danger {
+  background-color: #dc3545;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.card .btn-danger:hover {
+  background-color: #bb2d3b;
+}
+
+
+/* Style for the user-info-card */
+.user-info-card {
+  background-color: rgb(148, 203, 235); /* White background */
+  color: #000; /* Black text */
+  padding: 1px 200px; /* Add padding for small gaps */
+  border-radius: 5px; /* Remove border-radius */
+ 
+}
+.user-info-card:hover {
+  background-color:#1ea6e5a7; /* Darker blue on hover */
+  color: #000000; /* White text on hover */
+  
+}
+
+/* Style for the create_surveys_card */
+.create_surveys_card {
+  background-image: url('img/create_survey.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #000000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+
+
+/* Style for  <!-- Form Templates Section --> */
+.form_template_card {
+  background-image: url('img/form_temp.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #000000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* Style for <!-- Saved Forms Section -->*/
+.saved_forms_card {
+  background-image: url('img/saved_form.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #000000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+.form_analytics_card {
+  background-image: url('img/analytics.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #000000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom style for success message */
+.alert-success {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  animation: fadeInOut 5s linear;
+}
+
+/* Animation to fade in and out */
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  20%, 80% { opacity: 1; }
+}
+
+
+
+
+/* Footer styling */
+.footer {
+  background-color: transparent;
+  color: #0b0000;
+  box-shadow: 0px -2px 3px #35283a;
+  text-align: center;
+  padding: 5px 0;
+  position: fixed;
+  bottom: 0;
+  font-weight: bolder;
+  width: 100%;
+}
+
+.card-tile-view {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; /* Adjust as needed */
+}

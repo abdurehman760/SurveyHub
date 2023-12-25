@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Recent Forms Activity</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 10px;
+            padding: 0;
+            text-align: center;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        div.chart-container {
+            width: 80%;
+            max-width: 600px; /* Set a maximum width for the chart */
+            margin: 20px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Recent Forms Activity</h1>
+    <div class="chart-container">
+        {{ chart | safe }}
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Admin Dashboard{% endblock %}</title>
+    <style>
+        /* Your common styles here */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            box-shadow: -1px 6px 7px #221d1d;
+            color: white;
+            background: linear-gradient(90deg, #C7C5F4, #776BCC);
+        }
+
+        #logo {
+            width: 200px;
+            height: 60px;
+        }
+
+        #logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        #menu-button {
+            width: 60px;
+            height: 60px;
+        }
+
+        #menu-button button {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: transparent;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        #profile {
+            width: 60px;
+            height: 60px;
+        }
+
+        #profile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        #search {
+            width: 300px;
+            height: 40px;
+            margin-right: 20px;
+        }
+
+        #search input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <img src="static/img/logo.png" alt="Logo">
+        </div>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+    </header>
+    
+    {% block content %}{% endblock %}
+
+    <script>// index.js
+        function toggleNav() {
+            var sideNav = document.getElementById("side-nav");
+            var left = sideNav.style.left;
+            if (left == "-200px") {
+                sideNav.style.left = "0px";
+            } else {
+                sideNav.style.left = "-200px";
+            }
+        }
+    </script>
+</body>
+</html>

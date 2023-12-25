@@ -1,0 +1,131 @@
+
+body, a {
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+  }
+  
+  /* Basic styling for the container */
+  .container {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Styling for the profile section */
+  .profile {
+    margin-bottom: 30px;
+  }
+  
+  .profile__title {
+    font-size: 48px;
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+    animation: fadeInUp 1s ease-in-out;
+  }
+  
+  .profile__description {
+    font-size: 20px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    animation: fadeInUp 1.2s ease-in-out;
+  }
+  
+  .profile__cta {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #ff6600;
+    border: 4px solid #fff;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+    box-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
+    animation: pulsate 2s infinite;
+  }
+  
+  @keyframes pulsate {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .profile__cta:hover {
+    background-color: #ff8000;
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 102, 0, 0.5);
+  }
+  
+  /* Styling for the login prompt section */
+  .login-prompt {
+    margin-top: 30px;
+  }
+  
+  .login-prompt__description {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 10px;
+    animation: fadeInUp 1.5s ease-in-out;
+  }
+  
+  .login-prompt__note {
+    font-size: 16px;
+    color: #fff;
+    animation: fadeInUp 1.8s ease-in-out;
+  }
+  
+  /* Different colors for the links */
+  .links__item:nth-child(1) a {
+    color: #ff6600;
+  }
+  
+  .links__item:nth-child(2) a {
+    color: #00b300;
+  }
+  
+  .links__item:nth-child(3) a {
+    color: #cc0099;
+  }
+  
+  /* Styling for the links section */
+  .links {
+    margin-top: 50px;
+  }
+  
+  .links__title {
+    font-size: 24px;
+    color: #007bff;
+    animation: fadeInUp 2s ease-in-out;
+  }
+  
+  .links__list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+  }
+  
+  .links__item {
+    font-size: 18px;
+    margin-bottom: 10px;
+    animation: fadeInUp 2.2s ease-in-out;
+  }
+  
+  .links__item a {
+    text-decoration: none;
+    
+    color: #fff;
+  }
+  
+  .links__item a:hover {
+    color: #0056b3;
+    transform: scale(1.1);
+    text-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  }
+  
