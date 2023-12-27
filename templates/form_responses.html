@@ -60,3 +60,21 @@
         {% endfor %}
     </tbody>
 </table>
+<script>
+    var isNavOpen = false;
+
+    function closeNav() {
+        document.getElementById("side-nav").style.left = "-200px";
+        isNavOpen = false;
+    }
+
+    function toggleNav() {
+        var sideNav = document.getElementById("side-nav");
+        if (!isNavOpen) {
+            sideNav.style.left = "0px";
+        } else {
+            sideNav.style.left = "-200px";
+        }
+        isNavOpen = !isNavOpen;
+    }
+</script>

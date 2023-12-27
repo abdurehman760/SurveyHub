@@ -1,30 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey HuB Form</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='preview_form.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <!-- Add any additional meta tags, link tags, or script tags as needed -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey HuB Form</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='preview_form.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <!-- Add any additional meta tags, link tags, or script tags as needed -->
+  <style>
+    :focus {
+      outline: 0;
+      border-color: #2260ff;
+      box-shadow: 0 0 0 4px #b5c9fc;
+    }
+
+    .mydict div {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+      justify-content: center;
+    }
+
+    .mydict input[type="radio"] {
+      clip: rect(0 0 0 0);
+      clip-path: inset(100%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+
+    .mydict input[type="radio"]:checked+span {
+      box-shadow: 0 0 0 0.0625em #0043ed;
+      background-color: #dee7ff;
+      z-index: 1;
+      color: #0043ed;
+    }
+
+    label span {
+      display: block;
+      cursor: pointer;
+      background-color: #fff;
+      padding: 0.375em .75em;
+      position: relative;
+      margin-left: .0625em;
+      box-shadow: 0 0 0 0.0625em #b5bfd9;
+      letter-spacing: .05em;
+      color: #3e4963;
+      text-align: center;
+      transition: background-color .5s ease;
+    }
+
+    label:first-child span {
+      border-radius: .375em 0 0 .375em;
+    }
+
+    label:last-child span {
+      border-radius: 0 .375em .375em 0;
+    }
+  </style>
 </head>
+
 <body>
   <header>
     <div id="logo">
-      
-     
+
+
     </div>
     <span class="logo-text">Survey Hub</span>
     <div id="menu-button">
-        <button onclick="toggleNav()">☰</button>
+      <button onclick="toggleNav()">☰</button>
     </div>
-    
-    
-</header>
-<nav id="side-nav">
+
+
+  </header>
+  <nav id="side-nav">
     <button id="close-btn" onclick="closeNav()">&times;</button>
     <ul>
       <li><a href="/">Home</a></li>
@@ -33,504 +88,523 @@
       <li><a href="saved_forms">Sign Up</a></li>
       <li><a href="/about_us">About</a></li>
       <li><a href="/contact_us">Contact us</a></li>
-        
-        
+
+
     </ul>
-</nav>
-<div class="container mt-5">
-  <div class="form-box">
-    {% if success_message %}
+  </nav>
+  <div class="container mt-5">
+    <div class="form-box">
+
+      {% if success_message %}
       <div id="success-message" class="alert alert-success" style="display: none;">
         {{ success_message }}
-    </div>
-    
-{% endif %}
-    <h2>{{ form.form_header }}</h2>
-
-    <form method="POST" action="{{ url_for('fill_form', form_id=form.id) }}"enctype="multipart/form-data">
-      <input type="hidden" name="form_id" value="{{ form.id }}">
-
-      <div class="form-header">
-        <p class="form-title"><strong>Title:</strong> {{ form.form_title }}</p>
-        <p><strong>Created by:</strong> <span class="username">{{ form.creator }}</span></p>
-        <p><strong>Category:</strong> <span class="category">{{ form.category }}</span></p>
-        <p><strong>Created On:</strong> <span class="date">{{ form.created_at.strftime('%d-%m-%Y') }}</span></p>
-        <p><strong>Description:</strong> <span class="description">{{ form.form_description }}</span></p>
       </div>
-      
-      
-      
-      {% for question in form.questions %}
-  <hr>
-  <m class="question-container">
-    <o class="question-text"><strong> {{ loop.index }}:</strong> {{ question.question_text }}</0>
-    <input type="hidden" name="question_id[]" value="{{ question.id }}">
-    {% if question.mandatory == 'mandatory' %}
-      <span class="mandatory-text">(Mandatory)</span>
-    {% endif %}
-  </m>
 
-  
+      {% endif %}
+      <h2>{{ form.form_header }}</h2>
 
-      {% if question.question_type == 'multiple_choice' %}
-      <strong class="question-label">Options:</strong>
-      <ul class="question-options">
+      <form method="POST" action="{{ url_for('fill_form', form_id=form.id) }}" enctype="multipart/form-data">
+        <input type="hidden" name="form_id" value="{{ form.id }}">
+
+        <div class="form-header">
+          <p class="form-title"><strong>Title:</strong> {{ form.form_title }}</p>
+          <p><strong>Created by:</strong> <span class="username">{{ form.creator }}</span></p>
+          <p><strong>Category:</strong> <span class="category">{{ form.category }}</span></p>
+          <p><strong>Created On:</strong> <span class="date">{{ form.created_at.strftime('%d-%m-%Y') }}</span></p>
+          <p><strong>Description:</strong> <span class="description">{{ form.form_description }}</span></p>
+        </div>
+
+
+
+        {% for question in form.questions %}
+        <hr>
+        <m class="question-container">
+          <o class="question-text"><strong> {{ loop.index }}:</strong> {{ question.question_text }}</0>
+            <input type="hidden" name="question_id[]" value="{{ question.id }}">
+            {% if question.mandatory == 'mandatory' %}
+            <span class="mandatory-text">(Mandatory)</span>
+            {% endif %}
+        </m>
+
+
+
+        {% if question.question_type == 'multiple_choice' %}
+        <strong class="question-label">Options:</strong>
+        <ul class="question-options">
           {% for option in question.options %}
           <li class="question-option">
-              <input type="radio" name="question_{{ question.id }}" id="option_{{ option.id }}" value="{{ option.id }}"
-              {% if question.mandatory == 'mandatory' %}required{% endif %}>
-              <label for="option_{{ option.id }}" class="option-label">{{ option.option_text }}</label>
+            <input type="radio" name="question_{{ question.id }}" id="option_{{ option.id }}" value="{{ option.id }}" {%
+              if question.mandatory=='mandatory' %}required{% endif %}>
+            <label for="option_{{ option.id }}" class="option-label">{{ option.option_text }}</label>
           </li>
           {% endfor %}
-      </ul>
+        </ul>
 
-      {% elif question.question_type == 'checkboxes' %}
-      <strong class="question-label">Options:</strong>
-      <ul class="question-options">
+        {% elif question.question_type == 'checkboxes' %}
+        <strong class="question-label">Options:</strong>
+        <ul class="question-options">
           {% for option in question.options %}
-              <li class="question-option">
-                  <input type="checkbox" name="question_{{ question.id }}" id="option_{{ option.id }}" value="{{ option.id }}"
-                  {% if question.mandatory == 'mandatory' %}class="mandatory-checkbox"{% endif %}>
-                  <label for="option_{{ option.id }}" class="option-label">{{ option.option_text }}</label>
-              </li>
+          <li class="question-option">
+            <input type="checkbox" name="question_{{ question.id }}" id="option_{{ option.id }}" value="{{ option.id }}"
+              {% if question.mandatory=='mandatory' %}class="mandatory-checkbox" {% endif %}>
+            <label for="option_{{ option.id }}" class="option-label">{{ option.option_text }}</label>
+          </li>
           {% endfor %}
-      </ul>
-  
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        </ul>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
             var checkboxes = document.querySelectorAll('.mandatory-checkbox');
             var form = document.querySelector('form');
-    
+
             form.addEventListener('submit', function (event) {
-                var atLeastOneChecked = Array.from(checkboxes).some(function (cb) {
-                    return cb.checked;
-                });
-    
-                if (!atLeastOneChecked) {
-                    event.preventDefault(); // Prevent form submission
-                    alert('Select at least one option.'); // You can customize this alert or use another method to notify the user.
-                }
+              var atLeastOneChecked = Array.from(checkboxes).some(function (cb) {
+                return cb.checked;
+              });
+
+              if (!atLeastOneChecked) {
+                event.preventDefault(); // Prevent form submission
+                alert('Select at least one option.'); // You can customize this alert or use another method to notify the user.
+              }
             });
-    
+
             checkboxes.forEach(function (checkbox) {
-                checkbox.addEventListener('change', function () {
-                    var atLeastOneChecked = Array.from(checkboxes).some(function (cb) {
-                        return cb.checked;
-                    });
-    
-                    if (atLeastOneChecked) {
-                        checkboxes.forEach(function (cb) {
-                            cb.setCustomValidity('');
-                        });
-                    } else {
-                        checkboxes.forEach(function (cb) {
-                            cb.setCustomValidity('Select at least one option.');
-                        });
-                    }
+              checkbox.addEventListener('change', function () {
+                var atLeastOneChecked = Array.from(checkboxes).some(function (cb) {
+                  return cb.checked;
                 });
+
+                if (atLeastOneChecked) {
+                  checkboxes.forEach(function (cb) {
+                    cb.setCustomValidity('');
+                  });
+                } else {
+                  checkboxes.forEach(function (cb) {
+                    cb.setCustomValidity('Select at least one option.');
+                  });
+                }
+              });
             });
-        });
-    </script>
-    
-      {% elif question.question_type == 'dropdown' %}
-      <select name="question_{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+          });
+        </script>
+
+        {% elif question.question_type == 'dropdown' %}
+        <select name="question_{{ question.id }}" {% if question.mandatory=='mandatory' %}required{% endif %}>
           <option value="">Select an option</option>
           {% for option in question.options %}
           <option value="{{ option.id }}">{{ option.option_text }}</option>
           {% endfor %}
-      </select>
+        </select>
 
-      <!-- Add handling for other question types -->
-      {% elif question.question_type in ['short_answer', 'paragraph'] %}
-      <label for="answer_{{ question.id }}"> <strong>Answer here</strong></label>
-      <input class="form-control" type="text" name="question_{{ question.id }}"
-          placeholder="start typing here......... max limit:{{ question.char_limit }}"
-          {% if question.char_limit %}maxlength="{{ question.char_limit }}"{% endif %}
-          {% if question.mandatory == 'mandatory' %}required{% endif %}>
-      {% elif question.question_type == 'rating' %}
-      <div class="rating_1">
-        <input type="radio" id="star1_{{ question.id }}" name="question_{{ question.id }}" value="1"
-          data-question-id="{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
-        <label for="star1_{{ question.id }}" title="1 star">😞</label>
-        <input type="radio" id="star2_{{ question.id }}" name="question_{{ question.id }}" value="2"
-          data-question-id="{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
-        <label for="star2_{{ question.id }}" title="2 stars">😐</label>
-        <input type="radio" id="star3_{{ question.id }}" name="question_{{ question.id }}" value="3"
-          data-question-id="{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
-        <label for="star3_{{ question.id }}" title="3 stars">😊</label>
-        <input type="radio" id="star4_{{ question.id }}" name="question_{{ question.id }}" value="4"
-          data-question-id="{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
-        <label for="star4_{{ question.id }}" title="4 stars">😄</label>
-        <input type="radio" id="star5_{{ question.id }}" name="question_{{ question.id }}" value="5"
-          data-question-id="{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
-        <label for="star5_{{ question.id }}" title="5 stars">⭐️</label>
-      </div>
-      <div id="response_{{ question.id }}" class="response" style="display: none;"></div>
+        <!-- Add handling for other question types -->
+        {% elif question.question_type in ['short_answer', 'paragraph'] %}
+        <label for="answer_{{ question.id }}"> <strong>Answer here</strong></label>
+        <input class="form-control" type="text" name="question_{{ question.id }}"
+          placeholder="start typing here......... max limit:{{ question.char_limit }}" {% if question.char_limit
+          %}maxlength="{{ question.char_limit }}" {% endif %} {% if question.mandatory=='mandatory' %}required{% endif
+          %}>
+        {% elif question.question_type == 'rating' %}
+        <div class="rating_1">
+          <input type="radio" id="star1_{{ question.id }}" name="question_{{ question.id }}" value="1"
+            data-question-id="{{ question.id }}" {% if question.mandatory=='mandatory' %}required{% endif %}>
+          <label for="star1_{{ question.id }}" title="1 star">😞</label>
+          <input type="radio" id="star2_{{ question.id }}" name="question_{{ question.id }}" value="2"
+            data-question-id="{{ question.id }}" {% if question.mandatory=='mandatory' %}required{% endif %}>
+          <label for="star2_{{ question.id }}" title="2 stars">😐</label>
+          <input type="radio" id="star3_{{ question.id }}" name="question_{{ question.id }}" value="3"
+            data-question-id="{{ question.id }}" {% if question.mandatory=='mandatory' %}required{% endif %}>
+          <label for="star3_{{ question.id }}" title="3 stars">😊</label>
+          <input type="radio" id="star4_{{ question.id }}" name="question_{{ question.id }}" value="4"
+            data-question-id="{{ question.id }}" {% if question.mandatory=='mandatory' %}required{% endif %}>
+          <label for="star4_{{ question.id }}" title="4 stars">😄</label>
+          <input type="radio" id="star5_{{ question.id }}" name="question_{{ question.id }}" value="5"
+            data-question-id="{{ question.id }}" {% if question.mandatory=='mandatory' %}required{% endif %}>
+          <label for="star5_{{ question.id }}" title="5 stars">⭐️</label>
+        </div>
+        <div id="response_{{ question.id }}" class="response" style="display: none;"></div>
 
-      {% elif question.question_type == 'email' %}
-      <label for="email_{{ question.id }}">Email:</label>
-      <input type="email" class="form-control" id="email_{{ question.id }}" name="question_{{ question.id }}"
-          placeholder="Enter your email" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+        {% elif question.question_type == 'email' %}
+        <label for="email_{{ question.id }}">Email:</label>
+        <input type="email" class="form-control" id="email_{{ question.id }}" name="question_{{ question.id }}"
+          placeholder="Enter your email" {% if question.mandatory=='mandatory' %}required{% endif %}>
 
-      {% elif question.question_type in ['date'] %}
-      <label for="date_{{ question.id }}"><strong>Date:</strong></label>
-      <input type="date" class="form-control" id="datetime_{{ question.id }}" name="question_{{ question.id }}"
-          {% if question.mandatory == 'mandatory' %}required{% endif %}>
+        {% elif question.question_type in ['date'] %}
+        <label for="date_{{ question.id }}"><strong>Date:</strong></label>
+        <input type="date" class="form-control" id="datetime_{{ question.id }}" name="question_{{ question.id }}" {% if
+          question.mandatory=='mandatory' %}required{% endif %}>
 
-      {% elif question.question_type in ['time'] %}
-      <label for="datetime_{{ question.id }}"><strong>Time:</strong></label>
-      <input type="time" class="form-control" id="datetime_{{ question.id }}" name="question_{{ question.id }}"
-          {% if question.mandatory == 'mandatory' %}required{% endif %}>
+        {% elif question.question_type in ['time'] %}
+        <label for="datetime_{{ question.id }}"><strong>Time:</strong></label>
+        <input type="time" class="form-control" id="datetime_{{ question.id }}" name="question_{{ question.id }}" {% if
+          question.mandatory=='mandatory' %}required{% endif %}>
 
-    {% elif question.question_type =='text' %}
-          
-    <input type="text" class="form-control" id="text_{{ question.id }}" name="question_{{ question.id }}"
-              placeholder="start typing here......... max limit:{{ question.char_limit }}"
-              {% if question.char_limit %}maxlength="{{ question.char_limit }}"{% endif %}
-              {% if question.mandatory == 'mandatory' %}required{% endif %}>
+        {% elif question.question_type =='text' %}
 
-      {% elif question.question_type == 'tel' %}
-      <label for="phone">Phone:</label>
-      <select id="countrySelect" name="country_code">
+        <input type="text" class="form-control" id="text_{{ question.id }}" name="question_{{ question.id }}"
+          placeholder="start typing here......... max limit:{{ question.char_limit }}" {% if question.char_limit
+          %}maxlength="{{ question.char_limit }}" {% endif %} {% if question.mandatory=='mandatory' %}required{% endif
+          %}>
+
+        {% elif question.question_type == 'tel' %}
+        <label for="phone">Phone:</label>
+        <select id="countrySelect" name="country_code" {% if question.mandatory=='mandatory' %}required{% endif %}>
           <option value="" selected disabled>Select a country</option>
-          <option value="+92">Pakistan (+92)</option>
-          <option value="+49">Germany (+49)</option>
-          <option value="+86">China (+86)</option>
-          <option value="+44">United Kingdom (+44)</option>
-          <option value="+1">United States (+1)</option>
-          <option value="+91">India (+91)</option>
-          <option value="+965">Kuwait (+965)</option>
-          <option value="+966">Saudi Arabia (+966)</option>
-          <option value="+971">Dubai (+971)</option>
-          <option value="+93">Afghanistan (+93)</option>
-          <option value="+44">England (+44)</option>
-          <option value="+33">France (+33)</option>
-          <option value="other">Other Country</option>
-      </select>
-      <input type="tel" class="form-control" id="phone" name="phone"
-          placeholder="Enter phone number with country code" minlength="13" maxlength="13" pattern="{10,14}"
-          {% if question.mandatory == 'mandatory' %}required{% endif %}>
+          {% for country_code in country_codes %}
+          <option value="{{ country_code.Code }}">{{ country_code.Country }} ({{ country_code.Code }})</option>
+          {% endfor %}
+        </select>
+        <input type="tel" class="form-control" id="phone" name="phone"
+          placeholder="Enter phone number with country code" {% if question.mandatory=='mandatory' %}required{% endif
+          %}>
 
-      {% elif question.question_type == 'cnic' %}
-      <label for="cnic">CNIC Number:</label>
-      <input type="text" class="form-control" id="cnic" name="question_{{ question.id }}"
+        <script>
+          const countrySelect = document.getElementById('countrySelect');
+          const phoneInput = document.getElementById('phone');
+
+          // Fetch country codes dynamically
+          fetch('/country_codes')
+            .then(response => response.json())
+            .then(data => {
+              // Populate the country codes dropdown
+              data.country_codes.forEach(country_code => {
+                const option = document.createElement('option');
+                option.value = country_code.Code;
+                option.text = `${country_code.Country} (+${country_code.Code})`;
+                countrySelect.add(option);
+              });
+            })
+            .catch(error => console.error('Error fetching country codes:', error));
+
+          countrySelect.addEventListener('change', () => {
+            const selectedCountryCode = countrySelect.value;
+            if (selectedCountryCode === 'other') {
+              phoneInput.value = ''; // Clear the input if "Other Country" is selected
+            } else {
+              phoneInput.value = `+(${selectedCountryCode})-`; // Format: + (country_code) -
+            }
+          });
+
+
+          // Disable editing of the country code and parentheses in the input
+          phoneInput.addEventListener('input', () => {
+            const selectedCountryCode = countrySelect.value;
+            const inputLength = phoneInput.value.length;
+
+            // Ensure the country code and parentheses are not editable
+            if (inputLength < `+(${selectedCountryCode})-`.length) {
+              phoneInput.value = `+(${selectedCountryCode})-`;
+            }
+          });
+        </script>
+
+
+
+
+        {% elif question.question_type == 'cnic' %}
+        <label for="cnic">CNIC Number:</label>
+        <input type="text" class="form-control" id="cnic" name="question_{{ question.id }}"
           placeholder="Enter your CNIC number" minlength="14" maxlength="14" pattern="[0-9]{5}-[0-9]{7}-[0-9]{1}"
-          oninput="formatCnic(this)" {% if question.mandatory == 'mandatory' %}required{% endif %}>
+          oninput="formatCnic(this)" {% if question.mandatory=='mandatory' %}required{% endif %}>
 
-      {% elif question.question_type == 'gender' %}
-      <!-- Handle gender dropdown questions -->
-      <label for="question_{{ question.id }}">Select Gender:</label>
-      <select name="question_{{ question.id }}" id="question_{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
-          <option value="Rather Not Say">Rather Not Say</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-      </select>
-      
-      {% elif question.question_type == 'file_upload' %}
-      <label for="file_{{ question.id }}">Upload File:</label>
-      <input type="file" class="form-control-file" id="file_{{ question.id }}" name="question_{{ question.id }}"
-          {% if question.mandatory == 'mandatory' %}required{% endif %}>
-          
-      {% if question.options %}
-          <span class="file-type-hint">Acceptable file types: 
-              {% for option in question.options %}
-              <span class=" type">{{ option.file_type }}</span>{% if not loop.last %}, {% endif %}
-              {% endfor %}
-          </span>
-          <span class="file-size-hint">Acceptable file Size: 
-            {% for option in question.options %}
-            <span class="mb">  {{ option.max_file_size }}MBs</span>{% if not loop.last %}, {% endif %}
-            {% endfor %}
-        </span>
-      {% endif %}
-      
-    
- 
-      <!-- Add more question types here -->
-       <!-- HTML Template for Address Question Type -->
-       {% elif question.question_type == 'address' %}
-       <label for="country">Country:</label>
-       <select name="country" id="country" {% if question.mandatory == 'mandatory' %}required{% endif %}>
-           <option value="">Select a country</option>
-           {% for country in countries %}
-               <option value="{{ country.id }}">{{ country.name }}</option>
-           {% endfor %}
-       </select>
-       
-       <label for="state">State:</label>
-       <select name="state" id="state" {% if question.mandatory == 'mandatory' %}{% endif %}>
-           <option value="">Select a state</option>
-       </select>
-       
-       <label for="city">City:</label>
-       <select name="city" id="city" {% if question.mandatory == 'mandatory' %}{% endif %}>
-           <option value="">Select a city</option>
-       </select>
-       <label for="postal_code">Postal Code:</label>
- <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Enter postal code"{% if question.mandatory == 'mandatory' %} required{% endif %}>
- {% endif %}
-       <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-       <script>
-           // Use AJAX to load states based on the selected country
-           $('#country').change(function() {
-               console.log('Country dropdown changed');
-               var countryId = $(this).val();
-               console.log('Selected Country ID:', countryId);
-       
-               $.get('/states/' + countryId, function(data) {
-                   console.log('Received States Data:', data);
-       
-                   // Update the states dropdown
-                   var statesDropdown = $('#state');
-                   statesDropdown.empty();
-                   statesDropdown.append($('<option>').text('Select a state').attr('value', ''));
-                   $.each(data.states, function(index, state) {
-                       statesDropdown.append($('<option>').text(state.name).attr('value', state.name));
-                   });
-       
-                   // Clear the cities dropdown when the country changes
-                   $('#city').empty().append($('<option>').text('Select a city').attr('value', ''));
-               });
-           });
-       
-           // Use AJAX to load cities based on the selected state
-           $('#state').change(function() {
-               console.log('State dropdown changed');
-               var stateName = $(this).val();
-               console.log('Selected State Name:', stateName);
-       
-               $.get('/cities/' + stateName, function(data) {
-                   console.log('Received Cities Data:', data);
-       
-                   // Update the cities dropdown
-                   var citiesDropdown = $('#city');
-                   citiesDropdown.empty();
-                   citiesDropdown.append($('<option>').text('Select a city').attr('value', ''));
-                   $.each(data.cities, function(index, city) {
-                       citiesDropdown.append($('<option>').text(city.name).attr('value', city.name));
-                   });
-               });
-           });
-       </script>
-       
-  
-  
-
-      {% endfor %}
-      <hr>
-     
-      
-          {% if success_message %}
-       
-          <div id="submit-again-message" class="alert alert-info" style="display: none;">
-              You can submit again.
+        {% elif question.question_type == 'gender' %}
+        <div class="mydict">
+          <div>
+            <label>
+              <input type="radio" name="question_{{ question.id }}" value="Rather Not Say" checked="">
+              <span>Male</span>
+            </label>
+            <label>
+              <input type="radio" name="question_{{ question.id }}" value="Male">
+              <span>Female</span>
+            </label>
+            <label>
+              <input type="radio" name="question_{{ question.id }}" value="Female">
+              <span>Rather Not Say</span>
+            </label>
           </div>
-      {% endif %}
-      <button type="submit" class="submit-button">Submit   <i class="fa-solid fa-check"></i></button>
-      <button type="button" id="share-button" class="share-button" style="display: none;">Share</button>
-      <button type="reset" class="share-button" style="background-color: red;">Clear Form</button>
+        </div>
 
 
- 
-  <div id="popup-menu" class="popup">
-    <textarea id="form-link" readonly></textarea>
-    <button id="close-button" class="close-button">X</button>
-    <button id="copy-button" class="copy-button">Copy Link</button>
-</div>
-    </form>
+        {% elif question.question_type == 'file_upload' %}
+        <label for="file_{{ question.id }}">Upload File:</label>
+        <input type="file" class="form-control-file" id="file_{{ question.id }}" name="question_{{ question.id }}" {% if
+          question.mandatory=='mandatory' %}required{% endif %}>
+
+        {% if question.options %}
+        <span class="file-type-hint">Acceptable file types:
+          {% for option in question.options %}
+          <span class=" type">{{ option.file_type }}</span>{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </span>
+        <span class="file-size-hint">Acceptable file Size:
+          {% for option in question.options %}
+          <span class="mb"> {{ option.max_file_size }}MBs</span>{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </span>
+        {% endif %}
+
+
+
+        <!-- Add more question types here -->
+        <!-- HTML Template for Address Question Type -->
+        {% elif question.question_type == 'address' %}
+        <label for="country">Country:</label>
+        <select name="country" id="country" {% if question.mandatory=='mandatory' %}required{% endif %}>
+          <option value="">Select a country</option>
+          {% for country in countries %}
+          <option value="{{ country.id }}">{{ country.name }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="state">State:</label>
+        <select name="state" id="state" {% if question.mandatory=='mandatory' %}{% endif %}>
+          <option value="">Select a state</option>
+        </select>
+
+        <label for="city">City:</label>
+        <select name="city" id="city" {% if question.mandatory=='mandatory' %}{% endif %}>
+          <option value="">Select a city</option>
+        </select>
+        <label for="postal_code">Postal Code:</label>
+        <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Enter postal code" {%
+          if question.mandatory=='mandatory' %} required{% endif %}>
+        {% endif %}
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+          // Use AJAX to load states based on the selected country
+          $('#country').change(function () {
+            console.log('Country dropdown changed');
+            var countryId = $(this).val();
+            console.log('Selected Country ID:', countryId);
+
+            $.get('/states/' + countryId, function (data) {
+              console.log('Received States Data:', data);
+
+              // Update the states dropdown
+              var statesDropdown = $('#state');
+              statesDropdown.empty();
+              statesDropdown.append($('<option>').text('Select a state').attr('value', ''));
+              $.each(data.states, function (index, state) {
+                statesDropdown.append($('<option>').text(state.name).attr('value', state.name));
+              });
+
+              // Clear the cities dropdown when the country changes
+              $('#city').empty().append($('<option>').text('Select a city').attr('value', ''));
+            });
+          });
+
+          // Use AJAX to load cities based on the selected state
+          $('#state').change(function () {
+            console.log('State dropdown changed');
+            var stateName = $(this).val();
+            console.log('Selected State Name:', stateName);
+
+            $.get('/cities/' + stateName, function (data) {
+              console.log('Received Cities Data:', data);
+
+              // Update the cities dropdown
+              var citiesDropdown = $('#city');
+              citiesDropdown.empty();
+              citiesDropdown.append($('<option>').text('Select a city').attr('value', ''));
+              $.each(data.cities, function (index, city) {
+                citiesDropdown.append($('<option>').text(city.name).attr('value', city.name));
+              });
+            });
+          });
+        </script>
+
+
+
+
+        {% endfor %}
+        <hr>
+
+
+        {% if success_message %}
+
+        <div id="submit-again-message" class="alert alert-info" style="display: none;">
+          You can submit again.
+        </div>
+        {% endif %}
+        <button type="submit" class="submit-button">Submit <i class="fa-solid fa-check"></i></button>
+        <button type="button" id="share-button" class="share-button" style="display: none;">Share</button>
+        <button type="reset" class="share-button" style="background-color: red;">Clear Form</button>
+
+
+
+        <div id="popup-menu" class="popup">
+          <textarea id="form-link" readonly></textarea>
+          <button id="close-button" class="close-button">X</button>
+          <button id="copy-button" class="copy-button">Copy Link</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
-<div class="footer">
-  <p>&copy; 2023 Survey Hub. All rights reserved. | University of Swat, Software Engineering Batch
-    2019-2023</p>
-</div>
+  <div class="footer">
+    <p>&copy; 2023 Survey Hub. All rights reserved. | University of Swat, Software Engineering Batch
+      2019-2023</p>
+  </div>
 
-<!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function () {
-    const successMessage = $("#success-message");
-    const submitAgainMessage = $("#submit-again-message");
-    const shareButton = $("#share-button");
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      const successMessage = $("#success-message");
+      const submitAgainMessage = $("#submit-again-message");
+      const shareButton = $("#share-button");
 
-    // Display the success message
-    successMessage.fadeIn(1000);
+      // Display the success message
+      successMessage.fadeIn(1000);
 
-    // Display the submit-again message
-    submitAgainMessage.fadeIn(1000);
+      // Display the submit-again message
+      submitAgainMessage.fadeIn(1000);
 
-    // Show the "Share" button instantly
-    shareButton.show();
-  });
-</script>
+      // Show the "Share" button instantly
+      shareButton.show();
+    });
+  </script>
 
-<script>
-  $(document).ready(function () {
-    const successMessage = $("#success-message");
-    const submitAgainMessage = $("#submit-again-message");
+  <script>
+    $(document).ready(function () {
+      const successMessage = $("#success-message");
+      const submitAgainMessage = $("#submit-again-message");
 
-    // Display the success message for 3 seconds
-    successMessage.fadeIn(1000).delay(3000).fadeOut(1000, function () {
-      // After fading out the success message, display the "You can submit again" message for 3 seconds
-      submitAgainMessage.fadeIn(1000).delay(3000).fadeOut(1000, function () {
-        // After fading out the submit-again message, show the "Share" button
-        $("#share-button").show();
+      // Display the success message for 3 seconds
+      successMessage.fadeIn(1000).delay(3000).fadeOut(1000, function () {
+        // After fading out the success message, display the "You can submit again" message for 3 seconds
+        submitAgainMessage.fadeIn(1000).delay(3000).fadeOut(1000, function () {
+          // After fading out the submit-again message, show the "Share" button
+          $("#share-button").show();
+        });
       });
     });
-  });
-</script>
+  </script>
 
 
-<script>
-  $(document).ready(function () {
-    const shareButton = document.getElementById("share-button");
-    const popupMenu = document.getElementById("popup-menu");
-    const formLink = document.getElementById("form-link");
-    const copyButton = document.getElementById("copy-button");
-    const closeButton = document.getElementById("close-button");
+  <script>
+    $(document).ready(function () {
+      const shareButton = document.getElementById("share-button");
+      const popupMenu = document.getElementById("popup-menu");
+      const formLink = document.getElementById("form-link");
+      const copyButton = document.getElementById("copy-button");
+      const closeButton = document.getElementById("close-button");
 
-    shareButton.addEventListener("click", function () {
-      // Generate the form link (assuming 'form.id' contains the form ID)
-      const formId = "{{ form.id }}"; // Replace with your actual form ID
-      const formLinkValue = `http://127.0.0.1:5000/fill_form/${formId}`;
+      shareButton.addEventListener("click", function () {
+        // Generate the form link (assuming 'form.id' contains the form ID)
+        const formId = "{{ form.id }}"; // Replace with your actual form ID
+        const formLinkValue = `http://127.0.0.1:5000/fill_form/${formId}`;
 
-      // Set the form link text
-      formLink.textContent = formLinkValue;
+        // Set the form link text
+        formLink.textContent = formLinkValue;
 
-      // Show the popup menu
-      popupMenu.style.display = "block";
-    });
-
-    copyButton.addEventListener("click", function (event) {
-  event.preventDefault(); // Prevent the default behavior (form submission and redirection)
-
-  // Copy the link to the clipboard
-  const linkToCopy = formLink.textContent;
-  const tempInput = document.createElement("input");
-  document.body.appendChild(tempInput);
-  tempInput.value = linkToCopy;
-  tempInput.select();
-  document.execCommand("copy");
-  document.body.removeChild(tempInput);
-
-  // Provide some visual feedback to the user (e.g., change button text)
-  copyButton.textContent = "Copied!";
-  setTimeout(function () {
-    copyButton.textContent = "Copy Link";
-  }, 2000); // Reset the button text after 2 seconds
-});
-closeButton.addEventListener("click", function (event) {
-  event.preventDefault(); // Prevent the default behavior (form submission and redirection)
-
-  // Close the popup menu
-  popupMenu.style.display = "none";
-});
-
-  });
-</script>
-
-
-<script>
-  const stars = document.querySelectorAll('.rating_1 input[type="radio"]');
-  stars.forEach((star) => {
-    star.addEventListener('change', (e) => {
-      const selectedStar = e.target;
-      const selectedValue = parseInt(selectedStar.value);
-      const questionId = selectedStar.getAttribute('data-question-id');
-
-      // Clear previous selections
-      stars.forEach((s) => {
-        const starQuestionId = s.getAttribute('data-question-id');
-        const starLabel = document.querySelector(`label[for="star${s.value}_${starQuestionId}"]`);
-        if (s !== selectedStar && starQuestionId === questionId) {
-          starLabel.classList.remove('selected');
-        }
+        // Show the popup menu
+        popupMenu.style.display = "block";
       });
 
-      // Highlight selected star and previous stars for the same question
-      for (let i = 1; i <= selectedValue; i++) {
-        const starLabel = document.querySelector(`label[for="star${i}_${questionId}"]`);
-        if (starLabel) {
-          starLabel.classList.add('selected');
-        }
-      }
+      copyButton.addEventListener("click", function (event) {
+        event.preventDefault(); // Prevent the default behavior (form submission and redirection)
 
-      // Display response based on the selected emoji
-      const responseElement = document.getElementById(`response_${questionId}`);
-      if (responseElement) {
-        switch (selectedValue) {
-          case 1:
-            responseElement.innerHTML = "You selected 1 star: 😞";
-            break;
-          case 2:
-            responseElement.innerHTML = "You selected 2 stars: 😐";
-            break;
-          case 3:
-            responseElement.innerHTML = "You selected 3 stars: 😊";
-            break;
-          case 4:
-            responseElement.innerHTML = "You selected 4 stars: 😄";
-            break;
-          case 5:
-            responseElement.innerHTML = "You selected 5 stars: ⭐️";
-            break;
-          default:
-            responseElement.innerHTML = "";
-            break;
-        }
-        responseElement.style.display = "block";
-      }
+        // Copy the link to the clipboard
+        const linkToCopy = formLink.textContent;
+        const tempInput = document.createElement("input");
+        document.body.appendChild(tempInput);
+        tempInput.value = linkToCopy;
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+
+        // Provide some visual feedback to the user (e.g., change button text)
+        copyButton.textContent = "Copied!";
+        setTimeout(function () {
+          copyButton.textContent = "Copy Link";
+        }, 2000); // Reset the button text after 2 seconds
+      });
+      closeButton.addEventListener("click", function (event) {
+        event.preventDefault(); // Prevent the default behavior (form submission and redirection)
+
+        // Close the popup menu
+        popupMenu.style.display = "none";
+      });
+
     });
-  });
+  </script>
 
-  const countrySelect = document.getElementById('countrySelect');
-  const phoneInput = document.getElementById('phone');
 
-  countrySelect.addEventListener('change', () => {
-    const selectedCountryCode = countrySelect.value;
-    if (selectedCountryCode === 'other') {
-      phoneInput.value = ''; // Clear the input if "Other Country" is selected
-    } else {
-      phoneInput.value = selectedCountryCode;
-    }
-  });
+  <script>
+    const stars = document.querySelectorAll('.rating_1 input[type="radio"]');
+    stars.forEach((star) => {
+      star.addEventListener('change', (e) => {
+        const selectedStar = e.target;
+        const selectedValue = parseInt(selectedStar.value);
+        const questionId = selectedStar.getAttribute('data-question-id');
 
-  // Format CNIC input as 5 digits - 7 digits - 1 digit
-  function formatCnic(input) {
-    let value = input.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-    value = value.substring(0, 14); // Limit to 14 characters
+        // Clear previous selections
+        stars.forEach((s) => {
+          const starQuestionId = s.getAttribute('data-question-id');
+          const starLabel = document.querySelector(`label[for="star${s.value}_${starQuestionId}"]`);
+          if (s !== selectedStar && starQuestionId === questionId) {
+            starLabel.classList.remove('selected');
+          }
+        });
 
-    if (value.length >= 5 && value.length <= 12) {
-      value = value.substring(0, 5) + "-" + value.substring(5);
-    } else if (value.length >= 13) {
-      value = value.substring(0, 5) + "-" + value.substring(5, 12) + "-" + value.substring(12);
-    }
+        // Highlight selected star and previous stars for the same question
+        for (let i = 1; i <= selectedValue; i++) {
+          const starLabel = document.querySelector(`label[for="star${i}_${questionId}"]`);
+          if (starLabel) {
+            starLabel.classList.add('selected');
+          }
+        }
 
-    input.value = value;
-  }
-  
- 
+        // Display response based on the selected emoji
+        const responseElement = document.getElementById(`response_${questionId}`);
+        if (responseElement) {
+          switch (selectedValue) {
+            case 1:
+              responseElement.innerHTML = "You selected 1 star: 😞";
+              break;
+            case 2:
+              responseElement.innerHTML = "You selected 2 stars: 😐";
+              break;
+            case 3:
+              responseElement.innerHTML = "You selected 3 stars: 😊";
+              break;
+            case 4:
+              responseElement.innerHTML = "You selected 4 stars: 😄";
+              break;
+            case 5:
+              responseElement.innerHTML = "You selected 5 stars: ⭐️";
+              break;
+            default:
+              responseElement.innerHTML = "";
+              break;
+          }
+          responseElement.style.display = "block";
+        }
+      });
+    });
 
-</script>
-<script>
-  var isNavOpen = false;
 
-  function closeNav() {
+  </script>
+  <script>
+    var isNavOpen = false;
+
+    function closeNav() {
       document.getElementById("side-nav").style.left = "-200px";
       isNavOpen = false;
-  }
+    }
 
-  function toggleNav() {
+    function toggleNav() {
       var sideNav = document.getElementById("side-nav");
       if (!isNavOpen) {
-          sideNav.style.left = "0px";
+        sideNav.style.left = "0px";
       } else {
-          sideNav.style.left = "-200px";
+        sideNav.style.left = "-200px";
       }
       isNavOpen = !isNavOpen;
-  }
-</script>
+    }
+  </script>
 
 
 </body>
-</html> 
+
+</html>

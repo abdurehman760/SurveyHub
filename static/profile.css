@@ -252,7 +252,11 @@ body {
   background-color: #bb2d3b;
 }
 
-
+.user_card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 /* Style for the user-info-card */
 .user-info-card {
   background-color: rgb(148, 203, 235); /* White background */
@@ -260,12 +264,9 @@ body {
   padding: 1px 200px; /* Add padding for small gaps */
   border-radius: 5px; /* Remove border-radius */
  
+ 
 }
-.user-info-card:hover {
-  background-color:#1ea6e5a7; /* Darker blue on hover */
-  color: #000000; /* White text on hover */
-  
-}
+
 
 /* Style for the create_surveys_card */
 .create_surveys_card {
@@ -349,4 +350,45 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around; /* Adjust as needed */
+}
+.button.settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 12px;
+  gap: 8px;
+  height: 36px;
+  width: 120px;
+  border: none;
+  background: #5e41de33;
+  border-radius: 20px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.button.settings:hover {
+  background: #5e41de4d;
+}
+
+.button.settings:hover .svg-icon {
+  animation: spin 2s linear infinite;
+}
+
+.lable {
+  line-height: 20px;
+  font-size: 17px;
+  color: #000000;
+  font-family: sans-serif;
+  letter-spacing: 1px;
+}
+
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

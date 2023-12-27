@@ -116,7 +116,7 @@
   <div class="card-body">
       <h4>Gender Pie Chart</h4>
       <p>This displays a pie chart based on gender responses if there is a gender-related question in the form.</p>
-      <a id="gender-link" class="analytics-link" href="{{ url_for('gender_pie_chart', form_id=form.id) }}">View Analytics</a>
+      <a id="gender-link" class="analytics-link" href="{{ url_for('gender_pie_chart', form_id=form.id) }}">View Chart</a>
   </div>
 </div>
 
@@ -135,6 +135,13 @@
       <h4>All Responses</h4>
       <p>This section allows you to view all responses submitted for the form.</p>
       <a id="all-responses-link" class="analytics-link" href="{{ url_for('form_responses', form_id=form.id) }}">View All Responses</a>
+  </div>
+</div>
+<div class="card analytics-card">
+  <div class="card-body">
+      <h4>All Responses</h4>
+      <p>This section allows you to view all responses submitted for the form.</p>
+      <a id="all-responses-link" class="analytics-link" href="{{ url_for('address_pie_chart', form_id=form.id) }}">View Chart</a>
   </div>
 </div>
 

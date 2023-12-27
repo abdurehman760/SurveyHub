@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Pie Chart</title>
+    <!-- Add any additional styling or libraries if needed -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .toggle-buttons {
+            text-align: center;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    }
+
+    /* Style for the learn-more class (button) */
+    .learn-more {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        outline: none;
+        border: 0;
+        vertical-align: middle;
+        text-decoration: none;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 600;
+        color: #382b22;
+        text-transform: uppercase;
+        padding: 1.25em 2em;
+        background: #fff0f0;
+        border: 2px solid #b18597;
+        border-radius: 0.75em;
+        transform-style: preserve-3d;
+        transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+    }
+
+    /* Style for the ::before pseudo-element */
+    .learn-more::before {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #f9c4d2;
+        border-radius: inherit;
+        box-shadow: 0 0 0 2px #b18597, 0 0.625em 0 0 #ffe3e2;
+        transform: translate3d(0, 0.75em, -1em);
+        transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+    }
+
+    /* Hover effect for the button */
+    .learn-more:hover {
+        background: #ffe9e9;
+        transform: translate(0, 0.25em);
+    }
+
+    /* Hover effect for the ::before pseudo-element */
+    .learn-more:hover::before {
+        box-shadow: 0 0 0 2px #b18597, 0 0.5em 0 0 #ffe3e2;
+        transform: translate3d(0, 0.5em, -1em);
+    }
+
+    /* Active effect for the button */
+    .learn-more:active {
+        background: #ffe9e9;
+        transform: translate(0em, 0.75em);
+    }
+
+    /* Active effect for the ::before pseudo-element */
+    .learn-more:active::before {
+        box-shadow: 0 0 0 2px #b18597, 0 0 #ffe3e2;
+        transform: translate3d(0, 0, -1em);
+    }
+        /* Add your custom styles here */
+        /* ... */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Address Distribution</h1>
+        <p>
+            This pie chart represents the distribution of addresses based on the responses to the address question.
+        </p>
+
+        <!-- Toggle buttons for chart types -->
+        <div class="toggle-buttons">
+            <a class="learn-more" href="{{ url_for('address_pie_chart', form_id=form.id, chart_type='country') }}">Country</a>
+            <a class="learn-more" href="{{ url_for('address_pie_chart', form_id=form.id, chart_type='state') }}">State</a>
+            <a class="learn-more" href="{{ url_for('address_pie_chart', form_id=form.id, chart_type='city') }}">City</a>
+        </div>
+
+        <!-- Render Plotly chart -->
+        {{ chart_html|safe }}
+    </div>
+</body>
+
+</html>

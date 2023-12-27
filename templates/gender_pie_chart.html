@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gender Pie Chart</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
-<div class="container">
+
+<body>
+    <div class="container">
         <h1>Gender Distribution</h1>
         <p>
             This pie chart represents the responses to the gender question.
@@ -13,12 +45,7 @@
 
         <!-- Render Plotly chart -->
         {{ chart_html|safe }}
-
-        <h2>Percentage of Form Fillers by Gender</h2>
-        <ul>
-            <li>Male: {{ male_percentage }}%</li>
-            <li>Female: {{ female_percentage }}%</li>
-            <li>Rather Not Say: {{ rather_not_say_percentage }}%</li>
-        </ul>
     </div>
+</body>
+
 </html>

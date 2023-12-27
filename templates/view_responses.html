@@ -68,11 +68,19 @@
                         </h5>
                         <p class="question-text"> <span class="Q">Q:</span> {{ question.question_text }}</p>
                         {% if question.question_type in ['multiple_choice', 'dropdown', 'checkboxes'] %}
-                            <div class="chart-buttons">
-                                <a href="{{ url_for('view_pie_chart', form_id=form.id, question_type=question.question_type) }}"
-                                    class="btn btn-primary">View Pie Chart </a>
-                            </div>
-                        {% endif %}
+                        <!-- View Pie Chart Button -->
+                        <div class="chart-buttons">
+                            <a href="{{ url_for('view_pie_chart', form_id=form.id, question_type=question.question_type) }}"
+                                class="btn btn-primary">View Pie Chart</a>
+                        </div>
+                        
+                        <!-- View Bar Chart Button -->
+                        <div class="chart-buttons">
+                            <a href="{{ url_for('view_bar_chart', form_id=form.id, question_type=question.question_type) }}"
+                                class="btn btn-primary">View Bar Chart</a>
+                        </div>
+                    {% endif %}
+                
                     </div>
                     <span class="response-count" data-toggle="responses-{{ loop.index }}">
                         ({{ responses|length }} responses)
@@ -125,6 +133,13 @@
                                         </li>
                                     {% endfor %}
                                 {% else %}
+                                {% if question.question_type in ['paragraph', 'text', 'short_answer', 'date', 'gender','tel'] %}
+                        {% for response in responses %}
+                            <li class="list-group-item">
+                                {{ response.answer }}
+                            </li>
+                        {% endfor %}
+                    {% endif %}
                                     <!-- Handle other question types as before -->
                                 {% endif %}
                             </ul>

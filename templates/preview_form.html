@@ -292,14 +292,23 @@
           placeholder="Enter your CNIC number" minlength="14" maxlength="14" pattern="[0-9]{5}-[0-9]{7}-[0-9]{1}"
           oninput="formatCnic(this)" {% if question.mandatory == 'mandatory' %}required{% endif %}>
 
-      {% elif question.question_type == 'gender' %}
-      <!-- Handle gender dropdown questions -->
-      <label for="question_{{ question.id }}">Select Gender:</label>
-      <select name="question_{{ question.id }}" id="question_{{ question.id }}" {% if question.mandatory == 'mandatory' %}required{% endif %}>
-          <option value="Rather Not Say">Rather Not Say</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-      </select>
+          {% elif question.question_type == 'gender' %}
+          <div class="mydict">
+            <div>
+              <label>
+                <input type="radio" name="question_{{ question.id }}" value="Rather Not Say" checked="">
+                <span>Male</span>
+              </label>
+              <label>
+                <input type="radio" name="question_{{ question.id }}" value="Male">
+                <span>Female</span>
+              </label>
+              <label>
+                <input type="radio" name="question_{{ question.id }}" value="Female">
+                <span>Rather Not Say</span>
+              </label>
+            </div>
+          </div>
       {% elif question.question_type == 'file_upload' %}
       <label for="file_{{ question.id }}">Upload File:</label>
       <input type="file" class="form-control-file" id="file_{{ question.id }}" name="question_{{ question.id }}"

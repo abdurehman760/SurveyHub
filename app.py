@@ -1,5 +1,4 @@
 
-
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify,abort
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
@@ -10,9 +9,11 @@ import os
 import uuid  
 from flask import send_from_directory
 import plotly.express as px
-import pandas as pd
+import plotly.graph_objects as go
 from plotly.io import to_html
-import json
+import pandas as pd
+
+
 
 
 
@@ -93,8 +94,8 @@ class Form(db.Model):
     form_header = db.Column(db.String(255))
     created_by = db.Column(db.String(100))
     creator = db.Column(db.String(100))
-    edited = db.Column(db.String(3), default='No')  # New column 'edited' with default value 'No'
-    edited_at = db.Column(db.DateTime)  # New column 'edited_at'
+    edited = db.Column(db.String(3), default='No')  
+    edited_at = db.Column(db.DateTime) 
     questions = db.relationship('Question', backref='form', lazy=True, cascade='all, delete-orphan')
     responses = db.relationship('FormResponse', backref='form', lazy=True, cascade='all, delete-orphan')
 
@@ -117,7 +118,7 @@ class Option(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     option_text = db.Column(db.String(255), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
-    file_type = db.Column(db.String(50))  # Add a column for file type selection
+    file_type = db.Column(db.String(50)) 
     max_file_size = db.Column(db.Integer)
 
     
@@ -291,6 +292,69 @@ def view_pie_chart(form_id, question_type):
         gender_chart_html=gender_chart_html,
         gender_options=gender_options
     )
+    
+    
+
+
+
+@app.route('/view_bar_chart/<int:form_id>/<string:question_type>', methods=['GET'])
+def view_bar_chart(form_id, question_type):
+    form = Form.query.get_or_404(form_id)
+
+    # Fetch questions of the specified question type
+    questions = Question.query.filter(Question.form_id == form_id, Question.question_type == question_type).all()
+
+    # Prepare data for the bar chart
+    labels = []
+    values = []
+
+    for question in questions:
+        options = Option.query.filter_by(question_id=question.id).all()
+        for option in options:
+            option_text = get_option_text(option.id, question)
+            # Add a check for non-empty option text before appending to labels
+            if option_text:
+                labels.append(option_text)
+                values.append(0)  # Initialize values to 0 for each option
+
+    # Count occurrences of each option in responses
+    total_responses = len(form.responses)
+    for response in form.responses:
+        for answer in response.answers:
+            if answer.question_id in [q.id for q in questions]:
+                # Check if answer is a comma-separated list for checkboxes
+                if ',' in answer.answer:
+                    # Handle multiple options
+                    option_ids = [int(option_id) for option_id in answer.answer.split(',')]
+                    for option in options:
+                        if option.id in option_ids:
+                            option_text = get_option_text(option.id, question)
+                            # Add a check for non-empty option text before incrementing values
+                            if option_text:
+                                values[labels.index(option_text)] += 1
+                else:
+                    # Single option answer
+                    option_text = get_option_text(answer.answer, question)
+                    # Add a check for non-empty option text before incrementing values
+                    if option_text:
+                        values[labels.index(option_text)] += 1
+
+    # Create a bar chart using Plotly
+    fig = go.Figure(data=[go.Bar(x=labels, y=values)])
+    fig.update_layout(
+        title=f'Responses for {question_type.capitalize()} Questions',
+        xaxis_title='Options',
+        yaxis_title='Frequency',
+    )
+
+    # Convert the Plotly figure to HTML
+    bar_chart_html = fig.to_html(full_html=False)
+
+    return render_template(
+        'view_bar_chart.html',
+        bar_chart_html=bar_chart_html,
+        form=form
+    )
 
 
 
@@ -309,6 +373,8 @@ def fill_form(form_id):
     countries = countries_df.to_dict(orient='records')
     states = states_df.to_dict(orient='records')
     cities = cities_df.to_dict(orient='records')
+    country_codes_df = pd.read_csv(os.path.join(base_dir, 'static/csv/country-codes.csv'), usecols=['Country', 'Code'])
+    country_codes = country_codes_df.to_dict(orient='records')
 
     form_response = FormResponse(form_id=form.id)  # Initialize form_response here
 
@@ -363,10 +429,15 @@ def fill_form(form_id):
                 email_value = request.form.get(f'question_{question.id}')
                 answers[question.id] = email_value
             elif question.question_type == 'tel':
-                # Handle telephone input questions
-                phone_number = request.form.get(f'phone')
-                full_phone_number = f'{phone_number}'
-                answers[question.id] = full_phone_number
+        # Handle telephone input questions
+                selected_country_code = request.form.get('country_code')
+                phone_number = request.form.get('phone')
+    
+                if selected_country_code and phone_number:
+                   full_phone_number = f'{phone_number}'
+                   answers[question.id] = full_phone_number
+                else:
+                   answers[question.id] = None
             elif question.question_type == 'cnic':
                 # Handle CNIC input questions
                 cnic_value = request.form.get(f'question_{question.id}')
@@ -381,7 +452,7 @@ def fill_form(form_id):
                 answers[question.id] = date_time_value
             # Inside the loop where you handle different question types
             elif question.question_type == 'address':
-        # Handle address input questions
+            # Handle address input questions
                 country_id = request.form.get('country')
                 selected_country = next((country['name'] for country in countries if country['id'] == int(country_id)), None)
                 country = selected_country if selected_country is not None else ''
@@ -402,10 +473,6 @@ def fill_form(form_id):
     # Store the address string in the answer field
                 answers[question.id] = address_string
 
-
-
-            
-
         # Iterate through the user's answers and create ResponseAnswer instances
         for question_id, answer in answers.items():
             if question_id not in form_response.answers:
@@ -418,20 +485,37 @@ def fill_form(form_id):
                 form_response.answers.append(response_answer)
 
         # Add and commit the form response and answers to the database
-        db.session.add(form_response)
-        db.session.commit()
+        try:
+    # Add and commit the form response and answers to the database
+         db.session.add(form_response)
+         db.session.commit()
 
-        flash('Form submitted successfully!', 'success')
+         flash('Form submitted successfully!', 'success')
+
+        except Exception as e:
+    # Rollback changes in case of an error
+         db.session.rollback()
+         flash('Error submitting the form. Please try again.', 'danger')
 
         # Render the same template with the success message
         return render_template('fill_form.html', form=form, success_message='Form submitted successfully!', show_submit_another=True,
-            countries=countries,
-            states=states,
-            cities=cities)
+                               countries=countries,
+                               states=states,
+                               cities=cities,
+                               country_codes=country_codes)
 
-    return render_template('fill_form.html', form=form, show_submit_another=False, countries=countries, states=states, cities=cities)
+    return render_template('fill_form.html', form=form, show_submit_another=False, countries=countries, states=states,country_codes=country_codes, cities=cities)
 
+@app.route('/country_codes')
+def get_country_codes():
+    # Read the country-codes.csv file
+    country_codes_df = pd.read_csv(os.path.join(base_dir, 'static/csv/country-codes.csv'), usecols=['Country', 'Code'])
 
+    # Convert the DataFrame to a list of dictionaries
+    country_codes_list = country_codes_df.to_dict(orient='records')
+
+    # Return the list of country codes as JSON
+    return jsonify({'country_codes': country_codes_list})
 
 
 @app.route('/profile_redirect')
@@ -486,7 +570,7 @@ def view_responses(form_id):
 
     return render_template('view_responses.html', form=form, question_responses=question_responses, get_option_text=get_option_text)
 
-from flask import send_from_directory
+
 
 @app.route('/download_file/<filename>', methods=['GET'])
 def download_file(filename):
@@ -596,6 +680,86 @@ def gender_pie_chart(form_id):
         chart_html = 'No data available for gender question.'
 
     return render_template('gender_pie_chart.html', chart_html=chart_html)
+
+
+
+
+
+@app.route('/address_pie_chart/<int:form_id>')
+def address_pie_chart(form_id):
+    current_user = get_current_user()
+
+    if current_user is None:
+        return redirect(url_for('login'))
+
+    # Check if the form contains an "address" question
+    form = Form.query.get_or_404(form_id)
+    address_question = next((q for q in form.questions if q.question_type == 'address'), None)
+
+    chart_type = request.args.get('chart_type', 'country')  # Initialize chart_type with a default value
+
+    if address_question:
+        # Query the database to get real data for the "address" question
+        address_responses = []
+        form_responses = FormResponse.query.filter_by(form_id=form_id).all()
+        for response in form_responses:
+            answer = ResponseAnswer.query.filter_by(
+                response_id=response.id, question_id=address_question.id).first()
+            if answer and answer.answer:  # Check if answer is not None and not an empty string
+                address_responses.append(answer.answer)
+
+        # Create a Plotly pie chart based on the selected chart type
+        if chart_type == 'country':
+            chart_data = []
+            for response in address_responses:
+                if response:
+                    parts = response.split(', ')
+                    if len(parts) >= 1:
+                        country_info = parts[0].split(': ')
+                        if len(country_info) == 2:
+                            country = country_info[1]
+                            chart_data.append(country)
+            title = 'Country Distribution'
+        elif chart_type == 'state':
+            chart_data = []
+            for response in address_responses:
+                if response:
+                    parts = response.split(', ')
+                    if len(parts) >= 2:
+                        state_info = parts[1].split(': ')
+                        if len(state_info) == 2:
+                            state = state_info[1]
+                            chart_data.append(state)
+            title = 'State Distribution'
+        elif chart_type == 'city':
+            chart_data = []
+            for response in address_responses:
+                if response:
+                    parts = response.split(', ')
+                    if len(parts) >= 3:
+                        city_info = parts[2].split(': ')
+                        if len(city_info) == 2:
+                            city = city_info[1]
+                            chart_data.append(city)
+            title = 'City Distribution'
+        else:
+            chart_html = 'Invalid chart type.'
+            return render_template('address_pie_chart.html', chart_html=chart_html, chart_type=chart_type, form=form)
+
+        # Create a Plotly pie chart
+        fig = px.pie(
+            values=[chart_data.count(value) for value in set(chart_data)],
+            names=list(set(chart_data)),
+            title=title
+        )
+
+        # Convert the Plotly figure to HTML
+        chart_html = fig.to_html()
+    else:
+        chart_html = 'No data available for address question.'
+
+    # Pass 'form' along with other variables to the template
+    return render_template('address_pie_chart.html', chart_html=chart_html, chart_type=chart_type, form=form)
 
 
 
@@ -1014,7 +1178,7 @@ def edit_form(form_id):
 
      
 
-    return render_template('edit_form.html',form=form, user_role=current_user.role)
+    return render_template('edit_form.html',form=form, user_role=current_user.role, user=current_user)
 
 
 
@@ -1101,7 +1265,8 @@ def create_form():
         form_header = request.form['form_header']  # Get the form_header value
         creator_username = request.form['creator']
         # Check if at least one question is marked as mandatory
-        if not any(question['mandatory'] == 'mandatory' for question in request.form.getlist('mandatory[]')):
+        if not any('mandatory' in question for question in request.form.getlist('mandatory[]')):
+    
             flash('At least one question must be marked as mandatory.', 'error')
             return redirect(url_for('create_form'))
         # Create a new Form associated with the current user
@@ -1542,16 +1707,7 @@ def get_cities(state_name):
     filtered_cities = cities_df[cities_df['state_name'] == state_name].to_dict(orient='records')
     return {'cities': filtered_cities}
 
-@app.route('/country_codes')
-def get_country_codes():
-    # Read the country-codes.csv file
-    country_codes_df = pd.read_csv(os.path.join(base_dir, 'static/csv/country-codes.csv'), usecols=['Country', 'Code'])
 
-    # Convert the DataFrame to a list of dictionaries
-    country_codes_list = country_codes_df.to_dict(orient='records')
-
-    # Return the list of country codes as JSON
-    return jsonify({'country_codes': country_codes_list})
 
 
 
